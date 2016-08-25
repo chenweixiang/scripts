@@ -4,35 +4,66 @@
 # This Bash script is used to zip a specified commit in current repository.
 # The commit is specified by input parameter $1. Use HEAD as the commit if
 # no input parameter $1 is specified.
-#
-# Usage: git-archive-commit.sh [commit-id]
 #-------------------------------------------------------------------------------
 
 #
-# 1) Get the commit-id
+# 1) Get the commit-id and output-dir
 #
 
-if [ "$1" == "" ]; then
-    cmt="HEAD"
-else
-    cmt=$1
-fi
+# set default commit-id and output-dir
+cmt="HEAD"
+outdir="."
+path="."
+
+usage="git-archive-commit.sh { [-c commit-id] [-p path ] [-o output-dir] | [-h] }"
+
+# get commit-id and output-dir from input parameters
+while getopts "c:p:o:h" arg
+do
+    case $arg in
+        c)  # -c <commit-id>
+            cmt=$OPTARG
+            ;;
+        p)  # -p <path>
+            path=$OPTARG
+            ;;
+        o)  # -o <output-dir>
+            outdir=$OPTARG
+            ;;
+        h)  # help
+            echo ${usage}
+            exit 1
+            ;;
+        ?)  # unkonw argument
+            echo "unkonw argument"
+            exit 1
+            ;;
+    esac
+done
 
 #
-# 2) Get the name of current repository
+# 2) Archive the specified commit 'shortcmt' to 'filename'
 #
+
+shortcmt=`git rev-parse --short ${cmt}`
 
 reporoot=`git rev-parse --show-toplevel`
 reponame=`basename ${reporoot}`
 
-#
-# 3) Archive the specified commit 'shortcmt' to 'filename'
-#
+pathbase=`basename ${path}`
+if [ ${pathbase} == "." ]; then
+    pathbase=""
+else
+    pathbase=${pathbase}-
+fi
 
-shortcmt=`git rev-parse --short ${cmt}`
-filename=${reponame}-commit-${shortcmt}.zip
-git archive -o ${filename} ${shortcmt}
+gitdesc=`git describe --always ${cmt}`
 
-echo Archive repository commit ${shortcmt} to ${filename}
+filename=${reponame}-${pathbase}${gitdesc}.zip
 
+echo Archive commit ${shortcmt} of folder ${path} to ${outdir}/${filename}
+
+git archive -o ${outdir}/${filename} ${shortcmt} ${path}
+
+echo Done
 
