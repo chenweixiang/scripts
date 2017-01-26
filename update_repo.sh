@@ -124,6 +124,19 @@ echo -e "\n--- git status ---"
 git status
 
 
+echo
+echo -e "####################################"
+echo -e "### Update Repository: ~/xx-net ###"
+echo -e "####################################"
+echo -e "\n--- change directory ---"
+echo cd ~/xx-net
+cd ~/xx-net
+echo -e "\n--- git fetch --all ---"
+git fetch --all
+echo -e "\n--- git status ---"
+git status
+
+
 #print a new line at the end of the script
 echo
 
