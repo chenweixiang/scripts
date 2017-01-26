@@ -126,8 +126,34 @@ git status
 
 echo
 echo -e "####################################"
-echo -e "### Update Repository: ~/xx-net ###"
+echo -e "### Update Repository: ~/busybox ###"
 echo -e "####################################"
+echo -e "\n--- change directory ---"
+echo cd ~/busybox
+cd ~/busybox
+echo -e "\n--- git fetch --all ---"
+git fetch --all
+echo -e "\n--- git status ---"
+git status
+
+
+echo
+echo -e "#################################"
+echo -e "### Update Repository: ~/kmod ###"
+echo -e "#################################"
+echo -e "\n--- change directory ---"
+echo cd ~/kmod
+cd ~/kmod
+echo -e "\n--- git fetch --all ---"
+git fetch --all
+echo -e "\n--- git status ---"
+git status
+
+
+echo
+echo -e "###################################"
+echo -e "### Update Repository: ~/xx-net ###"
+echo -e "###################################"
 echo -e "\n--- change directory ---"
 echo cd ~/xx-net
 cd ~/xx-net
