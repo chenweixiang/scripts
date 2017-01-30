@@ -27,6 +27,19 @@ git status
 
 
 echo
+echo -e "##################################"
+echo -e "### Update Repository: ~/gitdm ###"
+echo -e "##################################"
+echo -e "\n--- change directory ---"
+echo cd ~/gitdm
+cd ~/gitdm
+echo -e "\n--- git fetch --all ---"
+git fetch --all
+echo -e "\n--- git status ---"
+git status
+
+
+echo
 echo -e "###################################################"
 echo -e "### Update Repository: ~/linux-kernel-send-mail ###"
 echo -e "###################################################"
@@ -157,6 +170,32 @@ echo -e "###################################"
 echo -e "\n--- change directory ---"
 echo cd ~/xx-net
 cd ~/xx-net
+echo -e "\n--- git fetch --all ---"
+git fetch --all
+echo -e "\n--- git status ---"
+git status
+
+
+echo
+echo -e "#####################################"
+echo -e "### Update Repository: ~/rubygems ###"
+echo -e "#####################################"
+echo -e "\n--- change directory ---"
+echo cd ~/rubygems
+cd ~/rubygems
+echo -e "\n--- git fetch --all ---"
+git fetch --all
+echo -e "\n--- git status ---"
+git status
+
+
+echo
+echo -e "##################################"
+echo -e "### Update Repository: ~/vgrep ###"
+echo -e "##################################"
+echo -e "\n--- change directory ---"
+echo cd ~/vgrep
+cd ~/vgrep
 echo -e "\n--- git fetch --all ---"
 git fetch --all
 echo -e "\n--- git status ---"
