@@ -151,6 +151,19 @@ git status
 
 
 echo
+echo -e "####################################"
+echo -e "### Update Repository: ~/u-boot ###"
+echo -e "####################################"
+echo -e "\n--- change directory ---"
+echo cd ~/u-boot
+cd ~/u-boot
+echo -e "\n--- git fetch --all ---"
+git fetch --all
+echo -e "\n--- git status ---"
+git status
+
+
+echo
 echo -e "#################################"
 echo -e "### Update Repository: ~/kmod ###"
 echo -e "#################################"
