@@ -202,17 +202,17 @@ echo -e "\n--- git status ---"
 git status
 
 
-echo
-echo -e "##################################"
-echo -e "### Update Repository: ~/vgrep ###"
-echo -e "##################################"
-echo -e "\n--- change directory ---"
-echo cd ~/vgrep
-cd ~/vgrep
-echo -e "\n--- git fetch --all ---"
-git fetch --all
-echo -e "\n--- git status ---"
-git status
+#echo
+#echo -e "##################################"
+#echo -e "### Update Repository: ~/vgrep ###"
+#echo -e "##################################"
+#echo -e "\n--- change directory ---"
+#echo cd ~/vgrep
+#cd ~/vgrep
+#echo -e "\n--- git fetch --all ---"
+#git fetch --all
+#echo -e "\n--- git status ---"
+#git status
 
 
 #echo
