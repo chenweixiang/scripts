@@ -15,7 +15,7 @@ cmt="HEAD"
 outdir="."
 path="."
 
-usage="git-archive-commit.sh { [-c commit-id] [-p path ] [-o output-dir] | [-h] }"
+usage="git-archive.sh { [-c commit-id] [-p path ] [-o output-dir] | [-h] }"
 
 # get commit-id and output-dir from input parameters
 while getopts "c:p:o:h" arg
