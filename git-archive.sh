@@ -6,64 +6,98 @@
 # no input parameter $1 is specified.
 #-------------------------------------------------------------------------------
 
-#
+#-------------------------------------------------------------------------------
 # 1) Get the commit-id and output-dir
-#
+#-------------------------------------------------------------------------------
 
-# set default commit-id and output-dir
-cmt="HEAD"
-outdir="."
-path="."
+# Set default commit-id and output-dir
+commitId="HEAD"
+outputDir="."
+path=`pwd`
+withSubmodule="No"
 
-usage="git-archive.sh { [-c commit-id] [-p path ] [-o output-dir] | [-h] }"
+usage="git-archive.sh { [-c commit-id] [-p path ] [-o output-dir] [-m] | [-h] }"
 
-# get commit-id and output-dir from input parameters
-while getopts "c:p:o:h" arg
+# Get commit-id and output-dir from input parameters
+while getopts "c:p:o:mh" arg
 do
     case $arg in
         c)  # -c <commit-id>
-            cmt=$OPTARG
+            commitId=$OPTARG
             ;;
         p)  # -p <path>
             path=$OPTARG
             ;;
         o)  # -o <output-dir>
-            outdir=$OPTARG
+            outputDir=$OPTARG
+            ;;
+        m)  # -m: archive submodules at the same time
+            withSubmodule="Yes"
             ;;
         h)  # help
             echo ${usage}
             exit 1
             ;;
         ?)  # unkonw argument
-            echo "unkonw argument"
+            echo "Unkonw argument"
             exit 1
             ;;
     esac
 done
 
-#
-# 2) Archive the specified commit 'shortcmt' to 'filename'
-#
+#-------------------------------------------------------------------------------
+# 2) Archive the specified commit ID 'shortCommitId' to 'fileName'
+#-------------------------------------------------------------------------------
 
-shortcmt=`git rev-parse --short ${cmt}`
+# Get short commit ID corresponding to commitId
+shortCommitId=`git rev-parse --short ${commitId}`
 
-reporoot=`git rev-parse --show-toplevel`
-reponame=`basename ${reporoot}`
+# Get the top directory of the repo
+repoRootDir=`git rev-parse --show-toplevel`
 
-pathbase=`basename ${path}`
-if [ ${pathbase} == "." ]; then
-    pathbase=""
-else
-    pathbase=${pathbase}-
+# Get repo name
+repoName=`basename ${repoRootDir}`
+
+# Get commit describe corresponding to commitId
+commitDesc=`git describe --always ${commitId}`
+
+# Assemble file name
+fileName=${repoName}-${commitDesc}
+
+# Create temperay directory to collect all output
+temperayDir=${outputDir}/${fileName}
+echo Create temperay directory ${temperayDir}
+mkdir -p ${temperayDir}
+
+# Archive the main repo
+echo Archive commit ${shortCommitId} of repo ${repoName} to ${temperayDir}
+cd ${repoRootDir}
+git archive --format=tar ${shortCommitId} ${path} | (cd ${temperayDir} && tar xf -)
+
+# Update submodules corresponding to commit ID 'shortCommitId' and check submodules status
+if [ ${withSubmodule} == "Yes" ]; then
+    echo Update submodules and current submodules status:
+    git submodule update --init --recursive
+    git submodule
+
+    # Archive each submodule
+    repoSubmodules=`git submodule | awk '{print $2}'`
+    for submodule in ${repoSubmodules}; do
+        submodulePath=${repoRootDir}/${submodule}
+        echo Archive submodule ${submodule} in directory ${submodulePath}
+        # echo cd ${submodulePath}
+        cd ${submodulePath}
+        git archive --format=tar --prefix=${submodule}/ HEAD | (cd ${temperayDir} && tar xf -)
+    done
 fi
 
-gitdesc=`git describe --always ${cmt}`
+# Compress all modules to .tar.gz
+echo Comparess all output to ${fileName}.tar.gz
+cd ${outputDir}
+tar cf ${fileName}.tar.gz ${fileName}
 
-filename=${reponame}-${pathbase}${gitdesc}.zip
-
-echo Archive commit ${shortcmt} of folder ${path} to ${outdir}/${filename}
-
-git archive -o ${outdir}/${filename} ${shortcmt} ${path}
+echo Remove temperay directory ${temperayDir}
+rm -rf ${fileName}
 
 echo Done
 
