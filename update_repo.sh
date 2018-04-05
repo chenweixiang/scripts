@@ -39,17 +39,17 @@ git status
 #git status
 
 
-echo
-echo -e "###################################################"
-echo -e "### Update Repository: ~/linux-kernel-send-mail ###"
-echo -e "###################################################"
-echo -e "\n--- change directory ---"
-echo cd ~/linux-kernel-send-mail
-cd ~/linux-kernel-send-mail
-echo -e "\n--- git fetch --all ---"
-git fetch --all
-echo -e "\n--- git status ---"
-git status
+#echo
+#echo -e "###################################################"
+#echo -e "### Update Repository: ~/linux-kernel-send-mail ###"
+#echo -e "###################################################"
+#echo -e "\n--- change directory ---"
+#echo cd ~/linux-kernel-send-mail
+#cd ~/linux-kernel-send-mail
+#echo -e "\n--- git fetch --all ---"
+#git fetch --all
+#echo -e "\n--- git status ---"
+#git status
 
 
 #echo
@@ -91,17 +91,17 @@ git status
 #git status
 
 
-echo
-echo -e "##############################################"
-echo -e "### Update Repository: ~/linux-kernel-test ###"
-echo -e "##############################################"
-echo -e "\n--- change directory ---"
-echo cd ~/linux-kernel-test
-cd ~/linux-kernel-test
-echo -e "\n--- git fetch --all ---"
-git fetch --all
-echo -e "\n--- git status ---"
-git status
+#echo
+#echo -e "##############################################"
+#echo -e "### Update Repository: ~/linux-kernel-test ###"
+#echo -e "##############################################"
+#echo -e "\n--- change directory ---"
+#echo cd ~/linux-kernel-test
+#cd ~/linux-kernel-test
+#echo -e "\n--- git fetch --all ---"
+#git fetch --all
+#echo -e "\n--- git status ---"
+#git status
 
 
 #echo
@@ -163,17 +163,17 @@ git status
 #git status
 
 
-echo
-echo -e "#################################"
-echo -e "### Update Repository: ~/kmod ###"
-echo -e "#################################"
-echo -e "\n--- change directory ---"
-echo cd ~/kmod
-cd ~/kmod
-echo -e "\n--- git fetch --all ---"
-git fetch --all
-echo -e "\n--- git status ---"
-git status
+#echo
+#echo -e "#################################"
+#echo -e "### Update Repository: ~/kmod ###"
+#echo -e "#################################"
+#echo -e "\n--- change directory ---"
+#echo cd ~/kmod
+#cd ~/kmod
+#echo -e "\n--- git fetch --all ---"
+#git fetch --all
+#echo -e "\n--- git status ---"
+#git status
 
 
 #echo
