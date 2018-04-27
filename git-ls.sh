@@ -14,8 +14,8 @@
 scriptName="git-ls.sh"
 
 # Default commit ID
-cmt="HEAD"
-parent_cmt="HEAD~"
+commit="HEAD"
+parentCommit="HEAD~"
 
 # Show all commit files in one line by default if option '-n' is not specified
 newLine="No"
@@ -51,8 +51,8 @@ while getopts "c:nh" arg
 do
     case ${arg} in
         c)  # -c <commit>
-            cmt=${OPTARG}
-            parent_cmt=${OPTARG}~
+            commit=${OPTARG}
+            parentCommit=${OPTARG}~
             ;;
         n)  # -n
             newLine="Yes"
@@ -69,13 +69,13 @@ do
 done
 
 #-------------------------------------------------------------------------------
-# 4) Get all changed files in <commit>~ and <commit>
+# 4) Get all changed files between <commit>~ and <commit>
 #-------------------------------------------------------------------------------
 
-files=`git diff-tree --no-commit-id --name-only -r ${parent_cmt} ${cmt}`
+commitFiles=`git diff-tree --no-commit-id --name-only -r ${parentCommit} ${commit}`
 
 #-------------------------------------------------------------------------------
-# 5) Print the absolute path of each file
+# 5) Print absolute path of each commit file
 #-------------------------------------------------------------------------------
 
 topPath=`git rev-parse --show-toplevel`
@@ -83,12 +83,12 @@ topPath=`git rev-parse --show-toplevel`
 unset absoluteFiles
 
 if [ ${newLine} == "Yes" ]; then
-    for f in $files; do
-        echo ${f}
+    for file in ${commitFiles}; do
+        echo ${topPath}/${file}
     done
 else
-    for f in $files; do
-        absoluteFiles+="${topPath}/${f} "
+    for file in ${commitFiles}; do
+        absoluteFiles+="${topPath}/${file} "
     done
     echo ${absoluteFiles}
 fi
