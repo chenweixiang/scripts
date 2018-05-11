@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 
 import os
+import datetime
 import subprocess
 import argparse
 
@@ -9,7 +10,7 @@ This script is executed in linux kernel repo and collects specified tags of linu
 kernel repo, then it uses Graphviz to draw a figure to show relationship between
 branches and tags. For instance:
 
-chenwx@chenwx ~/linux $ ~/scripts/linux_kernel_tags.py -l "v3.2 v3.16 v3.18 v4.1 v4.4 v4.9 v4.14" -s "v4.15 v4.16" -o ~/Downloads/
+chenwx@chenwx ~/linux $ ~/scripts/linux_kernel_releases.py -l "v3.2 v3.16 v3.18 v4.1 v4.4 v4.9 v4.14" -s "v4.15 v4.16" -o ~/Downloads/
 '''
 
 # Parse arguments
@@ -165,7 +166,7 @@ for oneTag in kernelNeedTags:
 #print(kernelNeedTagsDict)
 
 # construct Graphviz configuration file
-configFileName = outDir + "/linux_kernel_tags.gv"
+configFileName = outDir + "/Linux_Kernel_Release_" + datetime.date.today().strftime("%Y%m%d") + ".gv"
 f = open(configFileName, "w")
 f.write("digraph linux_kernel_tags\n")
 f.write("{\n")
