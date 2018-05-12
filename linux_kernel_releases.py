@@ -69,7 +69,7 @@ for oneTag in kernelAllTags:
         continue
     elif "-pre" in oneTag:  # remove tags of
         continue
-    elif oneTag == '':           # remove empty elements in tag list
+    elif oneTag == '':      # remove empty elements in tag list
         continue
     else:
         kernelNeedTags.append(oneTag)
@@ -95,7 +95,7 @@ print("Longterm branch  :", longtermBranch)
 print("Stable branch    :", stableBranch)
 print("Output directory :", outDir)
 
-# tags without keywork "-rc"
+# tags without keywork "-rc", "-pre1"
 kernelNeedTagsList = []
 kernelNeedTagsDict = {}
 cnt = 0
@@ -118,55 +118,60 @@ for oneTag in kernelNeedTags:
     # check the base tag (baseTag) of current tag (oneTag), and type of the branch (longterm or stable branch) this tag belongs to
     if cnt == 0:
         # branch type
-        if oneTag in longtermBranch.split(" "):
+        if tag in longtermBranch.split(" "):
             branchType = "longterm"
-        elif oneTag in stableBranch.split(" "):
+        elif tag in stableBranch.split(" "):
             branchType = "stable"
         else:
             branchType = ""
         # base tag
         baseTag = "NULL"
         baseBranchTag = oneTag.replace(".", "_")
+        branchName = "linux-" + tag[1:] + ".y"  # for instance, linux-3.2.y
     else:
-        if "v2." in oneTag:     # for v2.6.12, v2.6.13, etc. there are two points in them
+        if "v2." in tag:     # for v2.6.12, v2.6.13, etc. there are two dots in them
             if oneTag.count(".") == 2:
                 # branch type
-                if oneTag in longtermBranch.split(" "):
+                if tag in longtermBranch.split(" "):
                     branchType = "longterm"
-                elif oneTag in stableBranch.split(" "):
+                elif tag in stableBranch.split(" "):
                     branchType = "stable"
                 else:
                     branchType = ""
                 # base tag
                 baseTag = baseBranchTag.replace(".", "_")
-                baseBranchTag = oneTag.replace(".", "_")
+                baseBranchTag = tag.replace(".", "_")
+                branchName = "linux-" + tag[1:] + ".y"  # for instance, linux-3.2.y
             else:
                 baseTag = lastTag.replace(".", "_")
-        else:                   # for v3.0, v4.2, etc. there are one points in them
-            if oneTag.count(".") == 1:
+                branchName = "NULL"
+        else:                   # for v3.0, v4.2, etc. there are one dot in them
+            if tag.count(".") == 1:
                 # branch type
-                if oneTag in longtermBranch.split(" "):
+                if tag in longtermBranch.split(" "):
                     branchType = "longterm"
-                elif oneTag in stableBranch.split(" "):
+                elif tag in stableBranch.split(" "):
                     branchType = "stable"
                 else:
                     branchType = ""
                 # base tag
                 baseTag = baseBranchTag.replace(".", "_")
-                baseBranchTag = oneTag.replace(".", "_")
+                baseBranchTag = tag.replace(".", "_")
+                branchName = "linux-" + tag[1:] + ".y"  # for instance, linux-3.2.y
             else:
                 baseTag = lastTag.replace(".", "_")
-    lastTag = oneTag
+                branchName = "NULL"
+    lastTag = tag
     # construct dictionary
-    kernelNeedTagsDict[tag] = [tagAuthor[0], tagDate[0], baseTag, branchType]
+    kernelNeedTagsDict[tag] = [tagAuthor[0], tagDate[0], baseTag, branchType, branchName]
     # count increase one
     cnt = cnt + 1
 
-#print(kernelNeedTagsList)
-#print(kernelNeedTagsDict)
+#for tag in kernelNeedTagsList:
+#    print(tag, ":", kernelNeedTagsDict[tag])
 
 # construct Graphviz configuration file
-configFileName = outDir + "/Linux_Kernel_Release_" + datetime.date.today().strftime("%Y%m%d") + ".gv"
+configFileName = outDir + "/Linux_Kernel_Releases_" + datetime.date.today().strftime("%Y%m%d") + ".gv"
 f = open(configFileName, "w")
 f.write("digraph linux_kernel_tags\n")
 f.write("{\n")
@@ -180,15 +185,31 @@ for oneTag in kernelNeedTagsList:
         filledColor = "style=filled, fillcolor=\"lightgreen\""
     else:
         filledColor = ""
-    nodeAttribute = "    " + nodeName + " [shape=rectangle, label=\"" + oneTag + "\\n" + kernelNeedTagsDict[oneTag][1] + "\"" + filledColor + "];\n"
+    # construct node with branch name
+    if kernelNeedTagsDict[oneTag][4] != "NULL":
+        branchNodeName = kernelNeedTagsDict[oneTag][4].replace("-", "_")
+        branchNodeName = branchNodeName.replace(".", "_")
+        if filledColor == "":
+            branchNodeFilledColor = "style=filled, fillcolor=\"lightgray\""
+        else:
+            branchNodeFilledColor = filledColor
+        branchNodeAttribute = "    " + branchNodeName + " [shape=rectangle, label=\"" + kernelNeedTagsDict[oneTag][4] + "\", " + branchNodeFilledColor + "];\n"
+        f.write(branchNodeAttribute)
+    # contruct node with tag
+    nodeAttribute = "    " + nodeName + " [shape=rectangle, label=\"" + oneTag + "\\n" + kernelNeedTagsDict[oneTag][1] + "\", " + filledColor + "];\n"
     f.write(nodeAttribute)
     # construct arrows
-    arrowAttribute = "    " + kernelNeedTagsDict[oneTag][2] + " -> " + nodeName + " [arrowType=\"open\"]\n"
+    if kernelNeedTagsDict[oneTag][4] != "NULL":
+        arrowBranchAttribute = "    " + branchNodeName + " -> " + nodeName + " [style=dashed]\n"
+        f.write(arrowBranchAttribute)
     if kernelNeedTagsDict[oneTag][2] != "NULL":
+        arrowAttribute = "    " + kernelNeedTagsDict[oneTag][2] + " -> " + nodeName + " [arrowType=\"open\"]\n"
         f.write(arrowAttribute)
+
 f.write("}\n")
 f.close()
 
 # generate PNG figure
-cmdGraphviz = "dot -Tsvg -O " + configFileName
+outputFileName = configFileName.strip(".gv") + ".svg"
+cmdGraphviz = "dot -Tsvg " + configFileName + " -o " + outputFileName
 os.system(cmdGraphviz)
