@@ -228,5 +228,20 @@ git status
 #git status
 
 
+# A tool "include-what-you-use" for use with clang to analyze #includes in C and C++ source files
+# https://include-what-you-use.org
+echo
+echo -e "#################################################"
+echo -e "### Update Repository: ~/include-what-you-use ###"
+echo -e "#################################################"
+echo -e "\n--- change directory ---"
+echo cd ~/include-what-you-use
+cd ~/include-what-you-use
+echo -e "\n--- git fetch --all ---"
+git fetch --all
+echo -e "\n--- git status ---"
+git status
+
+
 #print a new line at the end of the script
 echo
