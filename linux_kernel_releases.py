@@ -8,9 +8,10 @@ import argparse
 '''
 This script is executed in linux kernel repo and collects specified tags of linux
 kernel repo, then it uses Graphviz to draw a figure to show relationship between
-branches and tags. For instance:
+branches and tags. The branch type information can be got from kernel official site
+https://www.kernel.org/. For instance:
 
-chenwx@chenwx ~/linux $ ~/scripts/linux_kernel_releases.py -l "v3.2 v3.16 v3.18 v4.1 v4.4 v4.9 v4.14" -s "v4.15 v4.16" -o ~/Downloads/
+chenwx@chenwx ~/linux $ ~/scripts/linux_kernel_releases.py -l "v3.2 v3.16 v3.18 v4.1 v4.4 v4.9 v4.14" -s "v4.16" -m "v4.17" -o ~/Downloads/
 '''
 
 # Parse arguments
@@ -18,7 +19,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-b", "--begintag", help="begin tag, such as \"v3.0\". Tag v2.6.12 by default")
 parser.add_argument("-e", "--endtag", help="end tag, such as \"v4.16\". Latest tag by default")
 parser.add_argument("-l", "--longterm", help="longterm branch, such as \"v3.2 v3.16 v3.18 v4.1 v4.4 v4.9 v4.14\". Empty by default")
-parser.add_argument("-s", "--stable", help="stable branch, such as \"v4.15 v4.16\". Empty by default")
+parser.add_argument("-s", "--stable", help="stable branch, such as \"v4.15\". Empty by default")
+parser.add_argument("-m", "--mainline", help="mainline branch, such as \"v4.16\". Empty by default")
 parser.add_argument("-o", "--outdir", help="output directory. Current directory by default")
 args = parser.parse_args()
 
@@ -45,6 +47,12 @@ if args.stable:
     stableBranch = args.stable
 else:
     stableBranch = ""
+
+# mainline branch
+if args.mainline:
+    mainlineBranch = args.mainline
+else:
+    mainlineBranch = ""
 
 # output directory
 if args.outdir:
@@ -93,6 +101,7 @@ print("Begin tag        :", beginTag)
 print("End tag          :", endTag)
 print("Longterm branch  :", longtermBranch)
 print("Stable branch    :", stableBranch)
+print("Mainline branch  :", mainlineBranch)
 print("Output directory :", outDir)
 
 # tags without keywork "-rc", "-pre1"
@@ -122,6 +131,8 @@ for oneTag in kernelNeedTags:
             branchType = "longterm"
         elif tag in stableBranch.split(" "):
             branchType = "stable"
+        elif tag in mainlineBranch.split(" "):
+            branchType = "mainline"
         else:
             branchType = ""
         # base tag
@@ -136,6 +147,8 @@ for oneTag in kernelNeedTags:
                     branchType = "longterm"
                 elif tag in stableBranch.split(" "):
                     branchType = "stable"
+                elif tag in mainlineBranch.split(" "):
+                    branchType = "mainline"
                 else:
                     branchType = ""
                 # base tag
@@ -152,6 +165,8 @@ for oneTag in kernelNeedTags:
                     branchType = "longterm"
                 elif tag in stableBranch.split(" "):
                     branchType = "stable"
+                elif tag in mainlineBranch.split(" "):
+                    branchType = "mainline"
                 else:
                     branchType = ""
                 # base tag
@@ -183,17 +198,15 @@ for oneTag in kernelNeedTagsList:
         filledColor = "style=filled, fillcolor=\"yellow\""
     elif kernelNeedTagsDict[oneTag][3] == "stable":
         filledColor = "style=filled, fillcolor=\"lightgreen\""
+    elif kernelNeedTagsDict[oneTag][3] == "mainline":
+        filledColor = "style=filled, fillcolor=\"green\""
     else:
-        filledColor = ""
+        filledColor = "style=filled, fillcolor=\"white\""
     # construct node with branch name
     if kernelNeedTagsDict[oneTag][4] != "NULL":
         branchNodeName = kernelNeedTagsDict[oneTag][4].replace("-", "_")
         branchNodeName = branchNodeName.replace(".", "_")
-        if filledColor == "":
-            branchNodeFilledColor = "style=filled, fillcolor=\"lightgray\""
-        else:
-            branchNodeFilledColor = filledColor
-        branchNodeAttribute = "    " + branchNodeName + " [shape=rectangle, label=\"" + kernelNeedTagsDict[oneTag][4] + "\", " + branchNodeFilledColor + "];\n"
+        branchNodeAttribute = "    " + branchNodeName + " [shape=rectangle, label=\"" + kernelNeedTagsDict[oneTag][4] + "\", " + filledColor + "];\n"
         f.write(branchNodeAttribute)
     # contruct node with tag
     nodeAttribute = "    " + nodeName + " [shape=rectangle, label=\"" + oneTag + "\\n" + kernelNeedTagsDict[oneTag][1] + "\", " + filledColor + "];\n"
