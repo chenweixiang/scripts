@@ -197,7 +197,7 @@ for oneTag in kernelNeedTagsList:
     if kernelNeedTagsDict[oneTag][3] == "longterm":
         filledColor = "style=filled, fillcolor=\"yellow\""
     elif kernelNeedTagsDict[oneTag][3] == "stable":
-        filledColor = "style=filled, fillcolor=\"lightgreen\""
+        filledColor = "style=filled, fillcolor=\"greenyellow\""
     elif kernelNeedTagsDict[oneTag][3] == "mainline":
         filledColor = "style=filled, fillcolor=\"green\""
     else:
