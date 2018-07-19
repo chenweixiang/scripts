@@ -15,7 +15,7 @@ chenwx@chenwx ~/linux $ ~/scripts/linux_kernel_releases.py -l "v3.2 v3.16 v3.18 
 '''
 
 # Parse arguments
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description='This script should be executed in working directory of linux kernel repo and collects specified tags of linux kernel repo, then it uses Graphviz to draw a figure to show relationship between branches and tags. The branch type information can be got from kernel official site https://www.kernel.org/. For instance: ~/scripts/linux_kernel_releases.py -l \"v3.16 v4.4 v4.9 v4.14" -s "v4.17" -m "v4.18" -o ~/Downloads/\"')
 parser.add_argument("-b", "--begintag", help="begin tag, such as \"v3.0\". Tag v2.6.12 by default")
 parser.add_argument("-e", "--endtag", help="end tag, such as \"v4.16\". Latest tag by default")
 parser.add_argument("-l", "--longterm", help="longterm branch, such as \"v3.2 v3.16 v3.18 v4.1 v4.4 v4.9 v4.14\". Empty by default")
