@@ -15,14 +15,27 @@ chenwx@chenwx ~/linux $ ~/scripts/linux_kernel_releases.py -l "v3.2 v3.16 v3.18 
 '''
 
 # Parse arguments
-parser = argparse.ArgumentParser(description='This script should be executed in working directory of linux kernel repo and collects specified tags of linux kernel repo, then it uses Graphviz to draw a figure to show relationship between branches and tags. The branch type information can be got from kernel official site https://www.kernel.org/. For instance: ~/scripts/linux_kernel_releases.py -l \"v3.16 v4.4 v4.9 v4.14" -s "v4.17" -m "v4.18" -o ~/Downloads/\"')
-parser.add_argument("-b", "--begintag", help="begin tag, such as \"v3.0\". Tag v2.6.12 by default")
-parser.add_argument("-e", "--endtag", help="end tag, such as \"v4.16\". Latest tag by default")
-parser.add_argument("-l", "--longterm", help="longterm branch, such as \"v3.2 v3.16 v3.18 v4.1 v4.4 v4.9 v4.14\". Empty by default")
-parser.add_argument("-s", "--stable", help="stable branch, such as \"v4.15\". Empty by default")
-parser.add_argument("-m", "--mainline", help="mainline branch, such as \"v4.16\". Empty by default")
-parser.add_argument("-o", "--outdir", help="output directory. Current directory by default")
+parser = argparse.ArgumentParser(description='This script should be executed in working directory of linux kernel repo and collects specified tags of linux kernel repo, then it uses Graphviz to draw a figure to show relationship between branches and tags. The branch type information can be got from kernel official site https://www.kernel.org/. For instance: ~/scripts/linux_kernel_releases.py -l \"v3.16 v4.4 v4.9 v4.14" -s "v4.17" -m "v4.18" -i \"~/linux\" -o \"~/Downloads/\"')
+parser.add_argument("-b", "--begintag", help="Begin tag, such as \"v3.0\". Tag v2.6.12 by default.")
+parser.add_argument("-e", "--endtag", help="End tag, such as \"v4.16\". Latest tag by default.")
+parser.add_argument("-l", "--longterm", help="Longterm branch, such as \"v3.2 v3.16 v3.18 v4.1 v4.4 v4.9 v4.14\". Empty by default.")
+parser.add_argument("-s", "--stable", help="Stable branch, such as \"v4.15\". Empty by default.")
+parser.add_argument("-m", "--mainline", help="Mainline branch, such as \"v4.16\". Empty by default.")
+parser.add_argument("-i", "--repodir", help="Working directory of linux kernel repo, such as \"~/linux\". Current directory by default.")
+parser.add_argument("-o", "--outdir", help="Output directory. Current directory by default.")
 args = parser.parse_args()
+
+# linux kernel repo
+if args.repodir:
+    repoDir = args.repodir
+    repoDir = os.path.expanduser(repoDir)
+    if not os.path.isdir(repoDir):
+        repoDir = os.getcwd()
+else:
+    repoDir = os.getcwd()
+
+# change directory to linux kernel repo
+os.chdir(repoDir)
 
 # start tag
 if args.begintag:
@@ -56,8 +69,8 @@ else:
 
 # output directory
 if args.outdir:
-    outDir = os.path.dirname(args.outdir)
-    outDir = os.path.abspath(outDir)
+    outDir = args.outdir
+    outDir = os.path.expanduser(outDir)
     if not os.path.isdir(outDir):
         outDir = os.getcwd()
 else:
@@ -97,12 +110,13 @@ else:
 #print(kernelNeedTags)
 
 # show important parameters
-print("Begin tag        :", beginTag)
-print("End tag          :", endTag)
-print("Longterm branch  :", longtermBranch)
-print("Stable branch    :", stableBranch)
-print("Mainline branch  :", mainlineBranch)
-print("Output directory :", outDir)
+print("Linux Repo       :", repoDir)
+print("Begin Tag        :", beginTag)
+print("End Tag          :", endTag)
+print("Longterm Branch  :", longtermBranch)
+print("Stable Branch    :", stableBranch)
+print("Mainline Branch  :", mainlineBranch)
+print("Output Directory :", outDir)
 
 # tags without keywork "-rc", "-pre1"
 kernelNeedTagsList = []
@@ -188,6 +202,15 @@ for oneTag in kernelNeedTags:
 # construct Graphviz configuration file
 configFileName = outDir + "/Linux_Kernel_Releases_" + datetime.date.today().strftime("%Y%m%d") + ".gv"
 f = open(configFileName, "w")
+
+# write comments
+f.write("// Begin Tag        : " + beginTag + "\n")
+f.write("// End Tag          : " + endTag + "\n")
+f.write("// Longterm Branch  : " + longtermBranch + "\n")
+f.write("// Stable Branch    : " + stableBranch + "\n")
+f.write("// Mainline Branch  : " + mainlineBranch + "\n\n")
+
+# write linux kernel tags
 f.write("digraph linux_kernel_tags\n")
 f.write("{\n")
 for oneTag in kernelNeedTagsList:
