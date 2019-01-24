@@ -150,7 +150,7 @@ fi
 if [ ${enLinuxKernelTest} == "Yes" ]; then
 	echo -e "######################################################################"
 	echo -e "### Update Repository: ${repoRootDir}/linux-kernel-test from"
-    echo -e "### https://github.com/chenweixiang/test-kernel.git"
+    echo -e "### https://github.com/chenweixiang/linux-kernel-test.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/linux-kernel-test
