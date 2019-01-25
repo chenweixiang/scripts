@@ -65,18 +65,18 @@ astyleOptions="--style=allman --indent=spaces=4 -c -j -n -p -y -H -Y -xb -xf -xh
 function usage(){
     echo
     echo "Usage:"
-    echo "${scriptName} [-b <astyle> | -c] [-h]"
-    echo "${scriptName} [-b <astyle> | -c] [-f <file>] [-v]"
-    echo "${scriptName} [-b <astyle> | -c] [-d <path>] [-w <wildcard>] [-n] [-r] [-v]"
+    echo "${scriptName} [-b <astyle>] [-h]"
+    echo "${scriptName} [-b <astyle>] [-f <file>] [-v]"
+    echo "${scriptName} [-b <astyle>] [-d <path>] [-w <wildcard>] [-n] [-r] [-v]"
     echo
-    echo "-b <astyle> | -c"
+    echo "-b <astyle>"
     echo "    Specify the location of executable astyle if it's not installed on your"
     echo "    server yet and you want to specify the location of executable astyle."
     echo "    If '-b <astyle>' is specified, use the <astyle> as the executable astyle."
-    echo "    Otherwise, if '-c' is specified, the executable astyle is located in the"
-    echo "    same directory with this script. Otherwise, use the astyle on the server."
-    echo "    Note that the option '-b <astyle>' has higher priority than '-c' if both"
-    echo "    of them are specified."
+    echo "    Otherwise, use the astyle on the server."
+    echo
+    echo "-c"
+    echo ""
     echo
     echo "-f <file>"
     echo "    Specify the file you want to format. In order to reach the file, absolute"
