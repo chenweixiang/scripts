@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Top directory of all repo in local laptop
-repoRootDir=~/repo
+repoRootDir=~
 
 # Flags to enable (=Yes) or disable (=No) specific repo
 enLinux=Yes
@@ -29,12 +29,12 @@ enTestNG=No
 
 if [ ${enLinux} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ~/linux from"
-    echo -e "### https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
+	echo -e "### [Repo] ${repoRootDir}/linux"
+	echo -e "### [From] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
-	echo cd ~/linux
-	cd ~/linux
+	echo cd ${repoRootDir}/linux
+	cd ${repoRootDir}/linux
 	echo -e "\n--- git fetch --all ---"
 	git fetch --all
 	echo -e "\n--- git status ---"
@@ -44,8 +44,8 @@ fi
 
 if [ ${enGit} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/git from"
-    echo -e "### https://github.com/git/git"
+	echo -e "### [Repo] ${repoRootDir}/git"
+	echo -e "### [From] https://github.com/git/git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/git
@@ -59,8 +59,8 @@ fi
 
 if [ ${enGitdm} == "Yes" ]; then
 	echo -e "############################################################"
-	echo -e "### Update Repository: ${repoRootDir}/gitdm"
-    echo -e "### git://git.lwn.net/gitdm.git"
+	echo -e "### [Repo] ${repoRootDir}/gitdm"
+	echo -e "### [From] git://git.lwn.net/gitdm.git"
 	echo -e "############################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/gitdm
@@ -74,8 +74,8 @@ fi
 
 if [ ${enLinuxKernelHistory} == "Yes" ]; then
 	echo -e "###################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/linux-kernel-history from"
-    echo -e "### https://github.com/gregkh/kernel-history.git"
+	echo -e "### [Repo] ${repoRootDir}/linux-kernel-history"
+	echo -e "### [From] https://github.com/gregkh/kernel-history.git"
 	echo -e "###################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/linux-kernel-history
@@ -89,8 +89,8 @@ fi
 
 if [ ${enLinuxKernelSendMail} == "Yes" ]; then
 	echo -e "###################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/linux-kernel-send-mail from"
-    echo -e "### https://github.com/raphaelsc/Generate-GIT-send-mail-arguments.git"
+	echo -e "### [Repo] ${repoRootDir}/linux-kernel-send-mail"
+	echo -e "### [From] https://github.com/raphaelsc/Generate-GIT-send-mail-arguments.git"
 	echo -e "###################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/linux-kernel-send-mail
@@ -104,8 +104,8 @@ fi
 
 if [ ${enSparse} == "Yes" ]; then
 	echo -e "############################################################"
-	echo -e "### Update Repository: ${repoRootDir}/sparse"
-    echo -e "### git://git.kernel.org/pub/scm/devel/sparse/sparse.git"
+	echo -e "### [Repo] ${repoRootDir}/sparse"
+	echo -e "### [From] git://git.kernel.org/pub/scm/devel/sparse/sparse.git"
 	echo -e "############################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/sparse
@@ -119,8 +119,8 @@ fi
 
 if [ ${enQuilt} == "Yes" ]; then
 	echo -e "############################################################"
-	echo -e "### Update Repository: ${repoRootDir}/quilt"
-    echo -e "### git://git.sv.gnu.org/quilt.git"
+	echo -e "### [Repo] ${repoRootDir}/quilt"
+	echo -e "### [From] git://git.sv.gnu.org/quilt.git"
 	echo -e "############################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/quilt
@@ -134,8 +134,8 @@ fi
 
 if [ ${enSmatch} == "Yes" ]; then
 	echo -e "############################################################"
-	echo -e "### Update Repository: ${repoRootDir}/smatch"
-    echo -e "### https://repo.or.cz/smatch.git"
+	echo -e "### [Repo] ${repoRootDir}/smatch"
+	echo -e "### [From] https://repo.or.cz/smatch.git"
 	echo -e "############################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/smatch
@@ -149,8 +149,8 @@ fi
 
 if [ ${enLinuxKernelTest} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/linux-kernel-test from"
-    echo -e "### https://github.com/chenweixiang/linux-kernel-test.git"
+	echo -e "### [Repo] ${repoRootDir}/linux-kernel-test"
+	echo -e "### [From] https://github.com/chenweixiang/linux-kernel-test.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/linux-kernel-test
@@ -164,8 +164,8 @@ fi
 
 if [ ${enMutt} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/mutt"
-    echo -e "### https://gitlab.com/muttmua/mutt.git"
+	echo -e "### [Repo] ${repoRootDir}/mutt"
+	echo -e "### [From] https://gitlab.com/muttmua/mutt.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/mutt
@@ -177,8 +177,8 @@ fi
 
 if [ ${enOpenwrt} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/openwrt"
-    echo -e "### https://git.openwrt.org/openwrt/openwrt.git"
+	echo -e "### [Repo] ${repoRootDir}/openwrt"
+	echo -e "### [From] https://git.openwrt.org/openwrt/openwrt.git"
 	echo -e "######################################################################"
 	echo cd ${repoRootDir}/openwrt
 	cd ${repoRootDir}/openwrt
@@ -188,8 +188,8 @@ fi
 
 if [ ${enSystemd} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/systemd"
-    echo -e "### https://github.com/systemd/systemd.git"
+	echo -e "### [Repo] ${repoRootDir}/systemd"
+	echo -e "### [From] https://github.com/systemd/systemd.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/systemd
@@ -203,8 +203,8 @@ fi
 
 if [ ${enBusybox} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/busybox"
-    echo -e "### https://git.busybox.net/busybox"
+	echo -e "### [Repo] ${repoRootDir}/busybox"
+	echo -e "### [From] https://git.busybox.net/busybox"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/busybox
@@ -218,8 +218,8 @@ fi
 
 if [ ${enUboot} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/u-boot"
-    echo -e "### https://github.com/u-boot/u-boot.git"
+	echo -e "### [Repo] ${repoRootDir}/u-boot"
+	echo -e "### [From] https://github.com/u-boot/u-boot.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/u-boot
@@ -233,8 +233,8 @@ fi
 
 if [ ${enKmod} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/kmod"
-    echo -e "### https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git"
+	echo -e "### [Repo] ${repoRootDir}/kmod"
+	echo -e "### [From] https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/kmod
@@ -248,8 +248,8 @@ fi
 
 if [ ${enXXnet} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/xx-net"
-    echo -e "### https://github.com/XX-net/XX-Net.git"
+	echo -e "### [Repo] ${repoRootDir}/xx-net"
+	echo -e "### [From] https://github.com/XX-net/XX-Net.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/xx-net
@@ -263,8 +263,8 @@ fi
 
 if [ ${enRubygems} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/rubygems"
-    echo -e "### https://github.com/rubygems/rubygems.git"
+	echo -e "### [Repo] ${repoRootDir}/rubygems"
+	echo -e "### [From] https://github.com/rubygems/rubygems.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/rubygems
@@ -278,8 +278,8 @@ fi
 
 if [ ${enVgrep} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/vgrep"
-    echo -e "### https://github.com/vrothberg/vgrep.git"
+	echo -e "### [Repo] ${repoRootDir}/vgrep"
+	echo -e "### [From] https://github.com/vrothberg/vgrep.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/vgrep
@@ -293,8 +293,8 @@ fi
 
 if [ ${enCpython} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/cpython"
-    echo -e "### https://github.com/python/cpython.git"
+	echo -e "### [Repo] ${repoRootDir}/cpython"
+	echo -e "### [From] https://github.com/python/cpython.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/cpython
@@ -310,8 +310,8 @@ fi
 # https://include-what-you-use.org
 if [ ${enIncludeWhatYouUse} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/include-what-you-use"
-    echo -e "### https://github.com/include-what-you-use/include-what-you-use.git"
+	echo -e "### [Repo] ${repoRootDir}/include-what-you-use"
+    echo -e "### [From] https://github.com/include-what-you-use/include-what-you-use.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/include-what-you-use
@@ -325,8 +325,8 @@ fi
 
 if [ ${enTestNG} == "Yes" ]; then
 	echo -e "######################################################################"
-	echo -e "### Update Repository: ${repoRootDir}/testng"
-    echo -e "### git://github.com/cbeust/testng.git"
+	echo -e "### [Repo] ${repoRootDir}/testng"
+	echo -e "### [From] git://github.com/cbeust/testng.git"
 	echo -e "######################################################################"
 	echo -e "\n--- change directory ---"
 	echo cd ${repoRootDir}/testng
