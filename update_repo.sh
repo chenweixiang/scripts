@@ -5,7 +5,7 @@ repoRootDir=~
 
 # Flags to enable (=Yes) or disable (=No) specific repo
 enLinux=Yes
-enGit=Yes
+enGit=No
 enGitdm=No
 enLinuxKernelHistory=No
 enLinuxKernelSendMail=No
