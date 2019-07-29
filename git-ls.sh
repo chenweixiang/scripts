@@ -62,7 +62,7 @@ do
             exit 1
             ;;
         ?)  # unkonw argument
-            echo "ERROR: Unkonw argument"
+            echo "ERROR: Unknown argument"
             exit 1
             ;;
     esac
