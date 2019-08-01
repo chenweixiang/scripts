@@ -29,11 +29,13 @@ The Git configure files ```git-config.conf``` and ```git-completion.conf``` cont
 ################################################################################
 # alias for git commands (already moved to git alias, see 'git config --list')
 ################################################################################
+
 source ~/scripts/git-config.conf
 
 ################################################################################
 # git commands auto-completion
 ################################################################################
+
 source ~/scripts/git-completion.conf
 ```
 
@@ -60,3 +62,4 @@ The Bash script ```clearcase-ls-commit.sh``` and its helper Python script ```cle
 ## Linux Kernel related scripts
 
 The Bash scripts ```checkpatch-staging.sh```, ```dmesg_msg_diff.sh``` and ```dmesg_msg_save.sh``` are used to show some information of Linux kernel.
+
