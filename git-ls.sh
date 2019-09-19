@@ -28,17 +28,20 @@ function usage(){
     echo
     echo "Usage:"
     echo "${scriptName} [-h]"
-    echo "${scriptName} [-c <commit>] [-n]"
+    echo "${scriptName} [-c <commit>] [-e | -n]"
     echo
-    echo "-c <commit>"
+    echo " -c <commit>"
     echo "    Specify the git commit that you want to check commit files of it."
     echo "    If this option is not specified, use HEAD as commit ID by default."
     echo
-    echo "-n"
+    echo " -e"
+    echo "    Open the commit files by gedit. Exit if gedit is not found."
+    echo
+    echo " -n"
     echo "    By default, all commit files are shown in one line. One commit file"
     echo "    per line if this option is specified."
     echo
-    echo "-h"
+    echo " -h"
     echo "    Show the usage of this script."
     echo
 }
@@ -47,12 +50,15 @@ function usage(){
 # 3) Check script options
 #-------------------------------------------------------------------------------
 
-while getopts "c:nh" arg
+while getopts "c:enh" arg
 do
     case ${arg} in
         c)  # -c <commit>
             commit=${OPTARG}
             parentCommit=${OPTARG}~
+            ;;
+        e)  # -e
+            openByGedit="Yes"
             ;;
         n)  # -n
             newLine="Yes"
@@ -82,7 +88,18 @@ topPath=`git rev-parse --show-toplevel`
 
 unset absoluteFiles
 
-if [ ${newLine} == "Yes" ]; then
+
+if [ ${openByGedit} == "Yes" ]; then
+    geditBin=`which gedit`
+    if [ ${geditBin} == "" ]; then
+        echo "ERROR: gedit is not found"
+    else
+        for file in ${commitFiles}; do
+            absoluteFiles+="${topPath}/${file} "
+        done
+        ${geditBin} ${absoluteFiles} 
+    fi
+elif [ ${newLine} == "Yes" ]; then
     for file in ${commitFiles}; do
         echo ${topPath}/${file}
     done
