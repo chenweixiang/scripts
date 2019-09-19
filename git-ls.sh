@@ -97,7 +97,7 @@ if [ ${openByGedit} == "Yes" ]; then
         for file in ${commitFiles}; do
             absoluteFiles+="${topPath}/${file} "
         done
-        ${geditBin} ${absoluteFiles} 
+        ${geditBin} ${absoluteFiles} &
     fi
 elif [ ${newLine} == "Yes" ]; then
     for file in ${commitFiles}; do
