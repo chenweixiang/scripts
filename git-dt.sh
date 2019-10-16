@@ -13,9 +13,9 @@
 # Script name and location of this script
 scriptName="git-dt.sh"
 
-# Default commit ID
-currCommit="HEAD"
-prevCommit="HEAD~"
+# Flags to specify options
+opt_p=
+opt_c=
 
 # Default file
 file=
@@ -32,7 +32,8 @@ function usage(){
     echo
     echo "  -p <previous-commit>"
     echo "     Specify the previous commit that you want to check the changes from."
-    echo "     If this option is not specified, use HEAD~ as commit ID by default."
+    echo "     If this option is not specified, use <current-commit>~ as commit ID"
+    echo "     by default."
     echo
     echo "  -c <current-commit>"
     echo "     Specify the current commit that you want to check the changes to."
@@ -56,9 +57,11 @@ while getopts "c:p:f:h" arg
 do
     case ${arg} in
         p)  # -p <previous-commit>
+            opt_p=Yes
             prevCommit=${OPTARG}
             ;;
         c)  # -c <current-commit>
+            opt_c=Yes
             currCommit=${OPTARG}
             ;;
         f)  # -f <file>
@@ -74,6 +77,20 @@ do
             ;;
     esac
 done
+
+#--------------------------------------
+# Set default commit ID
+#--------------------------------------
+
+# If no option "-c <current-commit>", use HEAD by default
+if [ x${opt_c} == x ]; then
+    currCommit="HEAD"
+fi
+
+# If no option "-p <previous-commit>", the parent commit of ${currCommit} by default
+if [ x${opt_p} == x ]; then
+    prevCommit="${currCommit}~"
+fi
 
 #-------------------------------------------------------------------------------
 # 4) Print log of specified commits
@@ -99,12 +116,14 @@ if [ x${file} == x ]; then
     echo
     echo "###### 3) Use 'git difftool' to show all changes between commit ${prevCommit} and ${currCommit} ######"
     echo
+    echo "git difftool ${prevCommit} ${currCommit}"
     git difftool ${prevCommit} ${currCommit}
     echo
 else
     echo
     echo "###### 3) Use 'git difftool' to show changes in file ${file} between commit ${prevCommit} and ${currCommit} ######"
     echo
+    echo "git difftool ${prevCommit} ${currCommit} -- ${file}"
     git difftool ${prevCommit} ${currCommit} -- ${file}
     echo
 fi
