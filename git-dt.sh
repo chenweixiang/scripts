@@ -40,9 +40,12 @@ function usage(){
     echo "     If this option is not specified, use HEAD as commit ID by default."
     echo
     echo "  -f <file>"
-    echo "     Specify the file with absolute- or relative path that you want to check"
-    echo "     changes between specified commits. If this option is not specified, show"
-    echo "     all changed files between specified commits by default."
+    echo "     Specify the file that you want to check changes between specified"
+    echo "     commits. If this option is not specified, show all changed files"
+    echo "     between specified commits by default. The format of <file> can be:"
+    echo "       a) file name, such as: git-dt.sh"
+    echo "       b) a part of file name, such as: git-dt"
+    echo "       c) a part of file name with absolute path, such as: scripts/git-dt"
     echo
     echo "  -h"
     echo "     Show the usage of this script."
@@ -109,10 +112,25 @@ echo
 git log --stat -c --decorate --pretty=fuller ${prevCommit}~..${currCommit}
 
 #-------------------------------------------------------------------------------
-# 5) Use git difftool to show changes
+# 5) Get matched files with absolute path
 #-------------------------------------------------------------------------------
 
-if [ x${file} == x ]; then
+matchedFiles=
+
+commitFiles=`git diff-tree --no-commit-id --name-only -r ${prevCommit} ${currCommit}`
+topPath=`git rev-parse --show-toplevel`
+
+for f in ${commitFiles}; do
+    case ${topPath}/${f} in
+        *${file}*) matchedFiles+="${topPath}/${f} ";;
+    esac
+done
+
+#-------------------------------------------------------------------------------
+# 6) Use git difftool to show changes
+#-------------------------------------------------------------------------------
+
+if [ x"${matchedFiles}" == x ]; then
     echo
     echo "###### 3) Use 'git difftool' to show all changes between commit ${prevCommit} and ${currCommit} ######"
     echo
@@ -121,10 +139,11 @@ if [ x${file} == x ]; then
     echo
 else
     echo
-    echo "###### 3) Use 'git difftool' to show changes in file ${file} between commit ${prevCommit} and ${currCommit} ######"
+    echo "###### 3) Use 'git difftool' to show changes in following file(s) between commit ${prevCommit} and ${currCommit} ######"
+    echo "          ${matchedFiles}"
     echo
-    echo "git difftool ${prevCommit} ${currCommit} -- ${file}"
-    git difftool ${prevCommit} ${currCommit} -- ${file}
+    echo "git difftool ${prevCommit} ${currCommit} -- ${matchedFiles}"
+    git difftool ${prevCommit} ${currCommit} -- ${matchedFiles}
     echo
 fi
 
