@@ -13,9 +13,9 @@
 # Script name and location of this script
 scriptName="git-ls.sh"
 
-# Default commit ID
-commit="HEAD"
-parentCommit="HEAD~"
+# Flag for options
+opt_p=
+opt_c=
 
 # Show all commit files in one line by default if option '-n' is not specified
 newLine="No"
@@ -28,10 +28,15 @@ function usage(){
     echo
     echo "Usage:"
     echo "${scriptName} [-h]"
-    echo "${scriptName} [-c <commit>] [-e | -n]"
+    echo "${scriptName} [-p <previous-commit>] [-c <current-commit>] [-e | -n]"
     echo
-    echo " -c <commit>"
-    echo "    Specify the git commit that you want to check commit files of it."
+    echo " -p <previous-commit>"
+    echo "    Specify the previous commit that you want to check commit files of."
+    echo "    If this option is not specified, use <current-commit>~ as commit ID"
+    echo "    by default."
+    echo
+    echo " -c <current-commit>"
+    echo "    Specify the current commit that you want to check commit files of."
     echo "    If this option is not specified, use HEAD as commit ID by default."
     echo
     echo " -e"
@@ -50,18 +55,22 @@ function usage(){
 # 3) Check script options
 #-------------------------------------------------------------------------------
 
-while getopts "c:enh" arg
+while getopts "p:c:enh" arg
 do
     case ${arg} in
-        c)  # -c <commit>
-            commit=${OPTARG}
-            parentCommit=${OPTARG}~
+        p)  # -p <previous-commit>
+            opt_p=Yes
+            prevCommit=${OPTARG}
+            ;;
+        c)  # -c <current-commit>
+            opt_c=Yes
+            currCommit=${OPTARG}
             ;;
         e)  # -e
-            openByGedit="Yes"
+            openByGedit=Yes
             ;;
         n)  # -n
-            newLine="Yes"
+            newLine=Yes
             ;;
         h)  # -h
             usage
@@ -74,11 +83,25 @@ do
     esac
 done
 
+#--------------------------------------
+# Set default commit ID
+#--------------------------------------
+
+# If no option "-c <current-commit>", use HEAD by default
+if [ x${opt_c} == x ]; then
+    currCommit="HEAD"
+fi
+
+# If no option "-p <previous-commit>", the parent commit of ${currCommit} by default
+if [ x${opt_p} == x ]; then
+    prevCommit="${currCommit}~"
+fi
+
 #-------------------------------------------------------------------------------
-# 4) Get all changed files between <commit>~ and <commit>
+# 4) Get all changed files between <prevCommit> and <currCommit>
 #-------------------------------------------------------------------------------
 
-commitFiles=`git diff-tree --no-commit-id --name-only -r ${parentCommit} ${commit}`
+commitFiles=`git diff-tree --no-commit-id --name-only -r ${prevCommit} ${currCommit}`
 
 #-------------------------------------------------------------------------------
 # 5) Print absolute path of each commit file
@@ -88,10 +111,9 @@ topPath=`git rev-parse --show-toplevel`
 
 unset absoluteFiles
 
-
-if [ ${openByGedit} == "Yes" ]; then
+if [ x${openByGedit} == xYes ]; then
     geditBin=`which gedit`
-    if [ ${geditBin} == "" ]; then
+    if [ x${geditBin} == x ]; then
         echo "ERROR: gedit is not found"
     else
         for file in ${commitFiles}; do
@@ -99,7 +121,7 @@ if [ ${openByGedit} == "Yes" ]; then
         done
         ${geditBin} ${absoluteFiles} &
     fi
-elif [ ${newLine} == "Yes" ]; then
+elif [ x${newLine} == xYes ]; then
     for file in ${commitFiles}; do
         echo ${topPath}/${file}
     done
