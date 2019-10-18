@@ -116,15 +116,22 @@ git log --stat -c --decorate --pretty=fuller ${prevCommit}~..${currCommit}
 #-------------------------------------------------------------------------------
 
 matchedFiles=
+notFoundFile=
 
-commitFiles=`git diff-tree --no-commit-id --name-only -r ${prevCommit} ${currCommit}`
-topPath=`git rev-parse --show-toplevel`
+if [ x${file} != x ]; then
+    commitFiles=`git diff-tree --no-commit-id --name-only -r ${prevCommit} ${currCommit}`
+    topPath=`git rev-parse --show-toplevel`
 
-for f in ${commitFiles}; do
-    case ${topPath}/${f} in
-        *${file}*) matchedFiles+="${topPath}/${f} ";;
-    esac
-done
+    for f in ${commitFiles}; do
+        case ${topPath}/${f} in
+            *${file}*) matchedFiles+="${topPath}/${f} ";;
+        esac
+    done
+
+    if [ x${matchedFiles} == x ]; then
+        notFoundFile=Yes
+    fi
+fi
 
 #-------------------------------------------------------------------------------
 # 6) Use git difftool to show changes
@@ -133,6 +140,11 @@ done
 if [ x"${matchedFiles}" == x ]; then
     echo
     echo "###### 3) Use 'git difftool' to show all changes between commit ${prevCommit} and ${currCommit} ######"
+
+    if [ x${notFoundFile} != x ]; then
+        echo "          NOTE: Not found file ${file}"
+    fi
+
     echo
     echo "git difftool ${prevCommit} ${currCommit}"
     git difftool ${prevCommit} ${currCommit}
