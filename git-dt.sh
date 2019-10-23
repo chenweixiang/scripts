@@ -20,6 +20,9 @@ opt_c=
 # Default file
 file=
 
+# Detail commit information
+detailInfo=
+
 #-------------------------------------------------------------------------------
 # 2) Usage
 #-------------------------------------------------------------------------------
@@ -28,7 +31,7 @@ function usage(){
     echo
     echo "Usage:"
     echo "  ${scriptName} [-h]"
-    echo "  ${scriptName} [-p <previous-commit>] [-c <current-commit>] [-f <file>]"
+    echo "  ${scriptName} [-p <previous-commit>] [-c <current-commit>] [-f <file>] [-d]"
     echo
     echo "  -p <previous-commit>"
     echo "     Specify the previous commit that you want to check the changes from."
@@ -47,6 +50,9 @@ function usage(){
     echo "       b) a part of file name, such as: git-dt"
     echo "       c) a part of file name with absolute path, such as: scripts/git-dt"
     echo
+    echo "  -d"
+    echo "     List detail commit information of each commit within specified range."
+    echo
     echo "  -h"
     echo "     Show the usage of this script."
     echo
@@ -56,7 +62,7 @@ function usage(){
 # 3) Check script options
 #-------------------------------------------------------------------------------
 
-while getopts "c:p:f:h" arg
+while getopts "c:p:f:dh" arg
 do
     case ${arg} in
         p)  # -p <previous-commit>
@@ -69,6 +75,9 @@ do
             ;;
         f)  # -f <file>
             file=${OPTARG}
+            ;;
+        d)  # -d
+            detailInfo=Yes
             ;;
         h)  # -h
             usage
@@ -105,11 +114,13 @@ echo
 
 git log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate ${prevCommit}~..${currCommit}
 
-echo
-echo "###### 2) Detail commit history from commit ${prevCommit} to ${currCommit} ######"
-echo
+if [ x${detailInfo} != x ]; then
+    echo
+    echo "###### 2) Detail commit history from commit ${prevCommit} to ${currCommit} ######"
+    echo
 
-git log --stat -c --decorate --pretty=fuller ${prevCommit}~..${currCommit}
+    git log --stat -c --decorate --pretty=fuller ${prevCommit}~..${currCommit}
+fi
 
 #-------------------------------------------------------------------------------
 # 5) Get matched files with absolute path
