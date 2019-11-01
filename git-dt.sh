@@ -23,6 +23,9 @@ file=
 # Detail commit information
 detailInfo=
 
+# Use 'git difftool' to show changes by default
+gitCommand="git difftool"
+
 #-------------------------------------------------------------------------------
 # 2) Usage
 #-------------------------------------------------------------------------------
@@ -31,7 +34,7 @@ function usage(){
     echo
     echo "Usage:"
     echo "  ${scriptName} [-h]"
-    echo "  ${scriptName} [-p <previous-commit>] [-c <current-commit>] [-f <file>] [-d]"
+    echo "  ${scriptName} [-p <previous-commit>] [-c <current-commit>] [-f <file>] [-d] [-t]"
     echo
     echo "  -p <previous-commit>"
     echo "     Specify the previous commit that you want to check the changes from."
@@ -53,6 +56,10 @@ function usage(){
     echo "  -d"
     echo "     List detail commit information of each commit within specified range."
     echo
+    echo "  -t"
+    echo "     Text mode. By default, use 'git difftool' to show changes. Enable the"
+    echo "     option, use 'git diff' instead of 'git difftool' to show the changes."
+    echo
     echo "  -h"
     echo "     Show the usage of this script."
     echo
@@ -62,7 +69,7 @@ function usage(){
 # 3) Check script options
 #-------------------------------------------------------------------------------
 
-while getopts "c:p:f:dh" arg
+while getopts "c:p:f:dth" arg
 do
     case ${arg} in
         p)  # -p <previous-commit>
@@ -78,6 +85,9 @@ do
             ;;
         d)  # -d
             detailInfo=Yes
+            ;;
+        t)  # -t
+            gitCommand="git diff"
             ;;
         h)  # -h
             usage
@@ -158,7 +168,7 @@ if [ x"${matchedFiles}" == x ]; then
 
     echo
     echo "git difftool ${prevCommit} ${currCommit}"
-    git difftool ${prevCommit} ${currCommit}
+    ${gitCommand} ${prevCommit} ${currCommit}
     echo
 else
     echo
@@ -166,7 +176,7 @@ else
     echo "          ${matchedFiles}"
     echo
     echo "git difftool ${prevCommit} ${currCommit} -- ${matchedFiles}"
-    git difftool ${prevCommit} ${currCommit} -- ${matchedFiles}
+    ${gitCommand} ${prevCommit} ${currCommit} -- ${matchedFiles}
     echo
 fi
 
