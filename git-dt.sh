@@ -24,7 +24,10 @@ file=
 detailInfo=
 
 # Use 'git difftool' to show changes by default
-gitCommand="git difftool"
+diffOption="difftool"
+
+# Delimiter (--) between git options and path
+delimiterOptAndPath="--"
 
 #-------------------------------------------------------------------------------
 # 2) Usage
@@ -87,7 +90,7 @@ do
             detailInfo=Yes
             ;;
         t)  # -t
-            gitCommand="git diff"
+            diffOption="git diff"
             ;;
         h)  # -h
             usage
@@ -122,11 +125,17 @@ echo
 echo "###### 1) Short commit history from commit ${prevCommit} to ${currCommit} ######"
 echo
 
+echo "git log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate ${prevCommit}~..${currCommit}"
+echo
+
 git log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate ${prevCommit}~..${currCommit}
 
 if [ x${detailInfo} != x ]; then
     echo
     echo "###### 2) Detail commit history from commit ${prevCommit} to ${currCommit} ######"
+    echo
+
+    echo "git log --stat -c --decorate --pretty=fuller ${prevCommit}~..${currCommit}"
     echo
 
     git log --stat -c --decorate --pretty=fuller ${prevCommit}~..${currCommit}
@@ -158,25 +167,22 @@ fi
 # 6) Use git difftool to show changes
 #-------------------------------------------------------------------------------
 
-if [ x"${matchedFiles}" == x ]; then
-    echo
-    echo "###### 3) Use 'git difftool' to show all changes between commit ${prevCommit} and ${currCommit} ######"
+echo
+echo "###### 3) Use 'git ${diffOption}' to show all changes between commit ${prevCommit} and ${currCommit} ######"
 
+if [ x"${matchedFiles}" == x ]; then
     if [ x${notFoundFile} != x ]; then
         echo "          NOTE: Not found file ${file}"
     fi
-
-    echo
-    echo "git difftool ${prevCommit} ${currCommit}"
-    ${gitCommand} ${prevCommit} ${currCommit}
-    echo
+    delimiterOptAndPath=
 else
-    echo
-    echo "###### 3) Use 'git difftool' to show changes in following file(s) between commit ${prevCommit} and ${currCommit} ######"
     echo "          ${matchedFiles}"
-    echo
-    echo "git difftool ${prevCommit} ${currCommit} -- ${matchedFiles}"
-    ${gitCommand} ${prevCommit} ${currCommit} -- ${matchedFiles}
-    echo
 fi
+
+echo
+echo "git ${diffOption} ${prevCommit} ${currCommit} ${delimiterOptAndPath} ${matchedFiles}"
+echo
+
+git ${diffOption} ${prevCommit} ${currCommit} ${delimiterOptAndPath} ${matchedFiles}
+echo
 
