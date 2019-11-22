@@ -90,7 +90,7 @@ do
             detailInfo=Yes
             ;;
         t)  # -t
-            diffOption="git diff"
+            diffOption="diff"
             ;;
         h)  # -h
             usage
