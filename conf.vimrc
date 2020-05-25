@@ -1,9 +1,23 @@
 "===============================================================================
-"= This is VIM's configuration file.                                           =
+"= This is configuration for Vim. Also check the example:                      =
+"=     /usr/share/vim/vim74/vimrc_example.vim                                  =
 "=                                                                             =
-"= Usage:                                                                      =
-"= 1) Move it to ~/.vimrc to enable it.                                        =
-"= 2) Use command: vim -u ~/scripts/vimrc.conf                                 =
+"= Three ways to use this configuration:                                       =
+"=                                                                             =
+"= 1) Check original configure file ~/.vimrc:                                  =
+"=        cat ~/.vimrc                                                         =
+"=    Replace it if no useful configuration in original one:                   =
+"=       cp ~/scripts/conf.vimrc ~/.vimrc                                      =
+"=                                                                             =
+"= 2) Copy this configuration to home directory:                               =
+"=       cp ~/scripts/conf.bashrc ~/.vimrc.user                                =
+"=   Source it in original configure file if not yet:                          =
+"=       cat ~/.vimrc | grep -n source                                         =
+"=       echo "source ~/.vimrc.user" >> ~/.vimrc                               =
+"=                                                                             =
+"= 3) Call the configure file while start Vim:                                 =
+"=        vim -u ~/scripts/vimrc.conf                                          =
+"=                                                                             =
 "===============================================================================
 
 "Don't compatible to vi
