@@ -137,7 +137,7 @@ git config --global alias.lhgfp "log --date=short --pretty=format:'%Cgreen%h %Cr
 #   c) git lc <tag-or-commit-id>^1 : List the first  parent of commit <tag-or-commit-id>, same as variants a), b)
 #   d) git lc <tag-or-commit-id>^2 : List the second parent of commit <tag-or-commit-id>
 #-------------------------------------------------------------------------------
-git config --global alias.lc "log --stat -1 -c --decorate --pretty=fuller"
+git config --global alias.lc "log --numstat -1 -c --decorate --pretty=fuller"
 
 #-------------------------------------------------------------------------------
 # List Commit with Patch format.
