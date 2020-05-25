@@ -57,17 +57,13 @@ alias ssig  'find . -noignore_readdir_race -nowarn -type f -not -path "*test*" -
 
 # Find Duplicate Files in Current Folder
 # Refer to https://blog.csdn.net/zixiaomuwu/article/details/50878383
-alias fdf  'find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find -type f -size {}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate | cut -b 36- '
+alias fdf  'find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I\{\} -n1 find -type f -size \{\}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate | cut -b 36- '
 
 # Find specific file within current path
 alias ff  'find . -noignore_readdir_race -nowarn -type f -iname'
 
 # Find specific directory within current path
 alias fd  'find . -noignore_readdir_race -nowarn -type d -iname'
-
-# Remove tail spaces, used when "git commit" failed caused by pre-commit script
-# Usage: rmtailspace lib.c > lib.c.notailspace
-alias rmtailspace  'sed -e \"s/[ \t]*$//g\"'
 
 
 ################################################################################
