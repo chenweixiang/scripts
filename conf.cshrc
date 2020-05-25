@@ -22,11 +22,11 @@
 ################################################################################
 
 # ls
-alias ll  "ls --color=auto -lh"
-alias la  "ls --color=auto -lha"
+alias ll  'ls --color=auto -lh'
+alias la  'ls --color=auto -lha'
 
 # Disk usage
-alias dusum  "du -sh"
+alias dusum  'du -sh'
 
 # Editor
 alias e  'gedit'
@@ -67,7 +67,7 @@ alias fd  'find . -noignore_readdir_race -nowarn -type d -iname'
 
 # Remove tail spaces, used when "git commit" failed caused by pre-commit script
 # Usage: rmtailspace lib.c > lib.c.notailspace
-alias rmtailspace  "sed -e \"s/[ \t]*$//g\""
+alias rmtailspace  'sed -e \"s/[ \t]*$//g\"'
 
 
 ################################################################################
@@ -78,7 +78,7 @@ alias rmtailspace  "sed -e \"s/[ \t]*$//g\""
 source ~/scripts/conf.git-config
 
 # Git completion
-source ~/scripts/conf.git-completion
+#source ~/scripts/conf.git-completion
 
 # Alias to git scripts
 alias gls  '~/scripts/git-ls.sh'
@@ -89,25 +89,25 @@ alias gar  '~/scripts/git-archive.sh'
 # 1) Clean git
 # 2) Build git
 # 3) Install built git
-alias cleangit    "make distclean"
-alias buildgit    "make prefix=/usr all doc info"
-alias installgit  "sudo make prefix=/usr install install-doc install-html install-info"
+alias cleangit    'make distclean'
+alias buildgit    'make prefix=/usr all doc info'
+alias installgit  'sudo make prefix=/usr install install-doc install-html install-info'
 
 
 ################################################################################
 # ClearCase Configure
 ################################################################################
 
-alias vtree    "cleartool lsvtree -g"
-alias ctco     "cleartool co -nc"
-alias lsco     "cleartool lsco -a -cview -short"
-alias cols     "cleartool ls -l \`cleartool lsco -a -cview -short\`"
-alias ctls     "cleartool ls -l"
-alias unco     "cleartool unco -keep"
-alias ctdiff   "cleartool diff -g"
-alias diffpre  "cleartool diff -g -pre"
-alias lsall    "cleartool lspriv -other"
-alias rmall    "rm -rf \`cleartool lspriv -other\`"
+alias vtree    'cleartool lsvtree -g'
+alias ctco     'cleartool co -nc'
+alias lsco     'cleartool lsco -a -cview -short'
+alias cols     'cleartool ls -l \`cleartool lsco -a -cview -short\`'
+alias ctls     'cleartool ls -l'
+alias unco     'cleartool unco -keep'
+alias ctdiff   'cleartool diff -g'
+alias diffpre  'cleartool diff -g -pre'
+alias lsall    'cleartool lspriv -other'
+alias rmall    'rm -rf \`cleartool lspriv -other\`'
 
 
 ################################################################################
@@ -115,7 +115,7 @@ alias rmall    "rm -rf \`cleartool lspriv -other\`"
 ################################################################################
 
 # Use command pip3 instead of below alias p3pip
-alias p3pip  "python3 -m pip"
+alias p3pip  'python3 -m pip'
 
 
 ################################################################################
