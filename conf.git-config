@@ -67,121 +67,64 @@ git config --global alias.tree "log --graph --pretty=oneline --abbrev-commit --a
 git config --global alias.follow "log --pretty='%h %Cgreen(%cr)%Creset %Cblue%an%Creset %C(yellow)%d%Creset %s' --follow"
 
 #-------------------------------------------------------------------------------
-# List commit History (10 records by default).
-# Usage:
-#   git lh [-<numberOfRecords>]
-#-------------------------------------------------------------------------------
-git config --global alias.lh "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' -10"
-
-#-------------------------------------------------------------------------------
 # List commit History (all records by default).
 # Usage:
-#   git lha [-<numberOfRecords>]
-#   git lha [-<numberOfRecords>] [<tag-or-commit-id>]
-#   git lha [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#   git lha [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
+#   git lh [-<numberOfRecords>]
+#   git lh [-<numberOfRecords>] [<tag-or-commit-id>]
+#   git lh [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
+#   git lh [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lha "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s'"
+git config --global alias.lh "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s'"
 
 #-------------------------------------------------------------------------------
-# List commit History without Tag (10 records by default).
+# List commit History without Tag (all records by default).
 # Usage:
 #   git lhnt [-<numberOfRecords>]
 #   git lhnt [-<numberOfRecords>] [<tag-or-commit-id>]
 #   git lhnt [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #   git lhnt [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhnt "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%an %Creset%s' -10"
+git config --global alias.lhnt "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%an %Creset%s'"
 
 #-------------------------------------------------------------------------------
-# List commit History without Tag (all records by default).
-# Usage:
-#   git lhnta [-<numberOfRecords>]
-#   git lhnta [-<numberOfRecords>] [<tag-or-commit-id>]
-#   git lhnta [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#   git lhnta [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
-#-------------------------------------------------------------------------------
-git config --global alias.lhnta "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%an %Creset%s'"
-
-#-------------------------------------------------------------------------------
-# List commit History with Tag (10 records by default).
+# List commit History with Tag (all records by default).
 # Usage:
 #   git lht [-<numberOfRecords>]
 #   git lht [-<numberOfRecords>] [<tag-or-commit-id>]
 #   git lht [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #   git lht [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lht "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%an %Cred%d %Creset%s' -10"
+git config --global alias.lht "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%an %Cred%d %Creset%s'"
 
 #-------------------------------------------------------------------------------
-# List commit History with Tag (all records by default).
-# Usage:
-#   git lhta [-<numberOfRecords>]
-#   git lhta [-<numberOfRecords>] [<tag-or-commit-id>]
-#   git lhta [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#   git lhta [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
-#-------------------------------------------------------------------------------
-git config --global alias.lhta "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%an %Cred%d %Creset%s'"
-
-#-------------------------------------------------------------------------------
-# Log commit History with Graphical (10 records by default).
+# Log commit History with Graphical (all records by default).
 # Usage:
 #   git lhg [-<numberOfRecords>]
 #   git lhg [-<numberOfRecords>] [<tag-or-commit-id>]
 #   git lhg [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #   git lhg [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate -10"
+git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate"
 
 #-------------------------------------------------------------------------------
-# Log commit History with Graphical (all records by default).
-# Usage:
-#   git lhga [-<numberOfRecords>]
-#   git lhga [-<numberOfRecords>] [<tag-or-commit-id>]
-#   git lhga [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#   git lhga [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
-#-------------------------------------------------------------------------------
-git config --global alias.lhga "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate"
-
-#-------------------------------------------------------------------------------
-# List commit History of First Parent (10 records by default).
+# List commit History of First Parent (all records by default).
 # Usage:
 #   git lhfp [-<numberOfRecords>]
 #   git lhfp [-<numberOfRecords>] [<tag-or-commit-id>]
 #   git lhfp [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #   git lhfp [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --first-parent -10"
+git config --global alias.lhfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --first-parent"
 
 #-------------------------------------------------------------------------------
-# List commit History of First Parent (all records by default).
-# Usage:
-#   git lhfpa [-<numberOfRecords>]
-#   git lhfpa [-<numberOfRecords>] [<tag-or-commit-id>]
-#   git lhfpa [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#   git lhfpa [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
-#-------------------------------------------------------------------------------
-git config --global alias.lhfpa "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --first-parent"
-
-#-------------------------------------------------------------------------------
-# Log commit History of First Parent with Graphical (10 records by default).
+# Log commit History of First Parent with Graphical (all records by default).
 # Usage:
 #   git lhgfp [-<numberOfRecords>]
 #   git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>]
 #   git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #   git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhgfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate --first-parent -10"
-
-#-------------------------------------------------------------------------------
-# Log commit History of First Parent with Graphical (all records by default).
-# Usage:
-#   git lhgfpa [-<numberOfRecords>]
-#   git lhgfpa [-<numberOfRecords>] [<tag-or-commit-id>]
-#   git lhgfpa [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#   git lhgfpa [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
-#-------------------------------------------------------------------------------
-git config --global alias.lhgfpa "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate --first-parent"
+git config --global alias.lhgfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate --first-parent"
 
 #-------------------------------------------------------------------------------
 # List Commit.
