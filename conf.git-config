@@ -112,13 +112,6 @@ git config --global alias.cf "cat-file -p"
 git config --global alias.lcp "log --no-prefix -1 -p --decorate --pretty=fuller"
 
 #-------------------------------------------------------------------------------
-# List Commit with Detail information.
-# Usage:
-#   git lcd <tag-or-commit-id>
-#-------------------------------------------------------------------------------
-git config --global alias.lcd "cat-file -p"
-
-#-------------------------------------------------------------------------------
 # Diff Two Commits.
 # Usage:
 #   git dtc <tag-or-commit-id-1> <tag-or-commit-id-2>
