@@ -67,14 +67,14 @@ git config --global alias.tree "log --graph --pretty=oneline --abbrev-commit --a
 git config --global alias.follow "log --pretty='%h %Cgreen(%cr)%Creset %Cblue%an%Creset %C(yellow)%d%Creset %s' --follow"
 
 #-------------------------------------------------------------------------------
-# Log commit History with Graphical (all records by default).
+# Log commit History with Graphical (30 records by default).
 # Usage:
 #   git lhg [-<numberOfRecords>]
 #   git lhg [-<numberOfRecords>] [<tag-or-commit-id>]
 #   git lhg [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #   git lhg [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate"
+git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate -30"
 
 #-------------------------------------------------------------------------------
 # Log commit History of First Parent with Graphical (all records by default).
@@ -207,17 +207,21 @@ git config --global alias.rma "clean -d -f -X"
 #-------------------------------------------------------------------------------
 # List References in a local repository.
 # Usage:
-#   git lf
+#   git lr
 #-------------------------------------------------------------------------------
 git config --global alias.lr "show-ref --head --heads --tags -d"
 
 #-------------------------------------------------------------------------------
 # Submodule Status
+# Usage:
+#   git subst
 #-------------------------------------------------------------------------------
 git config --global alias.subst "submodule status"
 
 #-------------------------------------------------------------------------------
 # Submodule Update
+# Usage:
+#   git subupd
 #-------------------------------------------------------------------------------
 git config --global alias.subupd "submodule update --init --recursive"
 
