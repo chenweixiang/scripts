@@ -49,9 +49,6 @@ git config --global alias.desc 'describe'
 ## Aliases
 ################################################################################
 
-#git config --global alias.last 'log -1 HEAD'
-#git config --global alias.last "cat-file commit HEAD"
-
 #-------------------------------------------------------------------------------
 # List commit history in tree format.
 # Usage:
@@ -98,6 +95,14 @@ git config --global alias.lhgfp "log --date=short --pretty=format:'%Cgreen%h %Cr
 #   d) git lc <tag-or-commit-id>^2 : List the second parent of commit <tag-or-commit-id>
 #-------------------------------------------------------------------------------
 git config --global alias.lc "log --numstat -1 -c --decorate --pretty=fuller"
+
+#-------------------------------------------------------------------------------
+# Show file content on specific commit.
+# Usage:
+#   git cf <tag-or-commit-id>:/path/to/file              : Show content of /path/to/file on tag or commit <tag-or-commit-id> on screen
+#   git cf <tag-or-commit-id>:/path/to/file | less -N    : Show content of /path/to/file on tag or commit <tag-or-commit-id> on editor less
+#-------------------------------------------------------------------------------
+git config --global alias.cf "cat-file -p"
 
 #-------------------------------------------------------------------------------
 # List Commit with Patch format.
@@ -160,7 +165,7 @@ git config --global alias.llt 'describe --abbrev=0 --tags --first-parent HEAD'
 # Usage:
 #   git lbt <tag-or-commit-id>
 #-------------------------------------------------------------------------------
-git config --global alias.lbt 'branch -a --contain'
+git config --global alias.lbt 'branch -a --contains'
 
 #-------------------------------------------------------------------------------
 # List Merge Bases for the specified commits, tags, or branches.
