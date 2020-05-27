@@ -29,6 +29,7 @@ function usage(){
     echo "Usage:"
     echo "${scriptName} [-h]"
     echo "${scriptName} [-p <previous-commit>] [-c <current-commit>] [-e | -n]"
+    echo "${scriptName} [-c <current-commit>] [-s | -l]"
     echo
     echo " -p <previous-commit>"
     echo "    Specify the previous commit that you want to check commit files of."
@@ -40,7 +41,20 @@ function usage(){
     echo "    If this option is not specified, use HEAD as commit ID by default."
     echo
     echo " -e"
-    echo "    Open the commit files by gedit. Exit if gedit is not found."
+    echo "    Open the commit files by gedit. Exit if gedit is not found. Note"
+    echo "    that the file content is the one in working directory, not the one"
+    echo "    in specified commit. Use option -s to open the files with content"
+    echo "    of the specified commit."
+    echo
+    echo " -s"
+    echo "    Show the commit files by less. Exit if less is not found. Note"
+    echo "    that the file content is the one in specified commit, not the one"
+    echo "    in working directory. Use option -e to open the files with content"
+    echo "    of the working directory."
+    echo
+    echo " -l"
+    echo "    Unlike -s, it just list commands to show file content in specified"
+    echo "    commit."
     echo
     echo " -n"
     echo "    By default, all commit files are shown in one line. One commit file"
@@ -55,7 +69,7 @@ function usage(){
 # 3) Check script options
 #-------------------------------------------------------------------------------
 
-while getopts "p:c:enh" arg
+while getopts "p:c:eslnh" arg
 do
     case ${arg} in
         p)  # -p <previous-commit>
@@ -68,6 +82,12 @@ do
             ;;
         e)  # -e
             openByGedit=Yes
+            ;;
+        s)  # -s
+            openByLessOfCommit=Yes
+            ;;
+        l)  # -l
+            listCmdOfSpecifiedCommit=Yes
             ;;
         n)  # -n
             newLine=Yes
@@ -111,7 +131,20 @@ topPath=`git rev-parse --show-toplevel`
 
 unset absoluteFiles
 
-if [ x${openByGedit} == xYes ]; then
+if [ x${listCmdOfSpecifiedCommit} == xYes ]; then
+    for file in ${commitFiles}; do
+        echo "git cat-file -p ${currCommit}:${file} | less -N -M"
+    done
+elif [ x${openByLessOfCommit} == xYes ]; then
+    lessBin=`which less`
+    if [ x${lessBin} == x ]; then
+        echo "ERROR: less is not found"
+    else
+        for file in ${commitFiles}; do
+            git cat-file -p ${currCommit}:${file} | less -N -M
+        done
+    fi
+elif [ x${openByGedit} == xYes ]; then
     geditBin=`which gedit`
     if [ x${geditBin} == x ]; then
         echo "ERROR: gedit is not found"
