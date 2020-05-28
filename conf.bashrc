@@ -74,7 +74,8 @@ alias fd='find . -noignore_readdir_race -nowarn -type d -iname'
 source ~/scripts/conf.git-config
 
 # Git completion
-source ~/scripts/conf.git-completion.bash
+# cp ~/scripts/conf.git-completion.bash ~/.git-completion.bash
+source ~/.git-completion.bash
 
 # Alias to git scripts
 alias gls='~/scripts/git-ls.sh'
