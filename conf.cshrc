@@ -80,9 +80,9 @@ source ~/.git-completion.tcsh
 set autolist=ambiguous
 
 # Alias to git scripts
-alias gls  '~/scripts/git-ls.sh'
-alias gdt  '~/scripts/git-dt.sh'
-alias gar  '~/scripts/git-archive.sh'
+alias gitls  '~/scripts/git-ls.sh'
+alias gitdt  '~/scripts/git-dt.sh'
+alias gitar  '~/scripts/git-archive.sh'
 
 # Build git from source code:
 # 1) Clean git
