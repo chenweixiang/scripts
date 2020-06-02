@@ -41,8 +41,10 @@ function usage(){
     echo "    If this option is not specified, use HEAD as commit ID by default."
     echo
     echo " -e"
-    echo "    Open the commit files by gedit. Exit if gedit is not found. Note"
-    echo "    that the file content is the one in working directory, not the one"
+    echo "    Open the commit files with type text/plain by gedit. Exit if gedit"
+    echo "    is not found."
+    echo
+    echo "    NOTE: The file content is the one in working directory, not the one"
     echo "    in specified commit. Use option -s to open the files with content"
     echo "    of the specified commit."
     echo
@@ -150,7 +152,10 @@ elif [ x${openByGedit} == xYes ]; then
         echo "ERROR: gedit is not found"
     else
         for file in ${commitFiles}; do
-            absoluteFiles+="${topPath}/${file} "
+            fileType=`file -b --mime-type ${file}`
+            if [ x${fileType} == x'text/plain' ]; then
+                absoluteFiles+="${topPath}/${file} "
+            fi
         done
         ${geditBin} ${absoluteFiles} &
     fi
