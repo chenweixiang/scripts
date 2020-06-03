@@ -31,6 +31,14 @@ alias dusum  'du -sh'
 # Editor
 alias e  'gedit'
 
+# Search in all files
+# Usage: sa [-i] <keyword>
+alias sa  'find . -noignore_readdir_race -nowarn -type f | xargs grep -n -s --color=auto --binary-files=without-match '
+
+# Search in all files within E///
+# Usage: se [-i] <keyword>
+alias se 'find . -noignore_readdir_race -nowarn -type f -not -path "*test*" -a -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -a -not -path "*sw/bin/*" | xargs grep -n -s --color=auto --binary-files=without-match '
+
 # Search in C/C++ headers and source files
 # Usage: ss [-i] <keyword>
 alias ss  'find . -noignore_readdir_race -nowarn -type f -not -path "*test*" -a -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -a -not -path "*sw/bin/*" \( -iname "*.h" -or -iname "*.hpp" -or -iname "*.hxx" -or -iname "*.c" -or -iname "*.cc" -or -iname "*.cxx" -or -iname "*.cpp" -or -iname "*.c++" \) | xargs grep -n -s --color=auto --binary-files=without-match '
