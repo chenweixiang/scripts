@@ -133,10 +133,15 @@ topPath=`git rev-parse --show-toplevel`
 
 unset absoluteFiles
 
+# option -l
 if [ x${listCmdOfSpecifiedCommit} == xYes ]; then
     for file in ${commitFiles}; do
-        echo "git cat-file -p ${currCommit}:${file} | less -N -M"
+        fileType=`file -b --mime-type ${file}`
+        if [ x${fileType} == x'text/plain' ]; then
+            echo "git cat-file -p ${currCommit}:${file} | less -N -M"
+        fi
     done
+# option -s
 elif [ x${openByLessOfCommit} == xYes ]; then
     lessBin=`which less`
     if [ x${lessBin} == x ]; then
@@ -146,6 +151,7 @@ elif [ x${openByLessOfCommit} == xYes ]; then
             git cat-file -p ${currCommit}:${file} | less -N -M
         done
     fi
+# option -e
 elif [ x${openByGedit} == xYes ]; then
     geditBin=`which gedit`
     if [ x${geditBin} == x ]; then
@@ -159,10 +165,12 @@ elif [ x${openByGedit} == xYes ]; then
         done
         ${geditBin} ${absoluteFiles} &
     fi
+# option -n
 elif [ x${newLine} == xYes ]; then
     for file in ${commitFiles}; do
         echo ${topPath}/${file}
     done
+# default
 else
     for file in ${commitFiles}; do
         absoluteFiles+="${topPath}/${file} "
