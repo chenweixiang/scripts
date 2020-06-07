@@ -33,21 +33,65 @@ git config --global color.interactive auto
 
 
 ################################################################################
-## Abbreviation
-################################################################################
-
-git config --global alias.br branch
-git config --global alias.co checkout
-git config --global alias.ci commit
-git config --global alias.st status
-git config --global alias.dt difftool
-git config --global alias.mt mergetool
-git config --global alias.desc 'describe'
-
-
-################################################################################
 ## Aliases
 ################################################################################
+
+#-------------------------------------------------------------------------------
+# List branches.
+# Usage:
+#   git br [-r]
+#-------------------------------------------------------------------------------
+git config --global alias.br branch
+
+#-------------------------------------------------------------------------------
+# Checkout to specific branch, tag or commit.
+# Usage:
+#   git co <branch>
+#   git co <tag-or-commit-id>
+#-------------------------------------------------------------------------------
+git config --global alias.co checkout
+
+#-------------------------------------------------------------------------------
+# Checkout to master branch.
+# Usage:
+#   git cm
+#-------------------------------------------------------------------------------
+git config --global alias.cm 'checkout master'
+
+#-------------------------------------------------------------------------------
+# Checkin changes.
+# Usage:
+#   git ci [--amend]
+#-------------------------------------------------------------------------------
+git config --global alias.ci commit
+
+#-------------------------------------------------------------------------------
+# Show repo status.
+# Usage:
+#   git st
+#-------------------------------------------------------------------------------
+git config --global alias.st status
+
+#-------------------------------------------------------------------------------
+# Use graphical tool to show differences, see below configurations.
+# Usage:
+#   git dt [branch-or-tag-or-commit-id1 [branch-or-tag-or-commit-id2]]
+#-------------------------------------------------------------------------------
+git config --global alias.dt difftool
+
+#-------------------------------------------------------------------------------
+# Use graphical tool to show differences, see below configurations.
+# Usage:
+#   git mt
+#-------------------------------------------------------------------------------
+git config --global alias.mt mergetool
+
+#-------------------------------------------------------------------------------
+# Give an object a human readable name based on an available ref.
+# Usage:
+#   git desc
+#-------------------------------------------------------------------------------
+git config --global alias.desc 'describe'
 
 #-------------------------------------------------------------------------------
 # List commit history in tree format.
