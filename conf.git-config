@@ -73,14 +73,7 @@ git config --global alias.ci commit
 git config --global alias.st status
 
 #-------------------------------------------------------------------------------
-# Use graphical tool to show differences, see below configurations.
-# Usage:
-#   git dt [branch-or-tag-or-commit-id1 [branch-or-tag-or-commit-id2]]
-#-------------------------------------------------------------------------------
-git config --global alias.dt difftool
-
-#-------------------------------------------------------------------------------
-# Use graphical tool to show differences, see below configurations.
+# Use graphical tool to merge commit, see below configurations.
 # Usage:
 #   git mt
 #-------------------------------------------------------------------------------
@@ -141,6 +134,15 @@ git config --global alias.lhgfp "log --date=short --pretty=format:'%Cgreen%h %Cr
 git config --global alias.lc "log --numstat -1 -c --decorate --pretty=fuller"
 
 #-------------------------------------------------------------------------------
+# Execute shell script ~/scripts/git-ls.sh to list changes in specific commit.
+# Usage:
+#   git sls [-h]
+#   git sls [-p <previous-commit>] [-c <current-commit>] [-e | -n]
+#   git sls [-c <current-commit>] [-s | -l]
+#-------------------------------------------------------------------------------
+git config --global alias.sls '!~/scripts/git-ls.sh'
+
+#-------------------------------------------------------------------------------
 # Show file content on specific commit.
 # Usage:
 #   git cf <tag-or-commit-id>:/path/to/file              : Show content of /path/to/file on tag or commit <tag-or-commit-id> on screen
@@ -149,11 +151,33 @@ git config --global alias.lc "log --numstat -1 -c --decorate --pretty=fuller"
 git config --global alias.cf "cat-file -p"
 
 #-------------------------------------------------------------------------------
+# Execute shell script ~/scripts/git-archive.sh to archive specific commit.
+# Usage:
+#   git sar { [-c commit-id] [-p path ] [-o output-dir] [-m] | [-h] }
+#-------------------------------------------------------------------------------
+git config --global alias.sar '!~/scripts/git-archive.sh'
+
+#-------------------------------------------------------------------------------
 # List Commit with Patch format.
 # Usage:
 #   git lcp <tag-or-commit-id>
 #-------------------------------------------------------------------------------
 git config --global alias.lcp "log --no-prefix -1 -p --decorate --pretty=fuller"
+
+#-------------------------------------------------------------------------------
+# Use graphical tool to show differences, see below configurations.
+# Usage:
+#   git dt [branch-or-tag-or-commit-id1 [branch-or-tag-or-commit-id2]]
+#-------------------------------------------------------------------------------
+git config --global alias.dt difftool
+
+#-------------------------------------------------------------------------------
+# Execute shell script ~/scripts/git-dt.sh to show changes between commits.
+# Usage:
+#   git sdt [-h]
+#   git sdt [-p <previous-commit>] [-c <current-commit>] [-f <file>] [-d] [-t]
+#-------------------------------------------------------------------------------
+git config --global alias.sdt '!~/scripts/git-dt.sh'
 
 #-------------------------------------------------------------------------------
 # Diff Two Commits.

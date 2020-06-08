@@ -85,11 +85,6 @@ source ~/scripts/conf.git-config
 # cp ~/scripts/conf.git-completion.bash ~/.git-completion.bash
 source ~/.git-completion.bash
 
-# Alias to git scripts
-alias gitls='~/scripts/git-ls.sh'
-alias gitdt='~/scripts/git-dt.sh'
-alias gitar='~/scripts/git-archive.sh'
-
 # Build git from source code:
 # 1) Clean git
 # 2) Build git

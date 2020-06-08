@@ -1,10 +1,12 @@
 #!/bin/bash
 
-#-------------------------------------------------------------------------------
-# This Bash script is used to zip a specified commit in current repository.
-# The commit is specified by input parameter $1. Use HEAD as the commit if
-# no input parameter $1 is specified.
-#-------------------------------------------------------------------------------
+################################################################################
+# This Bash script is used to zip a specified commit in current repository.    #
+# The commit is specified by input parameter $1. Use HEAD as the commit if     #
+# no input parameter $1 is specified.                                          #
+#                                                                              #
+# This script will be called by alias "git sar", see conf.git-config.          #
+################################################################################
 
 #-------------------------------------------------------------------------------
 # 1) Get the commit-id and output-dir

@@ -4,6 +4,8 @@
 # This Bash script is used to print the files changed by commit with absolute  #
 # path. The commit is specified by input parameter $1. Use HEAD as the commit  #
 # if no input parameter is specified.                                          #
+#                                                                              #
+# This script will be called by alias "git sls", see conf.git-config.          #
 ################################################################################
 
 #-------------------------------------------------------------------------------
