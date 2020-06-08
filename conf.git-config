@@ -37,260 +37,233 @@ git config --global color.interactive auto
 ################################################################################
 
 #-------------------------------------------------------------------------------
-# List branches.
-# Usage:
-#   git br [-r]
+# Remove section "alias" from ~/.gitconfig to clean legacy alias
+#-------------------------------------------------------------------------------
+git config --global --remove-section alias
+
+#-------------------------------------------------------------------------------
+# List local or remote branches.
+# Usage:  git br [-r]
 #-------------------------------------------------------------------------------
 git config --global alias.br branch
 
 #-------------------------------------------------------------------------------
 # Checkout to specific branch, tag or commit.
-# Usage:
-#   git co <branch>
-#   git co <tag-or-commit-id>
+# Usage:  git co <branch>
+#         git co <tag-or-commit-id>
 #-------------------------------------------------------------------------------
 git config --global alias.co checkout
 
 #-------------------------------------------------------------------------------
 # Checkout to master branch.
-# Usage:
-#   git cm
+# Usage:  git cm
 #-------------------------------------------------------------------------------
 git config --global alias.cm 'checkout master'
 
 #-------------------------------------------------------------------------------
 # Checkin changes.
-# Usage:
-#   git ci [--amend]
+# Usage:  git ci [--amend]
 #-------------------------------------------------------------------------------
 git config --global alias.ci commit
 
 #-------------------------------------------------------------------------------
 # Show repo status.
-# Usage:
-#   git st
+# Usage:  git st
 #-------------------------------------------------------------------------------
 git config --global alias.st status
 
 #-------------------------------------------------------------------------------
 # Use graphical tool to merge commit, see below configurations.
-# Usage:
-#   git mt
+# Usage:  git mt
 #-------------------------------------------------------------------------------
 git config --global alias.mt mergetool
 
 #-------------------------------------------------------------------------------
 # Give an object a human readable name based on an available ref.
-# Usage:
-#   git desc
+# Usage:  git desc
 #-------------------------------------------------------------------------------
 git config --global alias.desc 'describe'
 
 #-------------------------------------------------------------------------------
 # List commit history in tree format.
-# Usage:
-#   git tree
+# Usage:  git tree
 #-------------------------------------------------------------------------------
 git config --global alias.tree "log --graph --pretty=oneline --abbrev-commit --all --decorate"
 
 #-------------------------------------------------------------------------------
 # List commit history of a specified file.
-# Usage:
-#   git follow <file>
+# Usage:  git follow <file>
 #-------------------------------------------------------------------------------
 git config --global alias.follow "log --pretty='%h %Cgreen(%cr)%Creset %Cblue%an%Creset %C(yellow)%d%Creset %s' --follow"
 
 #-------------------------------------------------------------------------------
 # Log commit History with Graphical (20 records by default).
-# Usage:
-#   git lhg [-<numberOfRecords>]
-#   git lhg [-<numberOfRecords>] [<tag-or-commit-id>]
-#   git lhg [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#   git lhg [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
+# Usage:  git lhg [-<numberOfRecords>]
+#         git lhg [-<numberOfRecords>] [<tag-or-commit-id>]
+#         git lhg [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
+#         git lhg [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
 git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate -20"
 
 #-------------------------------------------------------------------------------
 # Log commit History of First Parent with Graphical (all records by default).
-# Usage:
-#   git lhgfp [-<numberOfRecords>]
-#   git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>]
-#   git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#   git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
+# Usage:  git lhgfp [-<numberOfRecords>]
+#         git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>]
+#         git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
+#         git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
 git config --global alias.lhgfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate --first-parent"
 
 #-------------------------------------------------------------------------------
 # List Commit.
-# Usage:
-#   git lc <tag-or-commit-id>      : List the commit <tag-or-commit-id>
-#
-# Variants:
-#   a) git lc <tag-or-commit-id>~  : List the first  parent of commit <tag-or-commit-id>, same as variants b), c)
-#   b) git lc <tag-or-commit-id>^  : List the first  parent of commit <tag-or-commit-id>, same as variants a), c)
-#   c) git lc <tag-or-commit-id>^1 : List the first  parent of commit <tag-or-commit-id>, same as variants a), b)
-#   d) git lc <tag-or-commit-id>^2 : List the second parent of commit <tag-or-commit-id>
+# Usage:  git lc <tag-or-commit-id>   : List the commit <tag-or-commit-id>
+#         git lc <tag-or-commit-id>~  : List the first  parent of commit <tag-or-commit-id>, same as variants b), c)
+#         git lc <tag-or-commit-id>^  : List the first  parent of commit <tag-or-commit-id>, same as variants a), c)
+#         git lc <tag-or-commit-id>^1 : List the first  parent of commit <tag-or-commit-id>, same as variants a), b)
+#         git lc <tag-or-commit-id>^2 : List the second parent of commit <tag-or-commit-id>
 #-------------------------------------------------------------------------------
 git config --global alias.lc "log --numstat -1 -c --decorate --pretty=fuller"
 
 #-------------------------------------------------------------------------------
 # Execute shell script ~/scripts/git-ls.sh to list changes in specific commit.
-# Usage:
-#   git sls [-h]
-#   git sls [-p <previous-commit>] [-c <current-commit>] [-e | -n]
-#   git sls [-c <current-commit>] [-s | -l]
+# Usage:  git sls [-h]
+#         git sls [-p <previous-commit>] [-c <current-commit>] [-e | -n]
+#         git sls [-c <current-commit>] [-s | -l]
 #-------------------------------------------------------------------------------
 git config --global alias.sls '!~/scripts/git-ls.sh'
 
 #-------------------------------------------------------------------------------
 # Show file content on specific commit.
-# Usage:
-#   git cf <tag-or-commit-id>:/path/to/file              : Show content of /path/to/file on tag or commit <tag-or-commit-id> on screen
-#   git cf <tag-or-commit-id>:/path/to/file | less -N    : Show content of /path/to/file on tag or commit <tag-or-commit-id> on editor less
+# Usage:  git cf <tag-or-commit-id>:/path/to/file              : Show content of /path/to/file on tag or commit <tag-or-commit-id> on screen
+#         git cf <tag-or-commit-id>:/path/to/file | less -N    : Show content of /path/to/file on tag or commit <tag-or-commit-id> on editor less
 #-------------------------------------------------------------------------------
 git config --global alias.cf "cat-file -p"
 
 #-------------------------------------------------------------------------------
 # Execute shell script ~/scripts/git-archive.sh to archive specific commit.
-# Usage:
-#   git sar { [-c commit-id] [-p path ] [-o output-dir] [-m] | [-h] }
+# Usage:  git sar { [-c commit-id] [-p path ] [-o output-dir] [-m] | [-h] }
 #-------------------------------------------------------------------------------
 git config --global alias.sar '!~/scripts/git-archive.sh'
 
 #-------------------------------------------------------------------------------
 # List Commit with Patch format.
-# Usage:
-#   git lcp <tag-or-commit-id>
+# Usage:  git lcp <tag-or-commit-id>
 #-------------------------------------------------------------------------------
 git config --global alias.lcp "log --no-prefix -1 -p --decorate --pretty=fuller"
 
 #-------------------------------------------------------------------------------
 # Use graphical tool to show differences, see below configurations.
-# Usage:
-#   git dt [branch-or-tag-or-commit-id1 [branch-or-tag-or-commit-id2]]
+# Usage:  git dt [branch-or-tag-or-commit-id1 [branch-or-tag-or-commit-id2]]
 #-------------------------------------------------------------------------------
 git config --global alias.dt difftool
 
 #-------------------------------------------------------------------------------
 # Execute shell script ~/scripts/git-dt.sh to show changes between commits.
-# Usage:
-#   git sdt [-h]
-#   git sdt [-p <previous-commit>] [-c <current-commit>] [-f <file>] [-d] [-t]
+# Usage:  git sdt [-h]
+#         git sdt [-p <previous-commit>] [-c <current-commit>] [-f <file>] [-d] [-t]
 #-------------------------------------------------------------------------------
 git config --global alias.sdt '!~/scripts/git-dt.sh'
 
 #-------------------------------------------------------------------------------
 # Diff Two Commits.
-# Usage:
-#   git dtc <tag-or-commit-id-1> <tag-or-commit-id-2>
+# Usage:  git dtc <tag-or-commit-id-1> <tag-or-commit-id-2>
 #-------------------------------------------------------------------------------
 git config --global alias.dtc "diff --no-prefix"
 
 #-------------------------------------------------------------------------------
 # Diff Two Commits with Statistics.
-# Usage:
-#   git dtcs <tag-or-commit-id-1> <tag-or-commit-id-2>
+# Usage:  git dtcs <tag-or-commit-id-1> <tag-or-commit-id-2>
 #-------------------------------------------------------------------------------
 git config --global alias.dtcs "diff --no-prefix --shortstat"
 
 #-------------------------------------------------------------------------------
 # Diff Two Commits with Statistics, include File changes.
-# Usage:
-#   git dtcsf <tag-or-commit-id-1> <tag-or-commit-id-2>
+# Usage:  git dtcsf <tag-or-commit-id-1> <tag-or-commit-id-2>
 #-------------------------------------------------------------------------------
 git config --global alias.dtcsf "diff --no-prefix --stat"
 
 #-------------------------------------------------------------------------------
 # List Tags sorted with "v:refname".
-# Usage:
-#   git lts
+# Usage:  git lts
 #-------------------------------------------------------------------------------
 git config --global alias.lts 'tag --sort="v:refname"'
 
 #-------------------------------------------------------------------------------
 # List Tag.
-# Usage:
-#   git lt <tag-or-commit-id>
+# Usage:  git lt <tag-or-commit-id>
 #-------------------------------------------------------------------------------
 git config --global alias.lt 'tag --points-at'
 
 #-------------------------------------------------------------------------------
 # List closest Tagname on first parent.
-# Usage:
-#   git llt
+# Usage:  git llt
 #-------------------------------------------------------------------------------
 git config --global alias.llt 'describe --abbrev=0 --tags --first-parent HEAD'
 
 #-------------------------------------------------------------------------------
 # List Branch which contains specific Tag or commit.
-# Usage:
-#   git lbt <tag-or-commit-id>
+# Usage:  git lbt <tag-or-commit-id>
 #-------------------------------------------------------------------------------
 git config --global alias.lbt 'branch -a --contains'
 
 #-------------------------------------------------------------------------------
 # List Merge Bases for the specified commits, tags, or branches.
-# Usage:
-#   git lmb {<branch-1> | <tag-1> | <commit-1>} {<branch-2> | <tag-2> | <commit-2>}
+# Usage:  git lmb {<branch-1> | <tag-1> | <commit-1>} {<branch-2> | <tag-2> | <commit-2>}
 #-------------------------------------------------------------------------------
 git config --global alias.lmb 'show-branch --merge-base'
 
 #-------------------------------------------------------------------------------
 # Grep commit Log.
-# Usage:
-#   git gl <keyword> [-- <files>]
+# Usage:  git gl <keyword> [-- <files>]
 #-------------------------------------------------------------------------------
 git config --global alias.gl "log --all --stat --grep"
 
 #-------------------------------------------------------------------------------
 # Print Lines matching a pattern.
-# Usage:
-#   git pl <keyword> [-- <files>]
+# Usage:  git pl <keyword> [-- <files>]
 #-------------------------------------------------------------------------------
 git config --global alias.pl "grep --full-name -n --heading --break -p"
 
 #-------------------------------------------------------------------------------
 # Print Lines matching a pattern (Ignore case).
-# Usage:
-#   git pl <keyword> [-- <files>]
+# Usage:  git pl <keyword> [-- <files>]
 #-------------------------------------------------------------------------------
 git config --global alias.pli "grep --full-name -n --heading --break -p -i"
 
 #-------------------------------------------------------------------------------
 # List Untracked ALL directories and files from working tree.
-# Usage:
-#   git lua
+# Usage:  git lua
 #-------------------------------------------------------------------------------
 git config --global alias.lua "clean -d -n"
 
 #-------------------------------------------------------------------------------
 # Remove ALL untracked directories and files from working tree.
-# Usage:
-#   git rma
+# Usage:  git rma
 #-------------------------------------------------------------------------------
 git config --global alias.rma "clean -d -f -X"
 
 #-------------------------------------------------------------------------------
 # List References in a local repository.
-# Usage:
-#   git lr
+# Usage:  git lr
 #-------------------------------------------------------------------------------
 git config --global alias.lr "show-ref --head --heads --tags -d"
 
 #-------------------------------------------------------------------------------
-# Submodule Status
-# Usage:
-#   git subst
+# List Submodule Status.
+# Usage:  git subst
 #-------------------------------------------------------------------------------
 git config --global alias.subst "submodule status"
 
 #-------------------------------------------------------------------------------
-# Submodule Update
-# Usage:
-#   git subupd
+# Update submodule.
+# Usage:  git subupd
 #-------------------------------------------------------------------------------
 git config --global alias.subupd "submodule update --init --recursive"
 
+#-------------------------------------------------------------------------------
+# Apply the last stash change.
+# Usage:  git stash-unapply
+#-------------------------------------------------------------------------------
 #git config --global alias.stash-unapply '!git stash show -p | git apply -R'
 
 
