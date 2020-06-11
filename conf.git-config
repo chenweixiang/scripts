@@ -107,12 +107,12 @@ git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred
 
 #-------------------------------------------------------------------------------
 # Log commit History of First Parent with Graphical (all records by default).
-# Usage:  git lhgfp [-<numberOfRecords>]
-#         git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>]
-#         git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#         git lhgfp [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
+# Usage:  git lhfp [-<numberOfRecords>]
+#         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>]
+#         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
+#         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhgfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate --first-parent"
+git config --global alias.lhfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate --first-parent"
 
 #-------------------------------------------------------------------------------
 # List Commit.
