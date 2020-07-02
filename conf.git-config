@@ -2,7 +2,7 @@
 ## User & E-mail
 ################################################################################
 
-# set user name and email address
+# Set user name and email address
 git config --global user.name "Weixiang Chen"
 git config --global user.email "weixiang.chen@outlook.com"
 
@@ -11,18 +11,20 @@ git config --global user.email "weixiang.chen@outlook.com"
 ## Misc
 ################################################################################
 
-# enable auto-correct function for mistype commands
+# Enable auto-correct function for mistype commands
 #git config --global help.autocorrect 1
 
-# abbreviate commit hashes to 12 characters
+# Abbreviate commit hashes to 12 characters
 git config --global core.abbrev 12
 
 
 ################################################################################
-## Color
+## Variables
 ################################################################################
 
-# set highlight for terminal
+#-------------------------------------------------------------------------------
+# Set highlight for terminal
+#-------------------------------------------------------------------------------
 git config --global color.ui true
 git config --global color.status auto
 git config --global color.branch auto
@@ -30,6 +32,13 @@ git config --global color.showbranch auto
 git config --global color.diff auto
 git config --global color.grep auto
 git config --global color.interactive auto
+
+#-------------------------------------------------------------------------------
+# Specify how differences in submodules are shown.
+# --submodule=diff is specified, the diff format is used.
+# Same as "git diff --submodule=diff <tag-or-commit-id-1> <tag-or-commit-id-2>"
+#-------------------------------------------------------------------------------
+git config --global diff.submodule diff
 
 
 ################################################################################
@@ -106,13 +115,22 @@ git config --global alias.follow "log --pretty='%h %Cgreen(%cr)%Creset %Cblue%an
 git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate -20"
 
 #-------------------------------------------------------------------------------
-# Log commit History of First Parent with Graphical (all records by default).
+# Log commit History of First Parent (all records by default).
 # Usage:  git lhfp [-<numberOfRecords>]
 #         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>]
 #         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
 git config --global alias.lhfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --topo-order --decorate --first-parent"
+
+#-------------------------------------------------------------------------------
+# Log commit History of First Parent with more Details (all records by default).
+# Usage:  git lhfpd [-<numberOfRecords>]
+#         git lhfpd [-<numberOfRecords>] [<tag-or-commit-id>]
+#         git lhfpd [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
+#         git lhfpd [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
+#-------------------------------------------------------------------------------
+git config --global alias.lhfpd "log --numstat -c --decorate --pretty=fuller --first-parent"
 
 #-------------------------------------------------------------------------------
 # List Commit.
