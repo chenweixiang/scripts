@@ -39,6 +39,12 @@ git config --global color.interactive auto
 #-------------------------------------------------------------------------------
 git config --global diff.submodule diff
 
+#-------------------------------------------------------------------------------
+# Specify how to reconcile divergent branches.
+# Same as "git pull --ff-only"
+#-------------------------------------------------------------------------------
+git config --global pull.ff only
+
 
 ################################################################################
 ## Aliases
