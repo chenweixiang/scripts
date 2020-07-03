@@ -28,8 +28,11 @@ alias la='ls --color=auto -lha'
 # Disk usage
 alias dusum='du -sh'
 
-# Editor
+# Editor: gedit
 alias e='gedit'
+
+# Editor: less
+alias l='less -N'
 
 # Search in all files
 # Usage: sa [-i] <keyword>
