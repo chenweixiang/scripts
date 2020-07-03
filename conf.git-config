@@ -35,8 +35,7 @@ git config --global color.interactive auto
 
 #-------------------------------------------------------------------------------
 # Specify how differences in submodules are shown.
-# --submodule=diff is specified, the diff format is used.
-# Same as "git diff --submodule=diff <tag-or-commit-id-1> <tag-or-commit-id-2>"
+# Same as "git diff --submodule=diff <tag-or-commit-ids>"
 #-------------------------------------------------------------------------------
 git config --global diff.submodule diff
 
@@ -143,6 +142,12 @@ git config --global alias.lhfpd "log --numstat -c --decorate --pretty=fuller --f
 git config --global alias.lc "log --numstat -1 -c --decorate --pretty=fuller"
 
 #-------------------------------------------------------------------------------
+# List Commit with Patch format.
+# Usage:  git lcp <tag-or-commit-id>
+#-------------------------------------------------------------------------------
+git config --global alias.lcp "log --no-prefix -1 -p --decorate --pretty=fuller"
+
+#-------------------------------------------------------------------------------
 # Execute shell script ~/scripts/git-ls.sh to list changes in specific commit.
 # Usage:  git sls [-h]
 #         git sls [-p <previous-commit>] [-c <current-commit>] [-e | -n]
@@ -162,12 +167,6 @@ git config --global alias.cf "cat-file -p"
 # Usage:  git sar { [-c commit-id] [-p path ] [-o output-dir] [-m] | [-h] }
 #-------------------------------------------------------------------------------
 git config --global alias.sar '!~/scripts/git-archive.sh'
-
-#-------------------------------------------------------------------------------
-# List Commit with Patch format.
-# Usage:  git lcp <tag-or-commit-id>
-#-------------------------------------------------------------------------------
-git config --global alias.lcp "log --no-prefix -1 -p --decorate --pretty=fuller"
 
 #-------------------------------------------------------------------------------
 # Use graphical tool to show differences, see below configurations.
