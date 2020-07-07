@@ -284,6 +284,12 @@ git config --global alias.subst "submodule status"
 git config --global alias.subupd "submodule update --init --recursive"
 
 #-------------------------------------------------------------------------------
+# Reset all submodules.
+# Usage:  git subrt
+#-------------------------------------------------------------------------------
+git config --global alias.subrt "submodule foreach --recursive git reset --hard"
+
+#-------------------------------------------------------------------------------
 # Apply the last stash change.
 # Usage:  git stash-unapply
 #-------------------------------------------------------------------------------
