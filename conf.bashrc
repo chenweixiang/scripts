@@ -28,11 +28,11 @@ alias la='ls --color=auto -lha'
 # Disk usage
 alias dusum='du -sh'
 
-# Editor: gedit
-alias e='gedit'
-
 # Editor: less
 alias l='less -N'
+
+# Editor: gedit, or xed on LinuxMint MATE
+alias e='gedit'
 
 # Search in all files
 # Usage: sa [-i] <keyword>
