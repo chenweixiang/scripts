@@ -36,34 +36,42 @@ alias e  'gedit'
 
 # Search in all files
 # Usage: sa [-i] <keyword>
+#        sa -E "<regexp>"
 alias sa  'find . -noignore_readdir_race -nowarn -type f | xargs grep -n -s --color=auto --binary-files=without-match '
 
 # Search in all files within E///
 # Usage: se [-i] <keyword>
+#        se -E "<regexp>"
 alias se 'find . -noignore_readdir_race -nowarn -type f -not -path "*test*" -a -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -a -not -path "*sw/bin/*" | xargs grep -n -s --color=auto --binary-files=without-match '
 
 # Search in C/C++ headers and source files
 # Usage: ss [-i] <keyword>
+#        ss -E "<regexp>"
 alias ss  'find . -noignore_readdir_race -nowarn -type f -not -path "*test*" -a -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -a -not -path "*sw/bin/*" \( -iname "*.h" -or -iname "*.hpp" -or -iname "*.hxx" -or -iname "*.c" -or -iname "*.cc" -or -iname "*.cxx" -or -iname "*.cpp" -or -iname "*.c++" \) | xargs grep -n -s --color=auto --binary-files=without-match '
 
 # Search in C/C++ headers only: *.h, *.hpp, *.hxx
 # Usage: sh [-i] <keyword>
+#        sh -E "<regexp>"
 alias sh  'find . -noignore_readdir_race -nowarn -type f -not -path "*test*" -a -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -a -not -path "*sw/bin/*" \( -iname "*.h" -or -iname "*.hpp" -or -iname "*.hxx" \) | xargs grep -n -s --color=auto --binary-files=without-match '
 
 # Search in C/C++ source files only: *.c, *.cc, *.cxx, *.cpp, *.c++
 # Usage: sc [-i] <keyword>
+#        sc -E "<regexp>"
 alias sc  'find . -noignore_readdir_race -nowarn -type f -not -path "*test*" -a -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -a -not -path "*sw/bin/*" \( -iname "*.c" -or -iname "*.cc" -or -iname "*.cxx" -or -iname "*.cpp" -or -iname "*.c++" \) | xargs grep -n -s --color=auto --binary-files=without-match '
 
 # Search in java source files only: *.java
 # Usage: sj [-i] <keyword>
+#        sj -E "<regexp>"
 alias sj  'find . -noignore_readdir_race -nowarn -type f -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -iname "*.java" | xargs grep -n -s --color=auto --binary-files=without-match '
 
 # Search in database: *.txt
 # Usage: sdb [-i] <keyword>
+#        sdb -E "<regexp>"
 alias sdb  'find . -noignore_readdir_race -nowarn -type f -not -path "*test*" -a -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -a -not -path "*sw/bin/*" -iname "*.txt" | xargs grep -n -s --color=auto --binary-files=without-match '
 
 # Search in signal files: *.sig
 # Usage: ssig [-i] <keyword>
+#        ssig -E "<regexp>"
 alias ssig  'find . -noignore_readdir_race -nowarn -type f -not -path "*test*" -a -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -a -not -path "*sw/bin/*" -iname "*.sig" | xargs grep -n -s --color=auto --binary-files=without-match '
 
 # Find Duplicate Files in Current Folder
