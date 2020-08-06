@@ -161,7 +161,7 @@ elif [ x${openByGedit} == xYes ]; then
     else
         for file in ${commitFiles}; do
             fileType=`file -b --mime-type ${file}`
-            if [ x${fileType} == x'text/plain' ]; then
+            if [[ ${fileType} =~ 'text/'.* ]]; then
                 absoluteFiles+="${topPath}/${file} "
             fi
         done
