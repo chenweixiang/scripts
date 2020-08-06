@@ -139,7 +139,7 @@ unset absoluteFiles
 if [ x${listCmdOfSpecifiedCommit} == xYes ]; then
     for file in ${commitFiles}; do
         fileType=`file -b --mime-type ${file}`
-        if [ x${fileType} == x'text/plain' ]; then
+        if [[ ${fileType} =~ 'text/'.* ]]; then
             echo "git cat-file -p ${currCommit}:${file} | less -N -M"
         fi
     done
