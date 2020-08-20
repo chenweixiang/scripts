@@ -90,7 +90,7 @@ alias fd='find . -noignore_readdir_race -nowarn -type d -iname'
 ################################################################################
 
 # Git alias
-source ~/scripts/conf.git-config
+# source ~/scripts/conf.git-config
 
 # Git completion
 # cp ~/scripts/conf.git-completion.bash ~/.git-completion.bash
