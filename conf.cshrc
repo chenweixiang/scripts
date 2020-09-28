@@ -28,8 +28,11 @@ alias la  'ls --color=auto -lha'
 # Disk usage
 alias dusum  'du -sh'
 
-# Editor: less
+# Reader: less
 alias l  'less -N'
+
+# Editor: vim
+alias v  'vim'
 
 # Editor: gedit, or xed on LinuxMint MATE
 alias e  'gedit'
