@@ -80,6 +80,11 @@ set ignorecase
 "is on.
 set smartcase
 
+"Do not wrap around. By default, the 'wrapscan' option is on, which means that
+"when "search next" reaches end of file, it wraps around to the beginning, and
+"when "search previous" reaches the beginning, it wraps around to the end.
+set nowrapscan
+
 "Don't make a backup
 set nobackup
 
