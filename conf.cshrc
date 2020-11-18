@@ -67,6 +67,11 @@ alias sc  'find . -noignore_readdir_race -nowarn -type f -not -path "*test*" -a 
 #        sj -E "<regexp>"
 alias sj  'find . -noignore_readdir_race -nowarn -type f -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -iname "*.java" | xargs grep -n -s --color=auto --binary-files=without-match '
 
+# Search in XML files only: *.xml
+# Usage: sx [-i] <keyword>
+#        sx -E "<regexp>"
+alias sx  'find . -noignore_readdir_race -nowarn -type f -not -path "*unitTest*" -a -not -path "*blockTest*" -a -not -path "*doc*" -iname "*.xml" | xargs grep -n -s --color=auto --binary-files=without-match '
+
 # Search in database: *.txt
 # Usage: sdb [-i] <keyword>
 #        sdb -E "<regexp>"
