@@ -37,7 +37,7 @@ def parseArguments():
     # Parse arguments
     parser = argparse.ArgumentParser(description='')
     parser.add_argument("-d", "--directory", help="specify directory.")
-    parser.add_argument("-e", "--execute", action, action="store_true", help="Execute the rename action.")
+    parser.add_argument("-e", "--execute", action="store_true", help="Execute the rename action.")
     parser.add_argument("-r", "--recursive", action="store_true", help="Recursive all sub-directories.")
     args = parser.parse_args()
     
