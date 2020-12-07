@@ -90,11 +90,11 @@ def generateNewFileName(filename, prefix):
     newFileName = ""
     
     # 如果取得Exif信息，则根据照片拍摄日期重命名文件; 否认则，直接跳过
-    exifData = exifread.process_file(fd)
-    if exifData:
+    exifTags = exifread.process_file(fd)
+    if exifTags:
         try:
             # 取得照片的拍摄日期，并转换成 yyyymmdd_hhmmss 格式
-            t = exifData [ 'EXIF DateTimeOriginal' ]
+            t = exifTags [ 'EXIF DateTimeOriginal' ]
             dateStr = prefix + str(t).replace(":", "")[:8] + "_" + str(t)[11:].replace(":", "")
             
             # 生成新文件名
