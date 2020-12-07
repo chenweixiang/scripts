@@ -243,6 +243,7 @@ git config --global alias.lmb 'show-branch --merge-base'
 #-------------------------------------------------------------------------------
 # Grep commit Log.
 # Usage:  git gl <keyword> [-- <files>]
+# Note: It cannot grep the content of each patch.
 #-------------------------------------------------------------------------------
 git config --global alias.gl "log --all --stat --grep"
 
