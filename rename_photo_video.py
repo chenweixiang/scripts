@@ -11,8 +11,8 @@
     ...
     IMG_20140315_091230_99.jpg
 
-本程序需要安装ExifRead模块，可执行下列
-命令安装ExifRead模块：
+本程序需要安装ExifRead模块，如果未改装
+改模块，可执行下列命令来安装：
     sudo apt install python3-pip
     pip3 --version
     sudo pip3 install exifread
@@ -30,34 +30,34 @@ IMG_SUFFIX_FILTER = [ '.jpg', '.png', '.mpg', '.bmp', '.jpeg' ]
 VID_SUFFIX_FILTER = [ '.mp4', '.mov', '.avi' ]
 
 # Global Variables
-isDryRun = False
+isExecute = False
 isRecursive = False
 
 def parseArguments():
     # Parse arguments
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument("-d", "--directory", nargs='?', help="specify directory. Use current directory by default.")
-    parser.add_argument("-n", "--dryrun", type=bool, default=False, help="DRYRUN = True: Dry-run the script. DRYRUN = False: Execute the script (Default).")
-    parser.add_argument("-r", "--recursive", type=bool, default=False, help="RECURSIVE = True: Recursive all sub-directories. RECURSIVE = False: Don't recursive all sub-directories (Default).")
+    parser.add_argument("-d", "--directory", help="specify directory.")
+    parser.add_argument("-e", "--execute", action, action="store_true", help="Execute the rename action.")
+    parser.add_argument("-r", "--recursive", action="store_true", help="Recursive all sub-directories.")
     args = parser.parse_args()
     
     # -d, --directory
     path = "."
     if args.directory and Path(args.directory).exists():
         path = args.directory
-    print("path is", os.path.abspath(path))
+    print("Path      :", os.path.abspath(path))
     
-    # -n, --dryrun
-    global isDryRun
-    if args.dryrun:
-        isDryRun = True
-    print("isDryRun is", isDryRun)
-
+    # -e, --execute
+    global isExecute
+    if args.execute:
+        isExecute = True
+    print("Execute   :", isExecute)
+    
     # -r, --recursive
     global isRecursive
     if args.recursive:
         isRecursive = True
-    print("isRecursive is", isRecursive)
+    print("Recursive ：", isRecursive)
     print('\n')
     
     return path
@@ -139,7 +139,7 @@ def scanDir(startdir):
                 retVal, newFileName = generateNewFileName(obj, prefix)
                 if retVal:
                     try:
-                        if isDryRun == False:
+                        if isExecute == True:
                             os.rename(obj, newFileName)
                         print(os.path.abspath(obj), " =>", newFileName)
                     except:
