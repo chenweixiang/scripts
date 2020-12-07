@@ -126,7 +126,7 @@ def generateNewFileName(filename, prefix):
 
 
 def scanDir(startdir):
-    global isDryRun
+    global isExecute
     global isRecursive
     
     # 遍历指定目录以及子目录，对满足条件的文件进行改名
