@@ -141,11 +141,11 @@ def scanDir(startdir):
                     try:
                         if isExecute == True:
                             os.rename(obj, newFileName)
-                        print(os.path.abspath(obj), " =>", newFileName)
+                        print(os.path.abspath(obj), " => ", newFileName)
                     except:
-                        print(os.path.abspath(obj), " => cannot rename to", newFileName)
+                        print(os.path.abspath(obj), " => cannot rename to ", newFileName)
                 else:
-                    print(os.path.abspath(obj), " => No change")
+                    print(os.path.abspath(obj), " =>  No change")
         elif os.path.isdir(obj) and isRecursive == True:
             scanDir(obj)
             os.chdir(os.pardir)
