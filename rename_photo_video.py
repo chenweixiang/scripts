@@ -30,51 +30,72 @@ IMG_SUFFIX_FILTER = [ '.jpg', '.png', '.mpg', '.bmp', '.jpeg' ]
 VID_SUFFIX_FILTER = [ '.mp4', '.mov', '.avi' ]
 
 # Global Variables
+isRecursive     = False
 isExecute       = False
 useModifiedDate = False
+handlePhoto     = False
+handleVedio     = False
 isQuiet         = False
-isRecursive     = False
+
 
 def parseArguments():
     # Parse arguments
     parser = argparse.ArgumentParser(description='')
     parser.add_argument("-d", "--directory", help="specify directory.")
+    parser.add_argument("-r", "--recursive", action="store_true", help="Recursive all sub-directories.")
     parser.add_argument("-e", "--execute", action="store_true", help="Execute the rename action.")
     parser.add_argument("-m", "--modified", action="store_true", help="Use modified date if EXIF data missing.")
+    parser.add_argument("-a", "--all", action="store_true", help="Process photos and vedios.")
+    parser.add_argument("-p", "--photo", action="store_true", help="Process photos.")
+    parser.add_argument("-v", "--vedio", action="store_true", help="Process vedios.")
     parser.add_argument("-q", "--quiet", action="store_true", help="Just print rename successful info.")
-    parser.add_argument("-r", "--recursive", action="store_true", help="Recursive all sub-directories.")
     args = parser.parse_args()
     
     # -d, --directory
     path = "."
     if args.directory and Path(args.directory).exists():
         path = args.directory
-    print("Path            :", os.path.abspath(path))
-    
-    # -e, --execute
-    global isExecute
-    if args.execute:
-        isExecute = True
-    print("Execute         :", isExecute)
-    
-    # -m, --modified
-    global useModifiedDate
-    if args.modified:
-        useModifiedDate = True
-    print("UseModifiedDate :", useModifiedDate)
-    
-    # -q, --quiet
-    global isQuiet
-    if args.quiet:
-        isQuiet = True
-    print("isQuiet         :", isQuiet)
     
     # -r, --recursive
     global isRecursive
     if args.recursive:
         isRecursive = True
-    print("Recursive       :", isRecursive)
     
+    # -e, --execute
+    global isExecute
+    if args.execute:
+        isExecute = True
+    
+    # -m, --modified
+    global useModifiedDate
+    if args.modified:
+        useModifiedDate = True
+    
+    # -a, --all
+    global handlePhoto
+    global handleVedio
+    if args.all:
+        handlePhoto = True
+        handleVedio = True
+    # -p, --photo
+    if args.photo:
+        handlePhoto = True
+    # -v, --vedio
+    if args.vedio:
+        handleVedio = True
+    
+    # -q, --quiet
+    global isQuiet
+    if args.quiet:
+        isQuiet = True
+
+    print("Path              :", os.path.abspath(path))
+    print("Recursive         :", isRecursive)
+    print("Execute           :", isExecute)
+    print("Use Modified Date :", useModifiedDate)
+    print("Handle Photo      :", handlePhoto)
+    print("Handle Vedio      :", handleVedio)
+    print("Quiet             :", isQuiet)
     print('\n')
     
     return path
@@ -84,9 +105,9 @@ def isTargetFileType(filename):
     # 根据文件扩展名，判断是否是需要处理的文件类型
     filename_nopath = os.path.basename(filename)
     f, e = os.path.splitext(filename_nopath)
-    if e.lower() in IMG_SUFFIX_FILTER:
+    if e.lower() in IMG_SUFFIX_FILTER and handlePhoto == True:
         return True, "IMG_"
-    elif e.lower() in VID_SUFFIX_FILTER:
+    elif e.lower() in VID_SUFFIX_FILTER and handleVedio == True:
         return True, "VID_"
     else:
         return False, ""
@@ -155,10 +176,6 @@ def generateNewFileName(filename, prefix):
 
 
 def scanDir(startdir):
-    global isExecute
-    global isQuiet
-    global isRecursive
-    
     # 遍历指定目录以及子目录，对满足条件的文件进行改名
     os.chdir(startdir)
     for obj in os.listdir(os.curdir):
