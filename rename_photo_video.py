@@ -60,7 +60,7 @@ VID_FILE_TYPE = "VID_"
 
 # Extension Names
 IMG_SUFFIX_FILTER = [ '.jpg', '.png', '.mpg', '.bmp', '.jpeg' ]
-VID_SUFFIX_FILTER = [ '.mp4', '.mov', '.avi' ]
+VID_SUFFIX_FILTER = [ '.mp4', '.avi' ]
 
 # Global Variables
 isRecursive     = False
