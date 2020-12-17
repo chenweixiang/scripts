@@ -59,8 +59,8 @@ IMG_FILE_TYPE = "IMG_"
 VID_FILE_TYPE = "VID_"
 
 # Extension Names
-IMG_SUFFIX_FILTER = [ '.jpg', '.png', '.mpg', '.bmp', '.jpeg' ]
-VID_SUFFIX_FILTER = [ '.mp4', '.avi' ]
+IMG_SUFFIX_FILTER = [ '.jpg', '.png', '.bmp', '.jpeg' ]
+VID_SUFFIX_FILTER = [ '.mp4', '.mpg', '.avi' ]
 
 # Global Variables
 isRecursive     = False
@@ -69,6 +69,9 @@ useModifiedDate = False
 handlePhoto     = False
 handleVedio     = False
 isQuiet         = False
+
+# China Time Zone
+CN_TIME_ZONE = "+08:00"
 
 
 def parseArguments():
@@ -191,15 +194,35 @@ def generateNewFileName(filename):
         src_zone = tz.tzutc()
         dst_zone = tz.tzlocal()
         for element in metaData:
+            # For .mp4
             if "Media Create Date" in element:
-                mediaCreateData = (element.split(" : ")[1])
-                utcDateTime = datetime.strptime(mediaCreateData, '%Y:%m:%d %H:%M:%S')
+                mediaCreateDate = (element.split(" : ")[1])
+                utcDateTime = datetime.strptime(mediaCreateDate, '%Y:%m:%d %H:%M:%S')
                 utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                 locDateTime = utcDateTime.astimezone(dst_zone)
                 dateStr = locDateTime.strftime(myDataFormat)
                 newFileName = os.path.join(dirname, dateStr + e).upper()
                 retVal = True
                 break
+            # For .mpg
+            elif "File Modification Date/Time" in element:
+                fileModificationDateTime = (element.split(" : ")[1])
+                modificationDateTime = fileModificationDateTime[:19]
+                timeZone = fileModificationDateTime[19:]
+                if timeZone == CN_TIME_ZONE:
+                    locDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
+                    dateStr = locDateTime.strftime(myDataFormat)
+                    newFileName = os.path.join(dirname, dateStr + e).upper()
+                    retVal = True
+                    break
+                else:
+                    utcDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
+                    utcDateTime = utcDateTime.replace(tzinfo=src_zone)
+                    locDateTime = utcDateTime.astimezone(dst_zone)
+                    dateStr = locDateTime.strftime(myDataFormat)
+                    newFileName = os.path.join(dirname, dateStr + e).upper()
+                    retVal = True
+                    break
     
     # 如果获取Exif信息失败，则采用该照片的创建日期重命名文件
     if retVal == False and useModifiedDate == True:
