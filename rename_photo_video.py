@@ -60,7 +60,7 @@ VID_FILE_TYPE = "VID_"
 
 # Extension Names
 IMG_SUFFIX_FILTER = [ '.jpg', '.png', '.bmp', '.jpeg' ]
-VID_SUFFIX_FILTER = [ '.mp4', '.mpg', '.avi' ]
+VID_SUFFIX_FILTER = [ '.mp4', '.mpg', '.mov', '.avi' ]
 
 # Global Variables
 isRecursive     = False
@@ -204,7 +204,7 @@ def generateNewFileName(filename):
                 newFileName = os.path.join(dirname, dateStr + e).upper()
                 retVal = True
                 break
-            # For .mpg
+            # For .mpg, .mov
             elif "File Modification Date/Time" in element:
                 fileModificationDateTime = (element.split(" : ")[1])
                 modificationDateTime = fileModificationDateTime[:19]
