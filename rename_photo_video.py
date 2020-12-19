@@ -59,8 +59,8 @@ IMG_FILE_TYPE = "IMG_"
 VID_FILE_TYPE = "VID_"
 
 # Extension Names
-IMG_SUFFIX_FILTER = [ '.jpg', '.png', '.bmp', '.jpeg' ]
-VID_SUFFIX_FILTER = [ '.mp4', '.mpg', '.mov', '.avi' ]
+IMG_SUFFIX_FILTER = [ '.JPG', '.PNG', '.BMP', '.JPEG' ]
+VID_SUFFIX_FILTER = [ '.MP4', '.MPG', '.MOV', '.AVI' ]
 
 # Global Variables
 isRecursive     = False
@@ -141,9 +141,9 @@ def isTargetFileType(filename):
     # 根据文件扩展名，判断是否是需要处理的文件类型
     filename_nopath = os.path.basename(filename)
     f, e = os.path.splitext(filename_nopath)
-    if e.lower() in IMG_SUFFIX_FILTER:
+    if e.upper() in IMG_SUFFIX_FILTER:
         return True, IMG_FILE_TYPE
-    elif e.lower() in VID_SUFFIX_FILTER:
+    elif e.upper() in VID_SUFFIX_FILTER:
         return True, VID_FILE_TYPE
     else:
         return False, ""
@@ -193,36 +193,48 @@ def generateNewFileName(filename):
         metaData = str(exiftoolVal.stdout).split("\\n")
         src_zone = tz.tzutc()
         dst_zone = tz.tzlocal()
-        for element in metaData:
-            # For .mp4
-            if "Media Create Date" in element:
-                mediaCreateDate = (element.split(" : ")[1])
-                utcDateTime = datetime.strptime(mediaCreateDate, '%Y:%m:%d %H:%M:%S')
-                utcDateTime = utcDateTime.replace(tzinfo=src_zone)
-                locDateTime = utcDateTime.astimezone(dst_zone)
-                dateStr = locDateTime.strftime(myDataFormat)
-                newFileName = os.path.join(dirname, dateStr + e).upper()
-                retVal = True
-                break
-            # For .mpg, .mov
-            elif "File Modification Date/Time" in element:
-                fileModificationDateTime = (element.split(" : ")[1])
-                modificationDateTime = fileModificationDateTime[:19]
-                timeZone = fileModificationDateTime[19:]
-                if timeZone == CN_TIME_ZONE:
-                    locDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
-                    dateStr = locDateTime.strftime(myDataFormat)
-                    newFileName = os.path.join(dirname, dateStr + e).upper()
-                    retVal = True
-                    break
-                else:
-                    utcDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
-                    utcDateTime = utcDateTime.replace(tzinfo=src_zone)
-                    locDateTime = utcDateTime.astimezone(dst_zone)
-                    dateStr = locDateTime.strftime(myDataFormat)
-                    newFileName = os.path.join(dirname, dateStr + e).upper()
-                    retVal = True
-                    break
+        
+        # For .MP4
+        if e.upper() == ".MP4":
+            for element in metaData:
+                if "Media Create Date" in element:
+                    try:
+                        mediaCreateDate = (element.split(" : ")[1])
+                        utcDateTime = datetime.strptime(mediaCreateDate, '%Y:%m:%d %H:%M:%S')
+                        utcDateTime = utcDateTime.replace(tzinfo=src_zone)
+                        locDateTime = utcDateTime.astimezone(dst_zone)
+                        dateStr = locDateTime.strftime(myDataFormat)
+                        newFileName = os.path.join(dirname, dateStr + e).upper()
+                        retVal = True
+                        break
+                    except:
+                        retVal = False
+                        break
+        # For .MPG, .MOV
+        elif e.upper() == ".MPG" or e.upper() == ".MOV":
+            for element in metaData:
+                if "File Modification Date/Time" in element:
+                    try:
+                        fileModificationDateTime = (element.split(" : ")[1])
+                        modificationDateTime = fileModificationDateTime[:19]
+                        timeZone = fileModificationDateTime[19:]
+                        if timeZone == CN_TIME_ZONE:
+                            locDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
+                            dateStr = locDateTime.strftime(myDataFormat)
+                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            retVal = True
+                            break
+                        else:
+                            utcDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
+                            utcDateTime = utcDateTime.replace(tzinfo=src_zone)
+                            locDateTime = utcDateTime.astimezone(dst_zone)
+                            dateStr = locDateTime.strftime(myDataFormat)
+                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            retVal = True
+                            break
+                    except:
+                        retVal = False
+                        break
     
     # 如果获取Exif信息失败，则采用该照片的创建日期重命名文件
     if retVal == False and useModifiedDate == True:
