@@ -194,7 +194,11 @@ def generateNewFileName(filename):
         src_zone = tz.tzutc()
         dst_zone = tz.tzlocal()
         
-        # For .MP4
+        # For ".MP4":
+        #   File Type                       : MP4
+        #   File Type Extension             : mp4
+        #   MIME Type                       : video/mp4
+        #   Major Brand                     : MP4 v2 [ISO 14496-14]
         if e.upper() == ".MP4":
             for element in metaData:
                 if "Media Create Date" in element:
@@ -210,8 +214,11 @@ def generateNewFileName(filename):
                     except:
                         retVal = False
                         break
-        # For .MPG, .MOV
-        elif e.upper() == ".MPG" or e.upper() == ".MOV":
+        # For ".MPG":
+        #   File Type                       : MPEG
+        #   File Type Extension             : mpg
+        #   MIME Type                       : video/mpeg
+        elif e.upper() == ".MPG":
             for element in metaData:
                 if "File Modification Date/Time" in element:
                     try:
@@ -226,6 +233,35 @@ def generateNewFileName(filename):
                             break
                         else:
                             utcDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
+                            utcDateTime = utcDateTime.replace(tzinfo=src_zone)
+                            locDateTime = utcDateTime.astimezone(dst_zone)
+                            dateStr = locDateTime.strftime(myDataFormat)
+                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            retVal = True
+                            break
+                    except:
+                        retVal = False
+                        break
+        # For ".MOV":
+        #   File Type                       : MOV
+        #   File Type Extension             : mov
+        #   MIME Type                       : video/quicktime
+        #   Major Brand                     : Apple QuickTime (.MOV/QT)
+        elif e.upper() == ".MOV":
+            for element in metaData:
+                if "Creation Date" in element:
+                    try:
+                        creationDate = (element.split(" : ")[1])
+                        creationDateTime = creationDate[:19]
+                        timeZone = creationDate[19:]
+                        if timeZone == CN_TIME_ZONE:
+                            locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
+                            dateStr = locDateTime.strftime(myDataFormat)
+                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            retVal = True
+                            break
+                        else:
+                            utcDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
                             utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                             locDateTime = utcDateTime.astimezone(dst_zone)
                             dateStr = locDateTime.strftime(myDataFormat)
