@@ -137,10 +137,10 @@ def parseArguments():
     return path
 
 
-def isTargetFileType(filename):
+def isTargetFileType(fileName):
     # 根据文件扩展名，判断是否是需要处理的文件类型
-    filename_nopath = os.path.basename(filename)
-    f, e = os.path.splitext(filename_nopath)
+    fileNameNoPath = os.path.basename(fileName)
+    f, e = os.path.splitext(fileNameNoPath)
     if e.upper() in IMG_SUFFIX_FILTER:
         return True, IMG_FILE_TYPE
     elif e.upper() in VID_SUFFIX_FILTER:
@@ -150,13 +150,14 @@ def isTargetFileType(filename):
 
 
 def isSameFileName(fileName, newFileName):
-    lenExte = 4
-    if len(newFileName) <= lenExte:
+    retVal = False
+    
+    lenExt = 4
+    if len(newFileName) <= lenExt:
         return False
     
-    retVal = False
-    lenName = len(newFileName) - lenExte
-    if fileName[:lenName] == newFileName[:lenName] and fileName[-lenExte:] == newFileName[-lenExte:]:
+    lenName = len(newFileName) - lenExt
+    if fileName[:lenName] == newFileName[:lenName] and fileName[-lenExt:] == newFileName[-lenExt:]:
         retVal = True
     
     return retVal
@@ -178,8 +179,8 @@ def generateNewFileName(fileName):
     
     # 原文件信息
     dirname = os.path.dirname(fileName)
-    fileName_nopath = os.path.basename(fileName)
-    f, e = os.path.splitext(fileName_nopath)
+    fileNameNoPath = os.path.basename(fileName)
+    f, e = os.path.splitext(fileNameNoPath)
     
     # Check if the file can be handled or not
     isSupported, fileType = isTargetFileType(fileName)
