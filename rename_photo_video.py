@@ -124,7 +124,7 @@ def parseArguments():
     global isQuiet
     if args.quiet:
         isQuiet = True
-
+    
     print("Path              :", os.path.abspath(path))
     print("Recursive         :", isRecursive)
     print("Execute           :", isExecute)
@@ -149,27 +149,40 @@ def isTargetFileType(filename):
         return False, ""
 
 
-def generateNewFileName(filename):
+def isSameFileName(fileName, newFileName):
+    lenExte = 4
+    if len(newFileName) <= lenExte:
+        return False
+    
+    retVal = False
+    lenName = len(newFileName) - lenExte
+    if fileName[:lenName] == newFileName[:lenName] and fileName[-lenExte:] == newFileName[-lenExte:]:
+        retVal = True
+    
+    return retVal
+
+
+def generateNewFileName(fileName):
     # 根据照片的拍照时间生成新的文件名。如果获取不到拍照时间，则直接跳过
     try:
-        if os.path.isfile(filename):
-            fd = open(filename, 'rb')
+        if os.path.isfile(fileName):
+            fd = open(fileName, 'rb')
         else:
-            raise "[%s] is not a file!\n" % filename
+            raise "[%s] is not a file!\n" % fileName
     except:
-        raise "unopen file[%s]\n" % filename
+        raise "unopen file[%s]\n" % fileName
     
     # Default value
     retVal = False
     newFileName = ""
     
     # 原文件信息
-    dirname = os.path.dirname(filename)
-    filename_nopath = os.path.basename(filename)
-    f, e = os.path.splitext(filename_nopath)
+    dirname = os.path.dirname(fileName)
+    fileName_nopath = os.path.basename(fileName)
+    f, e = os.path.splitext(fileName_nopath)
     
     # Check if the file can be handled or not
-    isSupported, fileType = isTargetFileType(filename)
+    isSupported, fileType = isTargetFileType(fileName)
     if isSupported == False:
         return retVal, newFileName
     
@@ -188,7 +201,7 @@ def generateNewFileName(filename):
             except:
                 pass
     elif fileType == VID_FILE_TYPE and handleVedio == True:
-        exiftoolCmd = "exiftool " + filename
+        exiftoolCmd = "exiftool " + fileName
         exiftoolVal = subprocess.run(exiftoolCmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
         metaData = str(exiftoolVal.stdout).split("\\n")
         src_zone = tz.tzutc()
@@ -274,7 +287,7 @@ def generateNewFileName(filename):
     
     # 如果获取Exif信息失败，则采用该照片的创建日期重命名文件
     if retVal == False and useModifiedDate == True:
-        state = os.stat(filename)
+        state = os.stat(fileName)
         dateStr = time.strftime(myDataFormat, time.localtime(state[-2]))
         newFileName = os.path.join(dirname, dateStr + e).upper()
         retVal = True
@@ -282,14 +295,14 @@ def generateNewFileName(filename):
     # 检查新文件名是否合法
     if retVal == True:
         # 如果新文件名与原文件名相同，则无需改名
-        if newFileName == filename:
+        if isSameFileName(fileName, newFileName):
             retVal = False
         # 如果新文件名与其他文件重名，则在新文件明后加后缀 _01, _02, .., _99
         elif Path(newFileName).exists():
             for i in range(1, 100):
                 tmpDateStr = dateStr + "_" + str(i).zfill(2)
                 newFileName = os.path.join(dirname, tmpDateStr + e).upper()
-                if newFileName == filename:
+                if isSameFileName(fileName, newFileName):
                     retVal = False
                     break
                 elif Path(newFileName).exists() == False:
