@@ -98,8 +98,8 @@ alias sx0 'find . -noignore_readdir_race -nowarn -type f -print0 \( -not -path "
 #        sdb  -E "<regexp>"
 #        sdb0 [-i] <keyword>
 #        sdb0 -E "<regexp>"
-alias sdb  'find . -noignore_readdir_race -nowarn -type f \( -not -path "*/test/*" -a -not -path "*/unitTest/*" -a -not -path "*/blockTest/*" -a -not -path "*/doc/*" -a -not -path "*/sw/bin/*" \) -iname "*.txt" | xargs -0 grep -n -s --color=auto --binary-files=without-match '
-alias sdb0 'find . -noignore_readdir_race -nowarn -type f -print0 \( -not -path "*/test/*" -a -not -path "*/unitTest/*" -a -not -path "*/blockTest/*" -a -not -path "*/doc/*" -a -not -path "*/sw/bin/*" \) -iname "*.txt" | xargs grep -n -s --color=auto --binary-files=without-match '
+alias sdb  'find . -noignore_readdir_race -nowarn -type f \( -not -path "*/test/*" -a -not -path "*/unitTest/*" -a -not -path "*/blockTest/*" -a -not -path "*/doc/*" -a -not -path "*/sw/bin/*" \) -iname "*.txt" | xargs grep -n -s --color=auto --binary-files=without-match '
+alias sdb0 'find . -noignore_readdir_race -nowarn -type f -print0 \( -not -path "*/test/*" -a -not -path "*/unitTest/*" -a -not -path "*/blockTest/*" -a -not -path "*/doc/*" -a -not -path "*/sw/bin/*" \) -iname "*.txt" | xargs -0 grep -n -s --color=auto --binary-files=without-match '
 
 # Search in signal files: *.sig
 # Usage: ssig  [-i] <keyword>
