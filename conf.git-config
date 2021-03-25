@@ -119,7 +119,7 @@ git config --global alias.tree "log --graph --pretty=oneline --abbrev-commit --a
 # List commit history of a specified file.
 # Usage:  git follow <file>
 #-------------------------------------------------------------------------------
-git config --global alias.follow "log --pretty='%h %Cgreen(%cr)%Creset %Cblue%an%Creset %C(yellow)%d%Creset %s' --follow"
+git config --global alias.follow "log --pretty='%h %Cgreen(%cr)%Creset %Cblue%an%Creset %Creset %s %C(yellow)%d' --follow"
 
 #-------------------------------------------------------------------------------
 # Log commit History with Graphical (20 records by default).
@@ -128,7 +128,7 @@ git config --global alias.follow "log --pretty='%h %Cgreen(%cr)%Creset %Cblue%an
 #         git lhg [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         git lhg [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --graph --topo-order --decorate -20"
+git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Creset%s %Cred%d' --graph --topo-order --decorate -20"
 
 #-------------------------------------------------------------------------------
 # Log commit History of First Parent (all records by default).
@@ -137,7 +137,7 @@ git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred
 #         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Cred%d %Creset%s' --topo-order --decorate --first-parent"
+git config --global alias.lhfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Cblue%cn %Creset%s %Cred%d' --topo-order --decorate --first-parent"
 
 #-------------------------------------------------------------------------------
 # Log commit History of First Parent with more Details (all records by default).
