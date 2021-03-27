@@ -38,7 +38,7 @@ alias v  'vim'
 alias e  'gedit'
 
 # Tree
-alias t='\tree'
+alias t  '\tree'
 
 # Search in all files
 # Usage: sa  [-i] <keyword>
