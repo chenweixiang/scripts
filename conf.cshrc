@@ -37,6 +37,9 @@ alias v  'vim'
 # Editor: gedit, or xed on LinuxMint MATE
 alias e  'gedit'
 
+# Tree
+alias t='\tree'
+
 # Search in all files
 # Usage: sa  [-i] <keyword>
 #        sa  -E "<regexp>"
