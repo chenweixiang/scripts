@@ -286,8 +286,15 @@ git config --global alias.lr "show-ref --head --heads --tags -d"
 #-------------------------------------------------------------------------------
 # List Submodule Status.
 # Usage:  git subst
+#         git subst --recurisve
 #-------------------------------------------------------------------------------
 git config --global alias.subst "submodule status"
+
+#-------------------------------------------------------------------------------
+# List Submodule Status Recursive.
+# Usage:  git substr
+#-------------------------------------------------------------------------------
+git config --global alias.substr "submodule status --recursive"
 
 #-------------------------------------------------------------------------------
 # Update submodule.
