@@ -155,6 +155,8 @@ git config --global alias.lhfpd "log --numstat -c --decorate --pretty=fuller --f
 #         git lc <tag-or-commit-id>^  : List the first  parent of commit <tag-or-commit-id>, same as variants a), c)
 #         git lc <tag-or-commit-id>^1 : List the first  parent of commit <tag-or-commit-id>, same as variants a), b)
 #         git lc <tag-or-commit-id>^2 : List the second parent of commit <tag-or-commit-id>
+#
+#         git lc --name-only <tag-or-commit-id> : List changed files by commit <tag-or-commit-id>, without add/delete statistics
 #-------------------------------------------------------------------------------
 git config --global alias.lc "log --numstat -1 -c --decorate --pretty=fuller"
 
@@ -163,6 +165,12 @@ git config --global alias.lc "log --numstat -1 -c --decorate --pretty=fuller"
 # Usage:  git lcp <tag-or-commit-id>
 #-------------------------------------------------------------------------------
 git config --global alias.lcp "log --no-prefix -1 -p --decorate --pretty=fuller"
+
+#-------------------------------------------------------------------------------
+# List Files changed in specific commit
+# Usage:  git lf <tag-or-commit-id>
+#-------------------------------------------------------------------------------
+git config --global alias.lf "diff-tree --no-commit-id --name-only -r"
 
 #-------------------------------------------------------------------------------
 # Execute shell script ~/scripts/git-ls.sh to list changes in specific commit.
