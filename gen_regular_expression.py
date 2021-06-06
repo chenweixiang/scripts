@@ -105,7 +105,7 @@ def parse_regexp_string():
                 exit()
         else:
             if start_idx < len(orig_regexp_str):
-                regexp_elements.append(orig_regexp_str[start_idx:-1])
+                regexp_elements.append(orig_regexp_str[start_idx:])
             break
     
     if len(suffix_str) > 0:
