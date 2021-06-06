@@ -133,6 +133,7 @@ def parse_regexp_priority():
     else:
         for element in reversed(range(0, len(regexp_attribute))):
             regexp_priority.append(element)
+    regexp_attribute[regexp_priority[0]][3] = regexp_attribute[regexp_priority[0]][1] - 1
     print(regexp_priority)
 
 
