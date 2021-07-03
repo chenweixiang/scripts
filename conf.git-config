@@ -274,6 +274,13 @@ git config --global alias.pl "grep --full-name -n --heading --break -p"
 git config --global alias.pli "grep --full-name -n --heading --break -p -i"
 
 #-------------------------------------------------------------------------------
+# Count commits
+# Usage:  git cnt <tag-or-commit-id>
+#         git cnt <tag-or-commit-id1>..<tag-or-commit-id2>
+#-------------------------------------------------------------------------------
+git config --global alias.cnt "rev-list --count"
+
+#-------------------------------------------------------------------------------
 # List Untracked ALL directories and files from working tree.
 # Usage:  git lua
 #-------------------------------------------------------------------------------
@@ -284,6 +291,12 @@ git config --global alias.lua "clean -d -n"
 # Usage:  git rma
 #-------------------------------------------------------------------------------
 git config --global alias.rma "clean -d -f -X"
+
+#-------------------------------------------------------------------------------
+# Optimize repository
+# Usage:  git opr
+#-------------------------------------------------------------------------------
+git config --global alias.opt "gc --prune=now --aggressive"
 
 #-------------------------------------------------------------------------------
 # List References in a local repository.
@@ -312,9 +325,9 @@ git config --global alias.subupd "submodule update --init --recursive"
 
 #-------------------------------------------------------------------------------
 # Reset all submodules.
-# Usage:  git subrt
+# Usage:  git subrst
 #-------------------------------------------------------------------------------
-git config --global alias.subrt "submodule foreach --recursive git reset --hard"
+git config --global alias.subrst "submodule foreach --recursive git reset --hard"
 
 #-------------------------------------------------------------------------------
 # Apply the last stash change.
