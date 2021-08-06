@@ -318,10 +318,16 @@ git config --global alias.subst "submodule status"
 git config --global alias.substr "submodule status --recursive"
 
 #-------------------------------------------------------------------------------
-# Update submodule.
+# Update submodule with depth one.
 # Usage:  git subupd
 #-------------------------------------------------------------------------------
-git config --global alias.subupd "submodule update --init --recursive"
+git config --global alias.subupd "submodule update --init --depth 1"
+
+#-------------------------------------------------------------------------------
+# Update submodule recursively.
+# Usage:  git subupdr
+#-------------------------------------------------------------------------------
+git config --global alias.subupdr "submodule update --init --recursive"
 
 #-------------------------------------------------------------------------------
 # Reset all submodules.
