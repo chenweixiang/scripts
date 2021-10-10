@@ -57,10 +57,12 @@ from pathlib import Path
 # FILE_TYPE
 IMG_FILE_TYPE = "IMG_"
 VID_FILE_TYPE = "VID_"
+AUD_FILE_TYPE = "AUD_"
 
 # Extension Names
 IMG_SUFFIX_FILTER = [ '.JPG', '.PNG', '.BMP', '.JPEG' ]
 VID_SUFFIX_FILTER = [ '.MP4', '.MPG', '.MOV', '.AVI' ]
+AUD_SUFFIX_FILTER = [ '.M4A', '.WAV' ]
 
 # Global Variables
 isRecursive     = False
@@ -110,9 +112,11 @@ def parseArguments():
     # -a, --all
     global handlePhoto
     global handleVedio
+    global handleAudio
     if args.all:
         handlePhoto = True
         handleVedio = True
+        handleAudio = True
     # -p, --photo
     if args.photo:
         handlePhoto = True
@@ -131,6 +135,7 @@ def parseArguments():
     print("Use Modified Date :", useModifiedDate)
     print("Handle Photo      :", handlePhoto)
     print("Handle Vedio      :", handleVedio)
+    print("Handle Audio      :", handleAudio)
     print("Quiet             :", isQuiet)
     print('\n')
     
@@ -145,6 +150,8 @@ def isTargetFileType(fileName):
         return True, IMG_FILE_TYPE
     elif e.upper() in VID_SUFFIX_FILTER:
         return True, VID_FILE_TYPE
+    elif e.upper() in AUD_SUFFIX_FILTER:
+        return True, AUD_FILE_TYPE
     else:
         return False, ""
 
@@ -264,6 +271,71 @@ def generateNewFileName(fileName):
         elif e.upper() == ".MOV":
             for element in metaData:
                 if "Creation Date" in element:
+                    try:
+                        creationDate = (element.split(" : ")[1])
+                        creationDateTime = creationDate[:19]
+                        timeZone = creationDate[19:]
+                        if timeZone == CN_TIME_ZONE:
+                            locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
+                            dateStr = locDateTime.strftime(myDataFormat)
+                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            retVal = True
+                            break
+                        else:
+                            utcDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
+                            utcDateTime = utcDateTime.replace(tzinfo=src_zone)
+                            locDateTime = utcDateTime.astimezone(dst_zone)
+                            dateStr = locDateTime.strftime(myDataFormat)
+                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            retVal = True
+                            break
+                    except:
+                        retVal = False
+                        break
+    elif fileType == AUD_FILE_TYPE and handleAudio == True:
+        exiftoolCmd = "exiftool " + fileName
+        exiftoolVal = subprocess.run(exiftoolCmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        metaData = str(exiftoolVal.stdout).split("\\n")
+        src_zone = tz.tzutc()
+        dst_zone = tz.tzlocal()
+        
+        # For ".M4A":
+        #   File Type                       : M4A
+        #   File Type Extension             : m4a
+        #   MIME Type                       : audio/mp4
+        #   Major Brand                     : Apple iTunes AAC-LC (.M4A) Audio
+        if e.upper() == ".M4A":
+            for element in metaData:
+                if "Create Date" in element:
+                    try:
+                        creationDate = (element.split(" : ")[1])
+                        creationDateTime = creationDate[:19]
+                        timeZone = creationDate[19:]
+                        if timeZone == CN_TIME_ZONE:
+                            locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
+                            dateStr = locDateTime.strftime(myDataFormat)
+                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            retVal = True
+                            break
+                        else:
+                            utcDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
+                            utcDateTime = utcDateTime.replace(tzinfo=src_zone)
+                            locDateTime = utcDateTime.astimezone(dst_zone)
+                            dateStr = locDateTime.strftime(myDataFormat)
+                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            retVal = True
+                            break
+                    except:
+                        retVal = False
+                        break
+        # For ".WAV":
+        #   File Type                       : WAV
+        #   File Type Extension             : wav
+        #   MIME Type                       : audio/x-wav
+        #   Encoding                        : Microsoft PCM
+        elif e.upper() == ".WAV":
+            for element in metaData:
+                if "File Modification Date/Time" in element:
                     try:
                         creationDate = (element.split(" : ")[1])
                         creationDateTime = creationDate[:19]
