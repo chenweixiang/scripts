@@ -22,10 +22,10 @@
 ################################################################################
 
 # ls
-alias ll='ls --color=auto --time-style="+%Y-%m-%d %H:%M:%S" -lh'
-alias lla='ls --color=auto --time-style="+%Y-%m-%d %H:%M:%S" -lha'
-alias llt='ls --color=auto --time-style="+%Y-%m-%d %H:%M:%S" -lh -rt'
-alias llat='ls --color=auto --time-style="+%Y-%m-%d %H:%M:%S" -lha -rt'
+alias ll='ls --time-style="+%Y-%m-%d %H:%M:%S" -lh'
+alias lla='ls --time-style="+%Y-%m-%d %H:%M:%S" -lha'
+alias llt='ls --time-style="+%Y-%m-%d %H:%M:%S" -lh -rt'
+alias llat='ls --time-style="+%Y-%m-%d %H:%M:%S" -lha -rt'
 
 # Time
 alias t='date --rfc-3339="seconds"'
@@ -41,9 +41,6 @@ alias v='vim'
 
 # Editor: gedit, or xed on LinuxMint MATE
 alias e='gedit'
-
-# Tree
-alias t='\tree'
 
 # Search in all files
 # Usage: sa  [-i] <keyword>
