@@ -74,6 +74,12 @@ git config --global alias.br branch
 git config --global alias.co checkout
 
 #-------------------------------------------------------------------------------
+# Create a branch and checkout to it.
+# Usage:  git cb <new-branch> [<tag-or-commit-id>]
+#-------------------------------------------------------------------------------
+git config --global alias.cb "checkout -b"
+
+#-------------------------------------------------------------------------------
 # Checkout to master branch.
 # Usage:  git cm
 #-------------------------------------------------------------------------------
