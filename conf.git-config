@@ -17,6 +17,9 @@ git config --global user.email "weixiang.chen@outlook.com"
 # Abbreviate commit hashes to 12 characters
 git config --global core.abbrev 12
 
+# Take care of file mode change
+git config --global core.filemode true
+
 
 ################################################################################
 ## Variables
