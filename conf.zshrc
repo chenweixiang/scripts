@@ -22,10 +22,10 @@
 ################################################################################
 
 # ls
-alias ll='ls -D "%Y-%m-%d %H:%M:%S" -lh'
-alias lla='ls -D "%Y-%m-%d %H:%M:%S" -lha'
-alias llt='ls -D "%Y-%m-%d %H:%M:%S" -lh -rt'
-alias llat='ls -D "%Y-%m-%d %H:%M:%S" -lha -rt'
+alias ll='ls --color -D "%Y-%m-%d %H:%M:%S" -lh'
+alias lla='ls --color -D "%Y-%m-%d %H:%M:%S" -lha'
+alias llt='ls --color -D "%Y-%m-%d %H:%M:%S" -lh -rt'
+alias llat='ls --color -D "%Y-%m-%d %H:%M:%S" -lha -rt'
 
 # Time
 alias t='date "+%Y-%m-%d %H:%M:%S"'

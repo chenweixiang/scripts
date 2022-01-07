@@ -22,10 +22,10 @@
 ################################################################################
 
 # ls
-alias ll               'ls --time-style="+%Y-%m-%d %H:%M:%S" -lh'
-alias lla              'ls --time-style="+%Y-%m-%d %H:%M:%S" -lha'
-alias llt              'ls --time-style="+%Y-%m-%d %H:%M:%S" -lh -rt'
-alias llat             'ls --time-style="+%Y-%m-%d %H:%M:%S" -lha -rt'
+alias ll               'ls --color --time-style="+%Y-%m-%d %H:%M:%S" -lh'
+alias lla              'ls --color --time-style="+%Y-%m-%d %H:%M:%S" -lha'
+alias llt              'ls --color --time-style="+%Y-%m-%d %H:%M:%S" -lh -rt'
+alias llat             'ls --color --time-style="+%Y-%m-%d %H:%M:%S" -lha -rt'
 
 # Time
 alias t                'date --rfc-3339="seconds"'
