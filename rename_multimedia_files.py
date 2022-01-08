@@ -25,8 +25,8 @@
       Author-email: ianare@gmail.com
       License: BSD
       Location: /usr/local/lib/python3.8/dist-packages
-      Requires: 
-      Required-by: 
+      Requires:
+      Required-by:
 
     $ pip3 install python-dateutil
     $ pip3 show python-dateutil
@@ -39,7 +39,7 @@
       License: Dual License
       Location: /home/chenwx/.local/lib/python3.8/site-packages
       Requires: six
-      Required-by: 
+      Required-by:
 
     $ sudo apt install exiftool
 '''
@@ -70,7 +70,8 @@ isExecute       = False
 useModifiedDate = False
 handlePhoto     = False
 handleVedio     = False
-isQuiet         = False
+useAbsPath      = False
+isQuiet         = True
 
 # China Time Zone
 CN_TIME_ZONE = "+08:00"
@@ -86,29 +87,30 @@ def parseArguments():
     parser.add_argument("-a", "--all", action="store_true", help="Process photos and vedios.")
     parser.add_argument("-p", "--photo", action="store_true", help="Process photos.")
     parser.add_argument("-v", "--vedio", action="store_true", help="Process vedios.")
-    parser.add_argument("-q", "--quiet", action="store_true", help="Just print rename successful info.")
+    parser.add_argument("-b", "--abspath", action="store_true", help="Print abspath.")
+    parser.add_argument("-n", "--notquiet", action="store_true", help="Print all rename info.")
     args = parser.parse_args()
-    
+
     # -d, --directory
     path = "."
     if args.directory and Path(args.directory).exists():
         path = args.directory
-    
+
     # -r, --recursive
     global isRecursive
     if args.recursive:
         isRecursive = True
-    
+
     # -e, --execute
     global isExecute
     if args.execute:
         isExecute = True
-    
+
     # -m, --modified
     global useModifiedDate
     if args.modified:
         useModifiedDate = True
-    
+
     # -a, --all
     global handlePhoto
     global handleVedio
@@ -123,12 +125,17 @@ def parseArguments():
     # -v, --vedio
     if args.vedio:
         handleVedio = True
-    
-    # -q, --quiet
+
+    # -b, --abspath
+    global useAbsPath
+    if args.abspath:
+        useAbsPath = True
+
+    # -n, --notquiet
     global isQuiet
-    if args.quiet:
-        isQuiet = True
-    
+    if args.notquiet:
+        isQuiet = False
+
     print("Path              :", os.path.abspath(path))
     print("Recursive         :", isRecursive)
     print("Execute           :", isExecute)
@@ -136,9 +143,10 @@ def parseArguments():
     print("Handle Photo      :", handlePhoto)
     print("Handle Vedio      :", handleVedio)
     print("Handle Audio      :", handleAudio)
+    print("Use AbsPath       :", useAbsPath)
     print("Quiet             :", isQuiet)
     print('\n')
-    
+
     return path
 
 
@@ -158,15 +166,15 @@ def isTargetFileType(fileName):
 
 def isSameFileName(fileName, newFileName):
     retVal = False
-    
+
     lenExt = 4
     if len(newFileName) <= lenExt:
         return False
-    
+
     lenName = len(newFileName) - lenExt
     if fileName[:lenName] == newFileName[:lenName] and fileName[-lenExt:] == newFileName[-lenExt:]:
         retVal = True
-    
+
     return retVal
 
 
@@ -179,21 +187,21 @@ def generateNewFileName(fileName):
             raise "[%s] is not a file!\n" % fileName
     except:
         raise "unopen file[%s]\n" % fileName
-    
+
     # Default value
     retVal = False
     newFileName = ""
-    
+
     # 原文件信息
     dirname = os.path.dirname(fileName)
     fileNameNoPath = os.path.basename(fileName)
     f, e = os.path.splitext(fileNameNoPath)
-    
+
     # Check if the file can be handled or not
     isSupported, fileType = isTargetFileType(fileName)
     if isSupported == False:
         return retVal, newFileName
-    
+
     myDataFormat = fileType + '%Y%m%d_%H%M%S'
     if fileType == IMG_FILE_TYPE and handlePhoto == True:
         # 如果取得Exif信息，则根据照片的拍摄日期重命名文件
@@ -205,7 +213,7 @@ def generateNewFileName(fileName):
                 dateStr = fileType + str(t).replace(":", "")[:8] + "_" + str(t)[11:].replace(":", "")
                 # 生成新文件名
                 newFileName = os.path.join(dirname, dateStr + e).upper()
-                retVal = True            
+                retVal = True
             except:
                 pass
     elif fileType == VID_FILE_TYPE and handleVedio == True:
@@ -214,7 +222,7 @@ def generateNewFileName(fileName):
         metaData = str(exiftoolVal.stdout).split("\\n")
         src_zone = tz.tzutc()
         dst_zone = tz.tzlocal()
-        
+
         # For ".MP4":
         #   File Type                       : MP4
         #   File Type Extension             : mp4
@@ -298,7 +306,7 @@ def generateNewFileName(fileName):
         metaData = str(exiftoolVal.stdout).split("\\n")
         src_zone = tz.tzutc()
         dst_zone = tz.tzlocal()
-        
+
         # For ".M4A":
         #   File Type                       : M4A
         #   File Type Extension             : m4a
@@ -357,14 +365,14 @@ def generateNewFileName(fileName):
                     except:
                         retVal = False
                         break
-    
+
     # 如果获取Exif信息失败，则采用该照片的创建日期重命名文件
     if retVal == False and useModifiedDate == True:
         state = os.stat(fileName)
         dateStr = time.strftime(myDataFormat, time.localtime(state[-2]))
         newFileName = os.path.join(dirname, dateStr + e).upper()
         retVal = True
-    
+
     # 检查新文件名是否合法
     if retVal == True:
         # 如果新文件名与原文件名相同，则无需改名
@@ -383,7 +391,7 @@ def generateNewFileName(fileName):
                     break
         else:
             retVal = True
-    
+
     return retVal, newFileName
 
 
@@ -398,13 +406,22 @@ def scanDir(startdir):
                 try:
                     if isExecute == True:
                         os.rename(obj, newFileName)
-                    print(os.path.abspath(obj), " => ", newFileName)
+                    if useAbsPath == True:
+                        print(os.path.abspath(obj), "\t=>\t", newFileName)
+                    else:
+                        print(obj, "\t=>\t", newFileName)
                 except:
                     if isQuiet == False:
-                        print(os.path.abspath(obj), " => cannot rename to ", newFileName)
+                        if useAbsPath == True:
+                            print(os.path.abspath(obj), "\t=>\tcannot rename to ", newFileName)
+                        else:
+                            print(obj, "\t=>\tcannot rename to ", newFileName)
             else:
                 if isQuiet == False:
-                    print(os.path.abspath(obj), " =>  No change")
+                    if useAbsPath == True:
+                        print(os.path.abspath(obj), "\t=>\tNo change")
+                    else:
+                        print(obj, "\t=>\tNo change")
         elif os.path.isdir(obj) and isRecursive == True:
             scanDir(obj)
             os.chdir(os.pardir)
@@ -413,4 +430,3 @@ def scanDir(startdir):
 if __name__ == "__main__":
     path = parseArguments()
     scanDir(path)
-
