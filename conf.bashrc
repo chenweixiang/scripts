@@ -140,9 +140,9 @@ source ~/.git-completion.bash
 # 1) Clean git
 # 2) Build git
 # 3) Install built git
-alias cleangit='make distclean'
-alias buildgit='make prefix=/usr all doc info'
-alias installgit='sudo make prefix=/usr install install-doc install-html install-info'
+alias cgit='make distclean'
+alias bgit='make prefix=/usr all doc info'
+alias igit='sudo make prefix=/usr install install-doc install-html install-info'
 
 
 ################################################################################
@@ -181,7 +181,8 @@ alias cpsf='sudo cp -rf /media/sf_share/ /home/chenwx/share/ && sudo chown -R ch
 # GitHub Blog
 ################################################################################
 
-alias buildblog='jekyll server --incremental 2>/dev/null'
+alias bblog='jekyll server --incremental 2>/dev/null'
+alias bbloginc='jekyll server 2>/dev/null'
 
 
 ################################################################################
