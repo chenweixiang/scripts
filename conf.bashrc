@@ -173,8 +173,11 @@ alias p3pip='python3 -m pip'
 # VirtualBox
 ################################################################################
 
-alias llsf='sudo ls --time-style="+%Y-%m-%d %H:%M:%S" -lha /media/sf_share/'
-alias cpsf='sudo cp -rf /media/sf_share/ /home/chenwx/share/ && sudo chown -R chenwx:chenwx /home/chenwx/share/sf_share/'
+# alias llsf='sudo ls --time-style="+%Y-%m-%d %H:%M:%S" -lha /media/sf_share/'
+alias llsf='ls --time-style="+%Y-%m-%d %H:%M:%S" -lha /media/sf_share/'
+
+# alias cpsf='sudo cp -rf /media/sf_share/ /home/chenwx/share/ && sudo chown -R chenwx:chenwx /home/chenwx/share/sf_share/'
+alias cpsf='cp -rf /media/sf_share/ /home/chenwx/share/'
 
 
 ################################################################################
