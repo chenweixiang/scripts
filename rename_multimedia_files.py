@@ -70,6 +70,7 @@ isExecute       = False
 useModifiedDate = False
 handlePhoto     = False
 handleVedio     = False
+handleAudio     = False
 useAbsPath      = False
 isQuiet         = True
 
