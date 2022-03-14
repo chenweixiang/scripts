@@ -54,9 +54,9 @@ set showmode
 "Show (partial) command in the last line of the screen.
 set showcmd
 
-"This option influences when the last window will have a status line:                                                            
-"  0: never                                                        
-"  1: only if there are at least two windows                       
+"This option influences when the last window will have a status line:
+"  0: never
+"  1: only if there are at least two windows
 "  2: always
 set laststatus=2
 
@@ -70,9 +70,9 @@ set hlsearch
 "matches.
 set incsearch
 
-"If the 'ignorecase' option is on, the case of normal letters is ignored.        
-"'smartcase' can be set to ignore case when the pattern contains lowercase       
-"letters only. 
+"If the 'ignorecase' option is on, the case of normal letters is ignored.
+"'smartcase' can be set to ignore case when the pattern contains lowercase
+"letters only.
 set ignorecase
 
 "Override the 'ignorecase' option if the search pattern contains upper case
@@ -94,4 +94,7 @@ set noswapfile
 "Minimal number of screen lines to keep above and below the cursor.
 set scrolloff=5
 
-
+"Put Vim in Paste mode.  This is useful if you want to cut or copy some text
+"from one window and paste it in Vim.  This will avoid unexpected effects.
+"set paste
+"set nopaste
