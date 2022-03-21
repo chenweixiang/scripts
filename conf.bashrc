@@ -39,8 +39,8 @@ alias l='less -N'
 # Editor: vim
 alias v='vim'
 
-# Editor: gedit, or xed on LinuxMint MATE
-alias e='gedit'
+# Editor: sublime text, gedit, or xed on LinuxMint MATE
+alias e='~/sublime_text/sublime_text'
 
 # Search in all files
 # Usage: sa  [-i] <keyword>
