@@ -39,8 +39,8 @@ alias l='less -N'
 # Editor: vim
 alias v='vim'
 
-# Editor: atom on Max OS
-alias e='atom'
+# Editor: sublime text, atom on Max OS
+alias e='~/sublime_text/sublime_text'
 
 # Search in all files
 # Usage: sa  [-i] <keyword>
