@@ -42,6 +42,9 @@ alias v='vim'
 # Editor: sublime text, atom on Max OS
 alias e='~/sublime_text/sublime_text'
 
+# Git
+alias g='git'
+
 # Search in all files
 # Usage: sa  [-i] <keyword>
 #        sa  -E "<regexp>"
