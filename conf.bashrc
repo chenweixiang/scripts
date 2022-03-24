@@ -42,6 +42,9 @@ alias v='vim'
 # Editor: sublime text, gedit, or xed on LinuxMint MATE
 alias e='~/sublime_text/sublime_text'
 
+# Git
+alias g='git'
+
 # Search in all files
 # Usage: sa  [-i] <keyword>
 #        sa  -E "<regexp>"
