@@ -42,9 +42,6 @@ alias v='vim'
 # Editor: sublime text, atom on Max OS
 alias e='~/sublime_text/sublime_text'
 
-# Git
-alias g='git'
-
 # Search in all files
 # Usage: sa  [-i] <keyword>
 #        sa  -E "<regexp>"
@@ -134,6 +131,52 @@ alias fd='find . -noignore_readdir_race -type d -iname'
 
 # Git alias
 source ~/scripts/conf.git-config
+
+alias g='git'
+alias gbr='git br'
+alias gco='git co'
+alias gcb='git cb'
+alias gcm='git cm'
+alias gci='git ci'
+alias gcp='git cp'
+alias gst='git st'
+alias gmt='git mt'
+alias gdesc='git desc'
+alias gtree='git tree'
+alias gfollow='git follow'
+alias glhg='git lhg'
+alias glhfp='git lhfp'
+alias glhfpd='git lhfpd'
+alias glc='git lc'
+alias glcp='git lcp'
+alias glf='git lf'
+alias gsls='git sls'
+alias gcf='git cf'
+alias gsar='git sar'
+alias gdt='git dt'
+alias gsdt='git sdt'
+alias gdtc='git dtc'
+alias gdtcs='git dtcs'
+alias gdtcsf='git dtcsf'
+alias glts='git lts'
+alias glt='git lt'
+alias gllt='git llt'
+alias glbt='git lbt'
+alias glmb='git lmb'
+alias ggl='git gl'
+alias gpl='git pl'
+alias gpli='git pli'
+alias gcnt='git cnt'
+alias glua='git lua'
+alias grma='git rma'
+alias gopr='git opr'
+alias glr='git lr'
+alias gsubst='git subst'
+alias gsubstr='git substr'
+alias gsubupd='git subupd'
+alias gsubupdr='git subupdr'
+alias gsubrst='git subrst'
+alias gupd='git pull; git subupdr'
 
 # Git completion
 # cp ~/scripts/conf.git-completion.bash ~/.git-completion.bash
