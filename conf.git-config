@@ -119,43 +119,31 @@ git config --global alias.mt mergetool
 git config --global alias.desc 'describe'
 
 #-------------------------------------------------------------------------------
-# List commit history in tree format.
-# Usage:  git tree
-#-------------------------------------------------------------------------------
-git config --global alias.tree "log --graph --pretty=oneline --abbrev-commit --all --decorate"
-
-#-------------------------------------------------------------------------------
-# List commit history of a specified file.
-# Usage:  git follow <file>
-#-------------------------------------------------------------------------------
-git config --global alias.follow "log --pretty='%h %Cgreen(%cr)%Creset %Cblue%an%Creset %Creset %s %C(yellow)%d' --follow"
-
-#-------------------------------------------------------------------------------
-# Log commit History with Graphical (20 records by default).
+# Log commit History with Graphical.
 # Usage:  git lhg [-<numberOfRecords>]
 #         git lhg [-<numberOfRecords>] [<tag-or-commit-id>]
 #         git lhg [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         git lhg [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate -20"
+git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate"
 
 #-------------------------------------------------------------------------------
-# Log commit History of First Parent (all records by default).
-# Usage:  git lhfp [-<numberOfRecords>]
-#         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>]
-#         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#         git lhfp [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
+# Log commit History of first parent.
+# Usage:  git lh [-<numberOfRecords>]
+#         git lh [-<numberOfRecords>] [<tag-or-commit-id>]
+#         git lh [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
+#         git lh [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhfp "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent"
+git config --global alias.lh "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent"
 
 #-------------------------------------------------------------------------------
-# Log commit History of First Parent with more Details (all records by default).
-# Usage:  git lhfpd [-<numberOfRecords>]
-#         git lhfpd [-<numberOfRecords>] [<tag-or-commit-id>]
-#         git lhfpd [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
-#         git lhfpd [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
+# Log commit History of first parent with more Details.
+# Usage:  git lhd [-<numberOfRecords>]
+#         git lhd [-<numberOfRecords>] [<tag-or-commit-id>]
+#         git lhd [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
+#         git lhd [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhfpd "log --numstat -c --decorate --pretty=fuller --first-parent"
+git config --global alias.lhd "log --numstat -c --decorate --pretty=fuller --first-parent"
 
 #-------------------------------------------------------------------------------
 # List Commit.
