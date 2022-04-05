@@ -305,7 +305,7 @@ git config --global alias.rma "clean -d -f -X"
 # Optimize repository
 # Usage:  git opr
 #-------------------------------------------------------------------------------
-git config --global alias.opt "gc --prune=now --aggressive"
+git config --global alias.opr "gc --prune=now --aggressive"
 
 #-------------------------------------------------------------------------------
 # List References in a local repository.
@@ -349,6 +349,60 @@ git config --global alias.subrst "submodule foreach --recursive git reset --hard
 # Usage:  git stash-unapply
 #-------------------------------------------------------------------------------
 #git config --global alias.stash-unapply '!git stash show -p | git apply -R'
+
+#-------------------------------------------------------------------------------
+# git worktree.
+# Usage:  git wt
+#-------------------------------------------------------------------------------
+git config --global alias.wt worktree
+
+#-------------------------------------------------------------------------------
+# git worktree list.
+# Usage:  git wtl
+#-------------------------------------------------------------------------------
+git config --global alias.wtl "worktree list"
+
+#-------------------------------------------------------------------------------
+# git worktree add.
+# Usage:  git wta
+#-------------------------------------------------------------------------------
+git config --global alias.wta "worktree add"
+
+#-------------------------------------------------------------------------------
+# git worktree remove.
+# Usage:  git wtrm
+#-------------------------------------------------------------------------------
+git config --global alias.wtrm "worktree remove"
+
+#-------------------------------------------------------------------------------
+# git worktree prune.
+# Usage:  git wtp
+#-------------------------------------------------------------------------------
+git config --global alias.wtp "worktree prune"
+
+#-------------------------------------------------------------------------------
+# git worktree move.
+# Usage:  git wtmv
+#-------------------------------------------------------------------------------
+git config --global alias.wtmv "worktree move"
+
+#-------------------------------------------------------------------------------
+# git worktree repair.
+# Usage:  git wtrp
+#-------------------------------------------------------------------------------
+git config --global alias.wtrp "worktree repair"
+
+#-------------------------------------------------------------------------------
+# git worktree lock.
+# Usage:  git wtlk
+#-------------------------------------------------------------------------------
+git config --global alias.wtlk "worktree lock"
+
+#-------------------------------------------------------------------------------
+# git worktree unlock.
+# Usage:  git wtul
+#-------------------------------------------------------------------------------
+git config --global alias.wtul "worktree unlock"
 
 
 ################################################################################
