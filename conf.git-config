@@ -64,10 +64,30 @@ git config --global pull.ff only
 git config --global --remove-section alias
 
 #-------------------------------------------------------------------------------
+# List git config.
+# Usage:  git conf
+#-------------------------------------------------------------------------------
+git config --global alias.conf "config -l"
+
+#-------------------------------------------------------------------------------
 # List local or remote branches.
-# Usage:  git br [-r]
+# Usage:  git br
+#         git br -r
+#         git br -a
 #-------------------------------------------------------------------------------
 git config --global alias.br branch
+
+#-------------------------------------------------------------------------------
+# List remote branches.
+# Usage:  git brr
+#-------------------------------------------------------------------------------
+git config --global alias.brr "branch -r"
+
+#-------------------------------------------------------------------------------
+# Remove specified branches.
+# Usage:  git brd
+#-------------------------------------------------------------------------------
+git config --global alias.brd "branch -D"
 
 #-------------------------------------------------------------------------------
 # Checkout to specific branch, tag or commit.
@@ -86,7 +106,7 @@ git config --global alias.cb "checkout -b"
 # Checkout to master branch.
 # Usage:  git cm
 #-------------------------------------------------------------------------------
-git config --global alias.cm 'checkout master'
+git config --global alias.cm "checkout master"
 
 #-------------------------------------------------------------------------------
 # Checkin changes.
@@ -96,9 +116,51 @@ git config --global alias.ci commit
 
 #-------------------------------------------------------------------------------
 # Checkin changes.
+# Usage:  git cia
+#-------------------------------------------------------------------------------
+git config --global alias.cia "commit --amend"
+
+#-------------------------------------------------------------------------------
+# Reset changes.
+# Usage:  git rst
+#-------------------------------------------------------------------------------
+git config --global alias.rst "reset --hard"
+
+#-------------------------------------------------------------------------------
+# Checkin changes.
 # Usage:  git cp
 #-------------------------------------------------------------------------------
 git config --global alias.cp cherry-pick
+
+#-------------------------------------------------------------------------------
+# Rebase changes.
+# Usage:  git rb
+#-------------------------------------------------------------------------------
+git config --global alias.rb rebase
+
+#-------------------------------------------------------------------------------
+# Rebase changes to master.
+# Usage:  git rbm
+#-------------------------------------------------------------------------------
+git config --global alias.rbm "rebase master"
+
+#-------------------------------------------------------------------------------
+# Rebase changes.
+# Usage:  git rbi
+#-------------------------------------------------------------------------------
+git config --global alias.rbi "rebase -i"
+
+#-------------------------------------------------------------------------------
+# Revert changes.
+# Usage:  git rvt
+#-------------------------------------------------------------------------------
+git config --global alias.rvt revert
+
+#-------------------------------------------------------------------------------
+# Blame changes.
+# Usage:  git blm
+#-------------------------------------------------------------------------------
+git config --global alias.blm blame
 
 #-------------------------------------------------------------------------------
 # Show repo status.
@@ -116,7 +178,13 @@ git config --global alias.mt mergetool
 # Give an object a human readable name based on an available ref.
 # Usage:  git desc
 #-------------------------------------------------------------------------------
-git config --global alias.desc 'describe'
+git config --global alias.desc describe
+
+#-------------------------------------------------------------------------------
+# List reflog.
+# Usage:  git rlog
+#-------------------------------------------------------------------------------
+git config --global alias.rlog reflog
 
 #-------------------------------------------------------------------------------
 # Log commit History with Graphical.
@@ -124,8 +192,16 @@ git config --global alias.desc 'describe'
 #         git lhg [-<numberOfRecords>] [<tag-or-commit-id>]
 #         git lhg [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         git lhg [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
+#
+#         git lhg10
+#         git lhg20
+#         git lhg30
 #-------------------------------------------------------------------------------
-git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate"
+git config --global alias.lhg   "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate"
+
+git config --global alias.lhg10 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate -10"
+git config --global alias.lhg20 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate -20"
+git config --global alias.lhg30 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate -30"
 
 #-------------------------------------------------------------------------------
 # Log commit History of first parent.
@@ -133,8 +209,16 @@ git config --global alias.lhg "log --date=short --pretty=format:'%Cgreen%h %Cred
 #         git lh [-<numberOfRecords>] [<tag-or-commit-id>]
 #         git lh [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         git lh [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
+#
+#         git lh10
+#         git lh20
+#         git lh30
 #-------------------------------------------------------------------------------
-git config --global alias.lh "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent"
+git config --global alias.lh   "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent"
+
+git config --global alias.lh10 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent -10"
+git config --global alias.lh20 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent -20"
+git config --global alias.lh30 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent -30"
 
 #-------------------------------------------------------------------------------
 # Log commit History of first parent with more Details.
@@ -143,7 +227,11 @@ git config --global alias.lh "log --date=short --pretty=format:'%Cgreen%h %Cred%
 #         git lhd [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         git lhd [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
-git config --global alias.lhd "log --numstat -c --decorate --pretty=fuller --first-parent"
+git config --global alias.lhd   "log --numstat -c --decorate --pretty=fuller --first-parent"
+
+git config --global alias.lhd10 "log --numstat -c --decorate --pretty=fuller --first-parent -10"
+git config --global alias.lhd20 "log --numstat -c --decorate --pretty=fuller --first-parent -20"
+git config --global alias.lhd30 "log --numstat -c --decorate --pretty=fuller --first-parent -30"
 
 #-------------------------------------------------------------------------------
 # List Commit.
@@ -156,6 +244,12 @@ git config --global alias.lhd "log --numstat -c --decorate --pretty=fuller --fir
 #         git lc --name-only <tag-or-commit-id> : List changed files by commit <tag-or-commit-id>, without add/delete statistics
 #-------------------------------------------------------------------------------
 git config --global alias.lc "log --numstat -1 -c --decorate --pretty=fuller"
+
+#-------------------------------------------------------------------------------
+# List changes in HEAD.
+# Usage:  git lch
+#-------------------------------------------------------------------------------
+git config --global alias.lch "log --numstat -1 -c --decorate --pretty=fuller HEAD"
 
 #-------------------------------------------------------------------------------
 # List Commit with Patch format.
@@ -191,10 +285,28 @@ git config --global alias.cf "cat-file -p"
 git config --global alias.sar '!~/scripts/git-archive.sh'
 
 #-------------------------------------------------------------------------------
+# show differences, see below configurations.
+# Usage:  git d [branch-or-tag-or-commit-id1 [branch-or-tag-or-commit-id2]]
+#-------------------------------------------------------------------------------
+git config --global alias.d diff
+
+#-------------------------------------------------------------------------------
+# Show differences between HEAD~ and specified commit.
+# Usage:  git dh [branch-or-tag-or-commit-id]
+#-------------------------------------------------------------------------------
+git config --global alias.dh "diff HEAD~"
+
+#-------------------------------------------------------------------------------
 # Use graphical tool to show differences, see below configurations.
 # Usage:  git dt [branch-or-tag-or-commit-id1 [branch-or-tag-or-commit-id2]]
 #-------------------------------------------------------------------------------
 git config --global alias.dt difftool
+
+#-------------------------------------------------------------------------------
+# Use graphical tool to show differences bewteen HEAD~ and specified commit.
+# Usage:  git dth [branch-or-tag-or-commit-id]
+#-------------------------------------------------------------------------------
+git config --global alias.dth "difftool HEAD~"
 
 #-------------------------------------------------------------------------------
 # Execute shell script ~/scripts/git-dt.sh to show changes between commits.
@@ -260,15 +372,15 @@ git config --global alias.gl "log --all --stat --grep"
 
 #-------------------------------------------------------------------------------
 # Print Lines matching a pattern.
-# Usage:  git pl <keyword> [-- <files>]
+# Usage:  git g <keyword> [-- <files>]
 #-------------------------------------------------------------------------------
-git config --global alias.pl "grep --full-name -n --heading --break -p"
+git config --global alias.g "grep --full-name -n --heading --break -p"
 
 #-------------------------------------------------------------------------------
 # Print Lines matching a pattern (Ignore case).
-# Usage:  git pl <keyword> [-- <files>]
+# Usage:  git gi <keyword> [-- <files>]
 #-------------------------------------------------------------------------------
-git config --global alias.pli "grep --full-name -n --heading --break -p -i"
+git config --global alias.gi "grep --full-name -n --heading --break -p -i"
 
 #-------------------------------------------------------------------------------
 # Count commits
@@ -281,13 +393,13 @@ git config --global alias.cnt "rev-list --count"
 # List Untracked ALL directories and files from working tree.
 # Usage:  git lua
 #-------------------------------------------------------------------------------
-git config --global alias.lua "clean -d -n"
+#git config --global alias.lua "clean -d -n"
 
 #-------------------------------------------------------------------------------
 # Remove ALL untracked directories and files from working tree.
 # Usage:  git rma
 #-------------------------------------------------------------------------------
-git config --global alias.rma "clean -d -f -X"
+git config --global alias.cln "clean -d -f -X"
 
 #-------------------------------------------------------------------------------
 # Optimize repository
@@ -300,6 +412,12 @@ git config --global alias.opr "gc --prune=now --aggressive"
 # Usage:  git lr
 #-------------------------------------------------------------------------------
 git config --global alias.lr "show-ref --head --heads --tags -d"
+
+#-------------------------------------------------------------------------------
+# Git Submodule.
+# Usage:  git sub
+#-------------------------------------------------------------------------------
+git config --global alias.sub submodule
 
 #-------------------------------------------------------------------------------
 # List Submodule Status.
@@ -360,7 +478,7 @@ git config --global alias.wta "worktree add"
 # git worktree remove.
 # Usage:  git wtrm
 #-------------------------------------------------------------------------------
-git config --global alias.wtrm "worktree remove"
+git config --global alias.wtrm "worktree remove -f"
 
 #-------------------------------------------------------------------------------
 # git worktree prune.
