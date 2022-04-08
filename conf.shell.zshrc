@@ -6,10 +6,10 @@
 # 1) Check original configure file ~/.zshrc:                                   #
 #        cat ~/.zshrc                                                          #
 #    Replace it if no useful configuration in original one:                    #
-#        cp ~/scripts/conf.zshrc ~/.zshrc                                      #
+#        cp ~/scripts/conf.shell.zshrc ~/.zshrc                                #
 #                                                                              #
 # 2) Copy this configuration to home directory:                                #
-#        cp ~/scripts/conf.zshrc ~/.zshrc.user                                 #
+#        cp ~/scripts/conf.shell.zshrc ~/.zshrc.user                           #
 #    Source it in original configure file if not yet:                          #
 #        cat ~/.zshrc | grep -n source                                         #
 #        echo "source ~/.zshrc.user" >> ~/.zshrc                               #

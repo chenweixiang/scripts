@@ -6,10 +6,10 @@
 # 1) Check original configure file ~/.cshrc:                                   #
 #        cat ~/.cshrc                                                          #
 #    Replace it if no useful configuration in original one:                    #
-#        cp ~/scripts/conf.cshrc ~/.cshrc                                      #
+#        cp ~/scripts/conf.shell.cshrc ~/.cshrc                                #
 #                                                                              #
 # 2) Copy this configuration to home directory:                                #
-#        cp ~/scripts/conf.cshrc ~/.cshrc.user                                 #
+#        cp ~/scripts/conf.shell.cshrc ~/.cshrc.user                           #
 #    Source it in original configure file if not yet:                          #
 #        cat ~/.cshrc | grep -n source                                         #
 #        echo "source ~/.cshrc.user" >> ~/.cshrc                               #

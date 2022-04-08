@@ -6,10 +6,10 @@
 # 1) Check original configure file ~/.bashrc:                                  #
 #        cat ~/.bashrc                                                         #
 #    Replace it if no useful configuration in original one:                    #
-#        cp ~/scripts/conf.bashrc ~/.bashrc                                    #
+#        cp ~/scripts/conf.shell.bashrc ~/.bashrc                              #
 #                                                                              #
 # 2) Copy this configuration to home directory:                                #
-#        cp ~/scripts/conf.bashrc ~/.bashrc.user                               #
+#        cp ~/scripts/conf.shell.bashrc ~/.bashrc.user                         #
 #    Source it in original configure file if not yet:                          #
 #        cat ~/.bashrc | grep -n source                                        #
 #        echo "source ~/.bashrc.user" >> ~/.bashrc                             #
