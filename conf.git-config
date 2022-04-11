@@ -145,10 +145,22 @@ git config --global alias.rst "reset --hard"
 git config --global alias.rsth "reset --hard HEAD"
 
 #-------------------------------------------------------------------------------
-# Checkin changes.
+# Cherry-pick changes.
 # Usage:  git cp
 #-------------------------------------------------------------------------------
 git config --global alias.cp cherry-pick
+
+#-------------------------------------------------------------------------------
+# Abort the ongoing cherry-pick.
+# Usage:  git cpa
+#-------------------------------------------------------------------------------
+git config --global alias.cpa "cherry-pick --abort"
+
+#-------------------------------------------------------------------------------
+# Continue the ongoing cherry-pick after conflict solved.
+# Usage:  git cpc
+#-------------------------------------------------------------------------------
+git config --global alias.cpc "cherry-pick --continue"
 
 #-------------------------------------------------------------------------------
 # Rebase changes.
@@ -167,6 +179,18 @@ git config --global alias.rbm "rebase master"
 # Usage:  git rbi
 #-------------------------------------------------------------------------------
 git config --global alias.rbi "rebase -i"
+
+#-------------------------------------------------------------------------------
+# Abort the ongoing rebase.
+# Usage:  git rba
+#-------------------------------------------------------------------------------
+git config --global alias.rba "rebase --abort"
+
+#-------------------------------------------------------------------------------
+# Continue the ongoing rebase after conflict solved.
+# Usage:  git rbc
+#-------------------------------------------------------------------------------
+git config --global alias.rbc "rebase --continue"
 
 #-------------------------------------------------------------------------------
 # Revert changes.
