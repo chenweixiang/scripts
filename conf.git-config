@@ -310,8 +310,14 @@ git config --global alias.lf "diff-tree --no-commit-id --name-only -r"
 # Usage:  git sls [-h]
 #         git sls [-p <previous-commit>] [-c <current-commit>] [-e | -n]
 #         git sls [-c <current-commit>] [-s | -l]
+#
+#         git slse
+#         git slsec [<current-commit>]
 #-------------------------------------------------------------------------------
-git config --global alias.sls '!~/scripts/git-ls.sh'
+git config --global alias.sls   '!~/scripts/git-ls.sh'
+
+git config --global alias.slse  '!~/scripts/git-ls.sh -e'
+git config --global alias.slsec '!~/scripts/git-ls.sh -e -c'
 
 #-------------------------------------------------------------------------------
 # Show file content on specific commit.
@@ -354,8 +360,12 @@ git config --global alias.dth "difftool HEAD~"
 # Execute shell script ~/scripts/git-dt.sh to show changes between commits.
 # Usage:  git sdt [-h]
 #         git sdt [-p <previous-commit>] [-c <current-commit>] [-f <file>] [-d] [-t]
+#
+#         git sdtc <current-commit>
 #-------------------------------------------------------------------------------
 git config --global alias.sdt '!~/scripts/git-dt.sh'
+
+git config --global alias.sdtc '!~/scripts/git-dt.sh -c'
 
 #-------------------------------------------------------------------------------
 # Diff Two Commits.
