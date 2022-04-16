@@ -133,6 +133,7 @@ alias fd='find . -noignore_readdir_race -nowarn -type d -iname'
 source ~/scripts/conf.git-config
 
 alias g='git'
+alias gv='git --version'
 alias gh='git h'
 alias gconf='git conf'
 alias gbr='git br'
