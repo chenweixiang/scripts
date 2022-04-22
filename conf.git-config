@@ -80,6 +80,9 @@ git config --global alias.conf "config -l"
 # Usage:  git br
 #         git br -r
 #         git br -a
+#
+# Create branch <branch-name> on specified <tag-or-commit-id>.
+# Usage:  git br <branch-name> [<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
 git config --global alias.br branch
 
@@ -94,6 +97,12 @@ git config --global alias.brr "branch -r"
 # Usage:  git bra
 #-------------------------------------------------------------------------------
 git config --global alias.bra "branch -a"
+
+#-------------------------------------------------------------------------------
+# Move/rename specified branches.
+# Usage:  git brm <old-branch-name> <new-branch-name>
+#-------------------------------------------------------------------------------
+git config --global alias.brm "branch -M"
 
 #-------------------------------------------------------------------------------
 # Remove specified branches.
@@ -294,6 +303,18 @@ git config --global alias.lc "log --numstat -1 -c --decorate --pretty=fuller"
 git config --global alias.lch "log --numstat -1 -c --decorate --pretty=fuller HEAD"
 
 #-------------------------------------------------------------------------------
+# List changes in HEAD^1.
+# Usage:  git lch1
+#-------------------------------------------------------------------------------
+git config --global alias.lch1 "log --numstat -1 -c --decorate --pretty=fuller HEAD^1"
+
+#-------------------------------------------------------------------------------
+# List changes in HEAD^2.
+# Usage:  git lch2
+#-------------------------------------------------------------------------------
+git config --global alias.lch2 "log --numstat -1 -c --decorate --pretty=fuller HEAD^2"
+
+#-------------------------------------------------------------------------------
 # List Commit with Patch format.
 # Usage:  git lcp <tag-or-commit-id>
 #-------------------------------------------------------------------------------
@@ -339,10 +360,22 @@ git config --global alias.sar '!~/scripts/git-archive.sh'
 git config --global alias.d diff
 
 #-------------------------------------------------------------------------------
-# Show differences between HEAD~ and specified commit.
+# Show differences between HEAD and specified commit.
 # Usage:  git dh [branch-or-tag-or-commit-id]
 #-------------------------------------------------------------------------------
-git config --global alias.dh "diff HEAD~"
+git config --global alias.dh "diff HEAD"
+
+#-------------------------------------------------------------------------------
+# Show differences between HEAD^1 and specified commit.
+# Usage:  git dh1 [branch-or-tag-or-commit-id]
+#-------------------------------------------------------------------------------
+git config --global alias.dh1 "diff HEAD^1"
+
+#-------------------------------------------------------------------------------
+# Show differences between HEAD^2 and specified commit.
+# Usage:  git dh2 [branch-or-tag-or-commit-id]
+#-------------------------------------------------------------------------------
+git config --global alias.dh2 "diff HEAD^2"
 
 #-------------------------------------------------------------------------------
 # Use graphical tool to show differences, see below configurations.
@@ -351,10 +384,22 @@ git config --global alias.dh "diff HEAD~"
 git config --global alias.dt difftool
 
 #-------------------------------------------------------------------------------
-# Use graphical tool to show differences bewteen HEAD~ and specified commit.
+# Use graphical tool to show differences bewteen HEAD and specified commit.
 # Usage:  git dth [branch-or-tag-or-commit-id]
 #-------------------------------------------------------------------------------
-git config --global alias.dth "difftool HEAD~"
+git config --global alias.dth "difftool HEAD"
+
+#-------------------------------------------------------------------------------
+# Use graphical tool to show differences bewteen HEAD^1 and specified commit.
+# Usage:  git dth1 [branch-or-tag-or-commit-id]
+#-------------------------------------------------------------------------------
+git config --global alias.dth1 "difftool HEAD^1"
+
+#-------------------------------------------------------------------------------
+# Use graphical tool to show differences bewteen HEAD^2 and specified commit.
+# Usage:  git dth2 [branch-or-tag-or-commit-id]
+#-------------------------------------------------------------------------------
+git config --global alias.dth2 "difftool HEAD^2"
 
 #-------------------------------------------------------------------------------
 # Execute shell script ~/scripts/git-dt.sh to show changes between commits.
