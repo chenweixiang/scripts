@@ -532,7 +532,7 @@ git config --global alias.f fetch
 # Git fetch.
 # Usage:  git fa
 #-------------------------------------------------------------------------------
-git config --global alias.fa "fetch -a"
+git config --global alias.fa "fetch --all --tags"
 
 #-------------------------------------------------------------------------------
 # Git pull.
@@ -567,7 +567,6 @@ git config --global alias.sub submodule
 #-------------------------------------------------------------------------------
 # List Submodule Status.
 # Usage:  git subst
-#         git subst --recurisve
 #-------------------------------------------------------------------------------
 git config --global alias.subst "submodule status"
 
@@ -579,9 +578,9 @@ git config --global alias.substr "submodule status --recursive"
 
 #-------------------------------------------------------------------------------
 # Update submodule with depth one.
-# Usage:  git subupd
+# Usage:  git subupd1
 #-------------------------------------------------------------------------------
-git config --global alias.subupd "submodule update --init --depth 1"
+git config --global alias.subupd1 "submodule update --init --depth 1"
 
 #-------------------------------------------------------------------------------
 # Update submodule recursively.
@@ -594,6 +593,24 @@ git config --global alias.subupdr "submodule update --init --recursive"
 # Usage:  git subrst
 #-------------------------------------------------------------------------------
 git config --global alias.subrst "submodule foreach --recursive git reset --hard"
+
+#-------------------------------------------------------------------------------
+# Git submodule foreach recursively.
+# Usage:  git subf
+#-------------------------------------------------------------------------------
+git config --global alias.subf "submodule foreach --recursive"
+
+#-------------------------------------------------------------------------------
+# Fetch all remotes and tags in all submodules recursively.
+# Usage:  git subfa
+#-------------------------------------------------------------------------------
+git config --global alias.subfa "submodule foreach --recursive git fetch --all --tags"
+
+#-------------------------------------------------------------------------------
+# Check changes in all submodules.
+# Usage:  git subfd
+#-------------------------------------------------------------------------------
+git config --global alias.subfd "submodule foreach --recursive git diff"
 
 #-------------------------------------------------------------------------------
 # Apply the last stash change.
