@@ -496,7 +496,7 @@ git config --global alias.cnt "rev-list --count"
 # Remove ALL untracked directories and files from working tree.
 # Usage:  git cln
 #-------------------------------------------------------------------------------
-git config --global alias.cln "clean -d -f -X"
+git config --global alias.cln "clean -d -f -x"
 
 #-------------------------------------------------------------------------------
 # Optimize repository
