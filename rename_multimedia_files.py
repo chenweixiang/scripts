@@ -67,6 +67,7 @@ AUD_SUFFIX_FILTER = [ '.M4A', '.WAV' ]
 # Global Variables
 isRecursive     = False
 isExecute       = False
+aFile           = ""
 useModifiedDate = False
 handlePhoto     = False
 handleVedio     = False
@@ -81,9 +82,10 @@ CN_TIME_ZONE = "+08:00"
 def parseArguments():
     # Parse arguments
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument("-d", "--directory", help="specify directory.")
+    parser.add_argument("-d", "--directory", help="Specify directory.")
     parser.add_argument("-r", "--recursive", action="store_true", help="Recursive all sub-directories.")
     parser.add_argument("-e", "--execute", action="store_true", help="Execute the rename action.")
+    parser.add_argument("-f", "--file", help="Specify a file.")
     parser.add_argument("-m", "--modified", action="store_true", help="Use modified date if EXIF data missing.")
     parser.add_argument("-a", "--all", action="store_true", help="Process photos and vedios.")
     parser.add_argument("-p", "--photo", action="store_true", help="Process photos.")
@@ -106,6 +108,11 @@ def parseArguments():
     global isExecute
     if args.execute:
         isExecute = True
+
+    # -f, --file
+    global aFile
+    if args.file:
+        aFile = args.file
 
     # -m, --modified
     global useModifiedDate
@@ -140,6 +147,7 @@ def parseArguments():
     print("Path              :", os.path.abspath(path))
     print("Recursive         :", isRecursive)
     print("Execute           :", isExecute)
+    print("aFile             :", aFile)
     print("Use Modified Date :", useModifiedDate)
     print("Handle Photo      :", handlePhoto)
     print("Handle Vedio      :", handleVedio)
@@ -397,6 +405,36 @@ def generateNewFileName(fileName):
 
 
 def scanDir(startdir):
+    # 只检查指定的一个文件
+    if aFile != "":
+        if os.path.isfile(aFile):
+            obj = aFile
+            # 对满足过滤条件的文件进行改名处理
+            retVal, newFileName = generateNewFileName(obj)
+            if retVal:
+                try:
+                    if isExecute == True:
+                        os.rename(obj, newFileName)
+                    if useAbsPath == True:
+                        print(os.path.abspath(obj), "\t=>\t", newFileName)
+                    else:
+                        print(obj, "\t=>\t", newFileName)
+                except:
+                    if isQuiet == False:
+                        if useAbsPath == True:
+                            print(os.path.abspath(obj), "\t=>\tcannot rename to ", newFileName)
+                        else:
+                            print(obj, "\t=>\tcannot rename to ", newFileName)
+            else:
+                if isQuiet == False:
+                    if useAbsPath == True:
+                        print(os.path.abspath(obj), "\t=>\tNo change")
+                    else:
+                        print(obj, "\t=>\tNo change")
+        else:
+            print(obj, " is not a vaild file!")
+        return
+
     # 遍历指定目录以及子目录，对满足条件的文件进行改名
     os.chdir(startdir)
     for obj in os.listdir(os.curdir):
