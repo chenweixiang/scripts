@@ -238,7 +238,9 @@ alias fd='find . -noignore_readdir_race -nowarn -type d -iname'
 ################################################################################
 
 # Git alias
-source ~/scripts/conf.git-config
+# No need to source it in shell configuration file.
+# Source it directly when conf.git-config changed.
+# source ~/scripts/conf.git-config
 
 alias g='git'
 alias gv='git --version'
