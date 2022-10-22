@@ -2,7 +2,17 @@
 # -*- coding: utf-8 -*-
 
 '''
-Generate sha256sum of files in specified directory.
+Generate sha256sum of files in specified directory and its sub-directories.
+
+Generate sha256sum:
+$ ~/scripts/gen_sha256sum.py -d <Directory> > <OutputFile>
+
+Check sha256sum:
+$ sha256sum --quiet -c <OutputFile>
+
+Example:
+~/scripts/gen_sha256sum.py -d Repository > Repository_sync_20221022
+sha256sum --quiet -c Repository_sync_20221022
 '''
 
 import os
@@ -23,25 +33,31 @@ fileFilter = [".DS_Store"]
 def parseArguments():
     # Parse arguments
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument("-d", "--directory", help="Specify directory.")
+    parser.add_argument("-d", "--directory", action='append', help="Specify directory.")
     args = parser.parse_args()
 
     # -d, --directory
-    path = "."
-    if args.directory and Path(args.directory).exists():
-        path = args.directory
+    paths = []
+    if args.directory:
+        for path in args.directory:
+            if Path(path).exists():
+                paths.append(path)
+    else:
+        paths.append(".")
 
-    return path
+    return paths
 
 
-def getFileList(path):
+def getFileList(paths):
     # Get file list in path and its sub-directory
     fileList = list()
-    for dirPath, dirNames, fileNames in os.walk(path, followlinks=True):
-        for fileName in fileNames:
-            if fileName not in fileFilter:
-                filePath = os.path.join(dirPath, fileName)
-                fileList.append(filePath)
+    for path in paths:
+        for dirPath, dirNames, fileNames in os.walk(path, followlinks=True):
+            for fileName in fileNames:
+                if fileName not in fileFilter:
+                    filePath = os.path.join(dirPath, fileName)
+                    if filePath not in fileList:
+                        fileList.append(filePath)
 
     fileList.sort()
     return fileList
@@ -55,11 +71,10 @@ def calcFileSha256(fileName):
         return hashValue
 
 
-def mainFunc():
-    path = parseArguments()
+def main():
+    paths = parseArguments()
 
-    fileList = getFileList(path)
-    print(len(fileList))
+    fileList = getFileList(paths)
     #result = list()
 
     for f in fileList:
@@ -68,5 +83,5 @@ def mainFunc():
 
 
 if __name__ == "__main__":
-    mainFunc()
+    main()
 
