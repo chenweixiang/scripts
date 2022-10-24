@@ -27,7 +27,7 @@ shaOptions  = "-b"
 cmdPrefix   = shaCommand + " " + shaOptions + " "
 
 # File filter
-fileFilter = [".DS_Store"]
+filePrefix = (".DS_Store", "._")
 
 
 def parseArguments():
@@ -54,7 +54,7 @@ def getFileList(paths):
     for path in paths:
         for dirPath, dirNames, fileNames in os.walk(path, followlinks=True):
             for fileName in fileNames:
-                if fileName not in fileFilter:
+                if not fileName.startswith(filePrefix):
                     filePath = os.path.join(dirPath, fileName)
                     if filePath not in fileList:
                         fileList.append(filePath)
