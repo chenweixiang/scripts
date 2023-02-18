@@ -202,8 +202,9 @@ def generateNewFileName(fileName):
     newFileName = ""
 
     # 原文件信息
-    dirname = os.path.dirname(fileName)
-    fileNameNoPath = os.path.basename(fileName)
+    absPathFile = os.path.abspath(fileName)
+    dirname = os.path.dirname(absPathFile)
+    fileNameNoPath = os.path.basename(absPathFile)
     f, e = os.path.splitext(fileNameNoPath)
 
     # Check if the file can be handled or not
@@ -221,7 +222,7 @@ def generateNewFileName(fileName):
                 t = exifTags [ 'EXIF DateTimeOriginal' ]
                 dateStr = fileType + str(t).replace(":", "")[:8] + "_" + str(t)[11:].replace(":", "")
                 # 生成新文件名
-                newFileName = os.path.join(dirname, dateStr + e).upper()
+                newFileName = os.path.join(dateStr + e).upper()
                 retVal = True
             except:
                 pass
@@ -246,7 +247,7 @@ def generateNewFileName(fileName):
                         utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                         locDateTime = utcDateTime.astimezone(dst_zone)
                         dateStr = locDateTime.strftime(myDataFormat)
-                        newFileName = os.path.join(dirname, dateStr + e).upper()
+                        newFileName = os.path.join(dateStr + e).upper()
                         retVal = True
                         break
                     except:
@@ -266,7 +267,7 @@ def generateNewFileName(fileName):
                         if timeZone == CN_TIME_ZONE:
                             locDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + e).upper()
                             retVal = True
                             break
                         else:
@@ -274,7 +275,7 @@ def generateNewFileName(fileName):
                             utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                             locDateTime = utcDateTime.astimezone(dst_zone)
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + e).upper()
                             retVal = True
                             break
                     except:
@@ -295,7 +296,7 @@ def generateNewFileName(fileName):
                         if timeZone == CN_TIME_ZONE:
                             locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + e).upper()
                             retVal = True
                             break
                         else:
@@ -303,7 +304,7 @@ def generateNewFileName(fileName):
                             utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                             locDateTime = utcDateTime.astimezone(dst_zone)
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + e).upper()
                             retVal = True
                             break
                     except:
@@ -331,7 +332,7 @@ def generateNewFileName(fileName):
                         if timeZone == CN_TIME_ZONE:
                             locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + e).upper()
                             retVal = True
                             break
                         else:
@@ -339,7 +340,7 @@ def generateNewFileName(fileName):
                             utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                             locDateTime = utcDateTime.astimezone(dst_zone)
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + e).upper()
                             retVal = True
                             break
                     except:
@@ -360,7 +361,7 @@ def generateNewFileName(fileName):
                         if timeZone == CN_TIME_ZONE:
                             locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + e).upper()
                             retVal = True
                             break
                         else:
@@ -368,7 +369,7 @@ def generateNewFileName(fileName):
                             utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                             locDateTime = utcDateTime.astimezone(dst_zone)
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dirname, dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + e).upper()
                             retVal = True
                             break
                     except:
@@ -379,7 +380,7 @@ def generateNewFileName(fileName):
     if retVal == False and useModifiedDate == True:
         state = os.stat(fileName)
         dateStr = time.strftime(myDataFormat, time.localtime(state[-2]))
-        newFileName = os.path.join(dirname, dateStr + e).upper()
+        newFileName = os.path.join(dateStr + e).upper()
         retVal = True
 
     # 检查新文件名是否合法
@@ -388,14 +389,14 @@ def generateNewFileName(fileName):
         if isSameFileName(fileName, newFileName):
             retVal = False
         # 如果新文件名与其他文件重名，则在新文件明后加后缀 _01, _02, .., _99
-        elif Path(newFileName).exists():
+        elif newFileName in os.listdir(dirname):
             for i in range(1, 100):
                 tmpDateStr = dateStr + "_" + str(i).zfill(2)
-                newFileName = os.path.join(dirname, tmpDateStr + e).upper()
+                newFileName = os.path.join(tmpDateStr + e).upper()
                 if isSameFileName(fileName, newFileName):
                     retVal = False
                     break
-                elif Path(newFileName).exists() == False:
+                elif newFileName not in os.listdir(dirname):
                     retVal = True
                     break
         else:
