@@ -39,6 +39,9 @@ alias l                'less -N'
 # Editor: vim
 alias v                'vim'
 
+# Editor: code from VSCode
+alias c                'code'
+
 # Editor: sublime text, gedit, or xed on LinuxMint MATE
 alias e                '~/sublime_text/sublime_text'
 

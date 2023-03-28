@@ -39,6 +39,9 @@ alias l='less -N'
 # Editor: vim
 alias v='vim'
 
+# Editor: code from VSCode
+alias c='code'
+
 # Editor: sublime text, atom on Max OS
 alias e='~/sublime_text/sublime_text'
 
