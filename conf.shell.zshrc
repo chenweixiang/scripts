@@ -398,6 +398,10 @@ alias rmall='rm -rf \`cleartool lspriv -other\`'
 # Use command pip3 instead of below alias p3pip
 alias p3pip='python3 -m pip'
 
+# Use python3 by default
+alias p3='python3'
+alias p='python3'
+
 
 ################################################################################
 # VirtualBox
