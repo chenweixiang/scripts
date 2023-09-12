@@ -87,14 +87,11 @@ git config --global alias.conf "config -l"
 # List local or remote branches.
 #
 # Usage:  git br
-#         git br -r
-#         git br -a
 #
 # Shell:  gbr
-#         gbrr
-#         gbra
 #
-# Create branch <branch-name> on specified <tag-or-commit-id>.
+# Create a new branch <branch-name> on specified <tag-or-commit-id>, but not
+# switch to the new branch.
 #
 # Usage:  git br <branch-name> [<tag-or-commit-id>]
 #
@@ -154,6 +151,26 @@ git config --global alias.brd "branch -D"
 git config --global alias.sw switch
 
 #-------------------------------------------------------------------------------
+# Force to create a new branch if <new-branch> already exists and switch to it.
+#
+# Usage:  git swc <new-branch> [<tag-or-commit-id>]
+#
+# Shell:  gswc    <new-branch> [<tag-or-commit-id>]
+#-------------------------------------------------------------------------------
+
+git config --global alias.swc "switch -C"
+
+#-------------------------------------------------------------------------------
+# Switch to master branch.
+#
+# Usage:  git swm
+#
+# Shell:  gswm
+#-------------------------------------------------------------------------------
+
+git config --global alias.swm "switch master"
+
+#-------------------------------------------------------------------------------
 # Checkout to specific branch, tag or commit.
 #
 # Usage:  git co <branch>
@@ -166,54 +183,24 @@ git config --global alias.sw switch
 git config --global alias.co checkout
 
 #-------------------------------------------------------------------------------
-# Create a new branch and switch to it.
+# Create a new branch and checkout to it.
 #
-# Usage:  git sc <new-branch> [<tag-or-commit-id>]
+# Usage:  git cob <new-branch> [<tag-or-commit-id>]
 #
-# Shell:  gsc    <new-branch> [<tag-or-commit-id>]
+# Shell:  gcob    <new-branch> [<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
 
-git config --global alias.sc "switch -c"
-
-#-------------------------------------------------------------------------------
-# Force to create a new branch if <new-branch> already exists and switch to it.
-#
-# Usage:  git sC <new-branch> [<tag-or-commit-id>]
-#
-# Shell:  gsC    <new-branch> [<tag-or-commit-id>]
-#-------------------------------------------------------------------------------
-
-git config --global alias.sC "switch -C"
-
-#-------------------------------------------------------------------------------
-# Create a branch and checkout to it.
-#
-# Usage:  git cb <new-branch> [<tag-or-commit-id>]
-#
-# Shell:  gcb    <new-branch> [<tag-or-commit-id>]
-#-------------------------------------------------------------------------------
-
-git config --global alias.cb "checkout -b"
-
-#-------------------------------------------------------------------------------
-# Switch to master branch.
-#
-# Usage:  git sm
-#
-# Shell:  gsm
-#-------------------------------------------------------------------------------
-
-git config --global alias.sm "switch master"
+git config --global alias.cob "checkout -b"
 
 #-------------------------------------------------------------------------------
 # Checkout to master branch.
 #
-# Usage:  git cm
+# Usage:  git com
 #
-# Shell:  gcm
+# Shell:  gcom
 #-------------------------------------------------------------------------------
 
-git config --global alias.cm "checkout master"
+git config --global alias.com "checkout master"
 
 #-------------------------------------------------------------------------------
 # Checkin changes.
