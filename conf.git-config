@@ -111,6 +111,12 @@ git config --global alias.brm "branch -M"
 git config --global alias.brd "branch -D"
 
 #-------------------------------------------------------------------------------
+# Switch to specific branch.
+# Usage:  git sw <branch>
+#-------------------------------------------------------------------------------
+git config --global alias.sw switch
+
+#-------------------------------------------------------------------------------
 # Checkout to specific branch, tag or commit.
 # Usage:  git co <branch>
 #         git co <tag-or-commit-id>
@@ -118,10 +124,28 @@ git config --global alias.brd "branch -D"
 git config --global alias.co checkout
 
 #-------------------------------------------------------------------------------
+# Create a new branch and switch to it.
+# Usage:  git sc <new-branch> [<tag-or-commit-id>]
+#-------------------------------------------------------------------------------
+git config --global alias.sc "switch -c"
+
+#-------------------------------------------------------------------------------
+# Force to create a new branch if <new-branch> already exists) and switch to it.
+# Usage:  git sC <new-branch> [<tag-or-commit-id>]
+#-------------------------------------------------------------------------------
+git config --global alias.sC "switch -C"
+
+#-------------------------------------------------------------------------------
 # Create a branch and checkout to it.
 # Usage:  git cb <new-branch> [<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
 git config --global alias.cb "checkout -b"
+
+#-------------------------------------------------------------------------------
+# Switch to master branch.
+# Usage:  git sm
+#-------------------------------------------------------------------------------
+git config --global alias.sm "switch master"
 
 #-------------------------------------------------------------------------------
 # Checkout to master branch.
