@@ -171,6 +171,16 @@ git config --global alias.swc "switch -C"
 git config --global alias.swm "switch master"
 
 #-------------------------------------------------------------------------------
+# Restore worktree files.
+#
+# Usage:  git res
+#
+# Shell:  gres
+#-------------------------------------------------------------------------------
+
+git config --global alias.res "restore"
+
+#-------------------------------------------------------------------------------
 # Checkout to specific branch, tag or commit.
 #
 # Usage:  git co <branch>
