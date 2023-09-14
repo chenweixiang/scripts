@@ -171,6 +171,16 @@ git config --global alias.swc "switch -C"
 git config --global alias.swm "switch master"
 
 #-------------------------------------------------------------------------------
+# Switch to a commit for inspection and discardable experiments.
+#
+# Usage:  git swd <tag-or-commit-id>
+#
+# Shell:  gswd    <tag-or-commit-id>
+#-------------------------------------------------------------------------------
+
+git config --global alias.swd "switch --detach"
+
+#-------------------------------------------------------------------------------
 # Restore worktree files.
 #
 # Usage:  git res
