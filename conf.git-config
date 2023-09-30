@@ -151,14 +151,17 @@ git config --global alias.brd "branch -D"
 git config --global alias.sw switch
 
 #-------------------------------------------------------------------------------
-# Force to create a new branch if <new-branch> already exists and switch to it.
+# Create a new branch <new-branch> and switch to it.
+#
+# Note: Refer to option -C to force to create a new branch if <new-branch>
+#       already exists and switch to it.
 #
 # Usage:  git swc <new-branch> [<tag-or-commit-id>]
 #
 # Shell:  gswc    <new-branch> [<tag-or-commit-id>]
 #-------------------------------------------------------------------------------
 
-git config --global alias.swc "switch -C"
+git config --global alias.swc "switch -c"
 
 #-------------------------------------------------------------------------------
 # Switch to master branch.
