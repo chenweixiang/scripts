@@ -27,6 +27,14 @@ alias lla              'ls --color --time-style="+%Y-%m-%d %H:%M:%S" -lha'
 alias llt              'ls --color --time-style="+%Y-%m-%d %H:%M:%S" -lh -rt'
 alias llat             'ls --color --time-style="+%Y-%m-%d %H:%M:%S" -lha -rt'
 
+# rm
+alias rmf              'rm -f'
+alias rmr              'rm -r'
+alias rmrf             'rm -rf'
+
+# cp
+alias cpf              'cp -f'
+
 # Time
 alias t                'date --rfc-3339="seconds"'
 
