@@ -34,6 +34,7 @@ alias rmrf='rm -rf'
 
 # cp
 alias cpf='cp -f'
+alias cprf='cp -rf'
 
 # Time
 alias t='date "+%Y-%m-%d %H:%M:%S"'
