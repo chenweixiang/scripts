@@ -240,9 +240,11 @@ alias fdf              'find -not -empty -type f -printf "%s\n" | sort -rn | uni
 
 # Find specific file within current path
 alias ff               'find . -noignore_readdir_race -nowarn -type f -iname'
+alias sff              '~/scripts/find_files.py -t f -s'
 
 # Find specific directory within current path
 alias fd               'find . -noignore_readdir_race -nowarn -type d -iname'
+alias sfd              '~/scripts/find_files.py -t d -s'
 
 
 ################################################################################

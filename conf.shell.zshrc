@@ -240,9 +240,11 @@ alias ssigie0='find . -noignore_readdir_race -type f -print0 \( -not -path "*/te
 
 # Find specific file within current path
 alias ff='find . -noignore_readdir_race -type f -iname'
+alias sff='~/scripts/find_files.py -t f -s'
 
 # Find specific directory within current path
 alias fd='find . -noignore_readdir_race -type d -iname'
+alias sfd='~/scripts/find_files.py -t d -s'
 
 
 ################################################################################
