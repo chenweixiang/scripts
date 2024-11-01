@@ -990,6 +990,16 @@ git config --global alias.psh "push origin HEAD:refs/for/master"
 git config --global alias.psd "push origin HEAD:refs/drafts/master"
 
 #-------------------------------------------------------------------------------
+# Git push to private for Gerrit v3.4.
+#
+# Usage:  git psp
+#
+# Shell:  gpsp
+#-------------------------------------------------------------------------------
+
+git config --global alias.psp "push origin HEAD:refs/for/master%private"
+
+#-------------------------------------------------------------------------------
 # Git Submodule.
 #
 # Usage:  git sub
