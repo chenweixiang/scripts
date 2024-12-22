@@ -463,25 +463,15 @@ git config --global alias.rlog reflog
 #         git lhg [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         git lhg [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #
-#         git lhg10
-#         git lhg20
-#         git lhg30
-#
 # Shell:  glhg    [-<numberOfRecords>]
 #         glhg    [-<numberOfRecords>] [<tag-or-commit-id>]
 #         glhg    [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         glhg    [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #
-#         glhg10
-#         glhg20
-#         glhg30
+#         glhg -10
 #-------------------------------------------------------------------------------
 
 git config --global alias.lhg   "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate"
-
-git config --global alias.lhg10 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate -10"
-git config --global alias.lhg20 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate -20"
-git config --global alias.lhg30 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --graph --topo-order --decorate -30"
 
 #-------------------------------------------------------------------------------
 # Log commit History of first parent.
@@ -491,25 +481,15 @@ git config --global alias.lhg30 "log --date=short --pretty=format:'%Cgreen%h %Cr
 #         git lh [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         git lh [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #
-#         git lh10
-#         git lh20
-#         git lh30
-#
 # Shell:  glh    [-<numberOfRecords>]
 #         glh    [-<numberOfRecords>] [<tag-or-commit-id>]
 #         glh    [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         glh    [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
 #
-#         glh10
-#         glh20
-#         glh30
+#         glh -10
 #-------------------------------------------------------------------------------
 
 git config --global alias.lh   "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent"
-
-git config --global alias.lh10 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent -10"
-git config --global alias.lh20 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent -20"
-git config --global alias.lh30 "log --date=short --pretty=format:'%Cgreen%h %Cred%ad %Creset%s %Cred%d' --topo-order --decorate --first-parent -30"
 
 #-------------------------------------------------------------------------------
 # Log commit History of first parent with more Details.
@@ -523,13 +503,11 @@ git config --global alias.lh30 "log --date=short --pretty=format:'%Cgreen%h %Cre
 #         glhd    [-<numberOfRecords>] [<tag-or-commit-id>]
 #         glhd    [-<numberOfRecords>] [<tag-or-commit-id>..<tag-or-commit-id>]
 #         glhd    [-<numberOfRecords>] [<tag-or-commit-id>~..<tag-or-commit-id>]
+#
+#         glhd -10
 #-------------------------------------------------------------------------------
 
 git config --global alias.lhd   "log --numstat -c --decorate --pretty=fuller --first-parent"
-
-git config --global alias.lhd10 "log --numstat -c --decorate --pretty=fuller --first-parent -10"
-git config --global alias.lhd20 "log --numstat -c --decorate --pretty=fuller --first-parent -20"
-git config --global alias.lhd30 "log --numstat -c --decorate --pretty=fuller --first-parent -30"
 
 #-------------------------------------------------------------------------------
 # List Commit.
