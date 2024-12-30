@@ -200,6 +200,7 @@ def generateNewFileName(fileName):
     # Default value
     retVal = False
     newFileName = ""
+    defSuffix = "_00"
 
     # 原文件信息
     absPathFile = os.path.abspath(fileName)
@@ -222,7 +223,7 @@ def generateNewFileName(fileName):
                 t = exifTags [ 'EXIF DateTimeOriginal' ]
                 dateStr = fileType + str(t).replace(":", "")[:8] + "_" + str(t)[11:].replace(":", "")
                 # 生成新文件名
-                newFileName = os.path.join(dateStr + e).upper()
+                newFileName = os.path.join(dateStr + defSuffix + e).upper()
                 retVal = True
             except:
                 pass
@@ -247,7 +248,7 @@ def generateNewFileName(fileName):
                         utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                         locDateTime = utcDateTime.astimezone(dst_zone)
                         dateStr = locDateTime.strftime(myDataFormat)
-                        newFileName = os.path.join(dateStr + e).upper()
+                        newFileName = os.path.join(dateStr + defSuffix + e).upper()
                         retVal = True
                         break
                     except:
@@ -267,7 +268,7 @@ def generateNewFileName(fileName):
                         if timeZone == CN_TIME_ZONE:
                             locDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
                             retVal = True
                             break
                         else:
@@ -275,7 +276,7 @@ def generateNewFileName(fileName):
                             utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                             locDateTime = utcDateTime.astimezone(dst_zone)
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
                             retVal = True
                             break
                     except:
@@ -296,7 +297,7 @@ def generateNewFileName(fileName):
                         if timeZone == CN_TIME_ZONE:
                             locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
                             retVal = True
                             break
                         else:
@@ -304,7 +305,7 @@ def generateNewFileName(fileName):
                             utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                             locDateTime = utcDateTime.astimezone(dst_zone)
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
                             retVal = True
                             break
                     except:
@@ -332,7 +333,7 @@ def generateNewFileName(fileName):
                         if timeZone == CN_TIME_ZONE:
                             locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
                             retVal = True
                             break
                         else:
@@ -340,7 +341,7 @@ def generateNewFileName(fileName):
                             utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                             locDateTime = utcDateTime.astimezone(dst_zone)
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
                             retVal = True
                             break
                     except:
@@ -361,7 +362,7 @@ def generateNewFileName(fileName):
                         if timeZone == CN_TIME_ZONE:
                             locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
                             retVal = True
                             break
                         else:
@@ -369,7 +370,7 @@ def generateNewFileName(fileName):
                             utcDateTime = utcDateTime.replace(tzinfo=src_zone)
                             locDateTime = utcDateTime.astimezone(dst_zone)
                             dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + e).upper()
+                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
                             retVal = True
                             break
                     except:
