@@ -10,7 +10,9 @@ from collections import defaultdict
 
 g_is_recursive = False
 g_is_verbose = False
+g_show_single_file = False
 g_path_list = []
+
 g_file_list = []
 g_file_md5sum_list = defaultdict(list)
 
@@ -20,6 +22,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description='')
     parser.add_argument("-d", "--directory", help="Specify directory.")
     parser.add_argument("-r", "--recursive", action="store_true", help="Recursive all sub-directories.")
+    parser.add_argument("-s", "--show_single_file", action="store_true", help="Show not duplicated files.")
     parser.add_argument("-v", "--verbose", action="store_true", help="Print debug traces")
     args = parser.parse_args()
 
@@ -28,9 +31,15 @@ def parse_arguments():
     if args.recursive:
         g_is_recursive = True
 
+    # -v, --verbose
     global g_is_verbose
     if args.verbose:
         g_is_verbose = True
+
+    # -s, --show_single_file
+    global g_show_single_file
+    if args.show_single_file:
+        g_show_single_file = True
 
     # -d, --directory
     global g_path_list
@@ -57,7 +66,6 @@ def scan_path(start_path):
     global g_is_recursive
     global g_is_verbose
 
-    # 遍历指定目录以及子目录，对满足条件的文件进行改名
     curr_path = Path(start_path)
     curr_path_str = curr_path.resolve()
 
@@ -97,6 +105,7 @@ def scan_path(start_path):
 def calc_md5sum():
     global g_file_list
     global g_is_verbose
+    global g_show_single_file
 
     if g_is_verbose:
         print('\n')
@@ -122,15 +131,16 @@ def calc_md5sum():
                 print(file)
             print('\n')
 
-    print("Not duplicated files")
-    print('\n')
+    if g_show_single_file == True:
+        print("Not duplicated files")
+        print('\n')
 
-    for md5sum in g_file_md5sum_list:
-        if len(g_file_md5sum_list[md5sum]) == 1:
-            print(md5sum)
-            for file in g_file_md5sum_list[md5sum]:
-                print(file)
-            print('\n')
+        for md5sum in g_file_md5sum_list:
+            if len(g_file_md5sum_list[md5sum]) == 1:
+                print(md5sum)
+                for file in g_file_md5sum_list[md5sum]:
+                    print(file)
+                print('\n')
 
 if __name__ == "__main__":
     parse_arguments()
