@@ -65,21 +65,25 @@ VID_SUFFIX_FILTER = [ '.MP4', '.MPG', '.MOV', '.AVI' ]
 AUD_SUFFIX_FILTER = [ '.M4A', '.WAV' ]
 
 # Global Variables
-isRecursive     = False
-isExecute       = False
-aFile           = ""
-useModifiedDate = False
-handlePhoto     = False
-handleVedio     = False
-handleAudio     = False
-useAbsPath      = False
-isQuiet         = True
+g_path_list         = []
+g_is_recursive      = False
+g_is_execute        = False
+g_single_file       = ""
+g_use_modified_date = False
+g_handle_photo      = False
+g_handle_vedio      = False
+g_handle_audio      = False
+g_use_abs_path      = False
+g_is_quiet          = True
 
 # China Time Zone
 CN_TIME_ZONE = "+08:00"
 
+# Suffix of output folder
+OUTPUT_DIR_SUFFIX = "_RENAME_MULTIMEDIA"
 
-def parseArguments():
+
+def parse_arguments():
     # Parse arguments
     parser = argparse.ArgumentParser(description='')
     parser.add_argument("-d", "--directory", help="Specify directory.")
@@ -95,74 +99,80 @@ def parseArguments():
     args = parser.parse_args()
 
     # -d, --directory
-    path = "."
-    if args.directory and Path(args.directory).exists():
-        path = args.directory
+    global g_path_list
+    if args.directory:
+        path_list = args.directory.split()
+        for path in path_list:
+            path_obj = Path(path)
+            if path_obj.exists():
+                path_str = path_obj.resolve()
+                if path_str not in g_path_list:
+                    g_path_list.append(path_str)
+    else:
+        g_path_list.append(Path().absolute())
 
     # -r, --recursive
-    global isRecursive
+    global g_is_recursive
     if args.recursive:
-        isRecursive = True
+        g_is_recursive = True
 
     # -e, --execute
-    global isExecute
+    global g_is_execute
     if args.execute:
-        isExecute = True
+        g_is_execute = True
 
     # -f, --file
-    global aFile
+    global g_single_file
     if args.file:
-        aFile = args.file
+        g_single_file = args.file
 
     # -m, --modified
-    global useModifiedDate
+    global g_use_modified_date
     if args.modified:
-        useModifiedDate = True
+        g_use_modified_date = True
 
     # -a, --all
-    global handlePhoto
-    global handleVedio
-    global handleAudio
+    global g_handle_photo
+    global g_handle_vedio
+    global g_handle_audio
     if args.all:
-        handlePhoto = True
-        handleVedio = True
-        handleAudio = True
+        g_handle_photo = True
+        g_handle_vedio = True
+        g_handle_audio = True
     # -p, --photo
     if args.photo:
-        handlePhoto = True
+        g_handle_photo = True
     # -v, --vedio
     if args.vedio:
-        handleVedio = True
+        g_handle_vedio = True
 
     # -b, --abspath
-    global useAbsPath
+    global g_use_abs_path
     if args.abspath:
-        useAbsPath = True
+        g_use_abs_path = True
 
     # -n, --notquiet
-    global isQuiet
+    global g_is_quiet
     if args.notquiet:
-        isQuiet = False
+        g_is_quiet = False
 
-    print("Path              :", os.path.abspath(path))
-    print("Recursive         :", isRecursive)
-    print("Execute           :", isExecute)
-    print("aFile             :", aFile)
-    print("Use Modified Date :", useModifiedDate)
-    print("Handle Photo      :", handlePhoto)
-    print("Handle Vedio      :", handleVedio)
-    print("Handle Audio      :", handleAudio)
-    print("Use AbsPath       :", useAbsPath)
-    print("Quiet             :", isQuiet)
+    print("g_path_list         :", g_path_list)
+    print("g_is_recursive      :", g_is_recursive)
+    print("g_is_execute        :", g_is_execute)
+    print("g_single_file       :", g_single_file)
+    print("g_use_modified_date :", g_use_modified_date)
+    print("g_handle_photo      :", g_handle_photo)
+    print("g_handle_vedio      :", g_handle_vedio)
+    print("g_handle_audio      :", g_handle_audio)
+    print("g_use_abs_path      :", g_use_abs_path)
+    print("g_is_quiet          :", g_is_quiet)
     print('\n')
 
-    return path
 
-
-def isTargetFileType(fileName):
+def is_target_file_type(file_name):
     # 根据文件扩展名，判断是否是需要处理的文件类型
-    fileNameNoPath = os.path.basename(fileName)
-    f, e = os.path.splitext(fileNameNoPath)
+    file_name_no_path = os.path.basename(file_name)
+    f, e = os.path.splitext(file_name_no_path)
     if e.upper() in IMG_SUFFIX_FILTER:
         return True, IMG_FILE_TYPE
     elif e.upper() in VID_SUFFIX_FILTER:
@@ -173,64 +183,64 @@ def isTargetFileType(fileName):
         return False, ""
 
 
-def isSameFileName(fileName, newFileName):
-    retVal = False
+def is_same_file_name(file_name, new_file_name):
+    ret_val = False
 
-    lenExt = 4
-    if len(newFileName) <= lenExt:
+    ext_len = 4
+    if len(new_file_name) <= ext_len:
         return False
 
-    lenName = len(newFileName) - lenExt
-    if fileName[:lenName] == newFileName[:lenName] and fileName[-lenExt:] == newFileName[-lenExt:]:
-        retVal = True
+    name_len = len(new_file_name) - ext_len
+    if file_name[:name_len] == new_file_name[:name_len] and file_name[-ext_len:] == new_file_name[-ext_len:]:
+        ret_val = True
 
-    return retVal
+    return ret_val
 
 
-def generateNewFileName(fileName):
+def generate_new_file_name(file_name):
     # 根据照片的拍照时间生成新的文件名。如果获取不到拍照时间，则直接跳过
     try:
-        if os.path.isfile(fileName):
-            fd = open(fileName, 'rb')
+        if os.path.isfile(file_name):
+            fd = open(file_name, 'rb')
         else:
-            raise "[%s] is not a file!\n" % fileName
+            raise "[%s] is not a file!\n" % file_name
     except:
-        raise "unopen file[%s]\n" % fileName
+        raise "unopen file[%s]\n" % file_name
 
     # Default value
-    retVal = False
-    newFileName = ""
-    defSuffix = "_00"
+    ret_val = False
+    new_file_name = ""
+    def_suffix = "_00"
 
     # 原文件信息
-    absPathFile = os.path.abspath(fileName)
-    dirname = os.path.dirname(absPathFile)
-    fileNameNoPath = os.path.basename(absPathFile)
-    f, e = os.path.splitext(fileNameNoPath)
+    abs_path_file = os.path.abspath(file_name)
+    dirname = os.path.dirname(abs_path_file)
+    file_name_no_path = os.path.basename(abs_path_file)
+    f, e = os.path.splitext(file_name_no_path)
 
     # Check if the file can be handled or not
-    isSupported, fileType = isTargetFileType(fileName)
-    if isSupported == False:
-        return retVal, newFileName
+    is_supported, file_type = is_target_file_type(file_name)
+    if is_supported == False:
+        return ret_val, new_file_name
 
-    myDataFormat = fileType + '%Y%m%d_%H%M%S'
-    if fileType == IMG_FILE_TYPE and handlePhoto == True:
+    my_data_format = file_type + '%Y%m%d_%H%M%S'
+    if file_type == IMG_FILE_TYPE and g_handle_photo == True:
         # 如果取得Exif信息，则根据照片的拍摄日期重命名文件
-        exifTags = exifread.process_file(fd)
-        if exifTags:
+        exif_tags = exifread.process_file(fd)
+        if exif_tags:
             try:
                 # 取得照片的拍摄日期，并转换成 yyyymmdd_hhmmss 格式
-                t = exifTags [ 'EXIF DateTimeOriginal' ]
-                dateStr = fileType + str(t).replace(":", "")[:8] + "_" + str(t)[11:].replace(":", "")
+                t = exif_tags [ 'EXIF DateTimeOriginal' ]
+                date_str = file_type + str(t).replace(":", "")[:8] + "_" + str(t)[11:].replace(":", "")
                 # 生成新文件名
-                newFileName = os.path.join(dateStr + defSuffix + e).upper()
-                retVal = True
+                new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                ret_val = True
             except:
                 pass
-    elif fileType == VID_FILE_TYPE and handleVedio == True:
-        exiftoolCmd = "exiftool " + fileName
-        exiftoolVal = subprocess.run(exiftoolCmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-        metaData = str(exiftoolVal.stdout).split("\\n")
+    elif file_type == VID_FILE_TYPE and g_handle_vedio == True:
+        exiftool_cmd = "exiftool " + file_name
+        exiftool_val = subprocess.run(exiftool_cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        meta_data = str(exiftool_val.stdout).split("\\n")
         src_zone = tz.tzutc()
         dst_zone = tz.tzlocal()
 
@@ -240,47 +250,47 @@ def generateNewFileName(fileName):
         #   MIME Type                       : video/mp4
         #   Major Brand                     : MP4 v2 [ISO 14496-14]
         if e.upper() == ".MP4":
-            for element in metaData:
+            for element in meta_data:
                 if "Media Create Date" in element:
                     try:
                         mediaCreateDate = (element.split(" : ")[1])
-                        utcDateTime = datetime.strptime(mediaCreateDate, '%Y:%m:%d %H:%M:%S')
-                        utcDateTime = utcDateTime.replace(tzinfo=src_zone)
-                        locDateTime = utcDateTime.astimezone(dst_zone)
-                        dateStr = locDateTime.strftime(myDataFormat)
-                        newFileName = os.path.join(dateStr + defSuffix + e).upper()
-                        retVal = True
+                        utc_date_time = datetime.strptime(mediaCreateDate, '%Y:%m:%d %H:%M:%S')
+                        utc_date_time = utc_date_time.replace(tzinfo=src_zone)
+                        local_date_time = utc_date_time.astimezone(dst_zone)
+                        date_str = local_date_time.strftime(my_data_format)
+                        new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                        ret_val = True
                         break
                     except:
-                        retVal = False
+                        ret_val = False
                         break
         # For ".MPG":
         #   File Type                       : MPEG
         #   File Type Extension             : mpg
         #   MIME Type                       : video/mpeg
         elif e.upper() == ".MPG":
-            for element in metaData:
+            for element in meta_data:
                 if "File Modification Date/Time" in element:
                     try:
                         fileModificationDateTime = (element.split(" : ")[1])
                         modificationDateTime = fileModificationDateTime[:19]
-                        timeZone = fileModificationDateTime[19:]
-                        if timeZone == CN_TIME_ZONE:
-                            locDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
-                            dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
-                            retVal = True
+                        time_zone = fileModificationDateTime[19:]
+                        if time_zone == CN_TIME_ZONE:
+                            local_date_time = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
+                            date_str = local_date_time.strftime(my_data_format)
+                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            ret_val = True
                             break
                         else:
-                            utcDateTime = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
-                            utcDateTime = utcDateTime.replace(tzinfo=src_zone)
-                            locDateTime = utcDateTime.astimezone(dst_zone)
-                            dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
-                            retVal = True
+                            utc_date_time = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
+                            utc_date_time = utc_date_time.replace(tzinfo=src_zone)
+                            local_date_time = utc_date_time.astimezone(dst_zone)
+                            date_str = local_date_time.strftime(my_data_format)
+                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            ret_val = True
                             break
                     except:
-                        retVal = False
+                        ret_val = False
                         break
         # For ".MOV":
         #   File Type                       : MOV
@@ -288,33 +298,33 @@ def generateNewFileName(fileName):
         #   MIME Type                       : video/quicktime
         #   Major Brand                     : Apple QuickTime (.MOV/QT)
         elif e.upper() == ".MOV":
-            for element in metaData:
+            for element in meta_data:
                 if "Creation Date" in element:
                     try:
-                        creationDate = (element.split(" : ")[1])
-                        creationDateTime = creationDate[:19]
-                        timeZone = creationDate[19:]
-                        if timeZone == CN_TIME_ZONE:
-                            locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
-                            dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
-                            retVal = True
+                        creation_date = (element.split(" : ")[1])
+                        creation_date_time = creation_date[:19]
+                        time_zone = creation_date[19:]
+                        if time_zone == CN_TIME_ZONE:
+                            local_date_time = datetime.strptime(creation_date_time, '%Y:%m:%d %H:%M:%S')
+                            date_str = local_date_time.strftime(my_data_format)
+                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            ret_val = True
                             break
                         else:
-                            utcDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
-                            utcDateTime = utcDateTime.replace(tzinfo=src_zone)
-                            locDateTime = utcDateTime.astimezone(dst_zone)
-                            dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
-                            retVal = True
+                            utc_date_time = datetime.strptime(creation_date_time, '%Y:%m:%d %H:%M:%S')
+                            utc_date_time = utc_date_time.replace(tzinfo=src_zone)
+                            local_date_time = utc_date_time.astimezone(dst_zone)
+                            date_str = local_date_time.strftime(my_data_format)
+                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            ret_val = True
                             break
                     except:
-                        retVal = False
+                        ret_val = False
                         break
-    elif fileType == AUD_FILE_TYPE and handleAudio == True:
-        exiftoolCmd = "exiftool " + fileName
-        exiftoolVal = subprocess.run(exiftoolCmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-        metaData = str(exiftoolVal.stdout).split("\\n")
+    elif file_type == AUD_FILE_TYPE and g_handle_audio == True:
+        exiftool_cmd = "exiftool " + file_name
+        exiftool_val = subprocess.run(exiftool_cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        meta_data = str(exiftool_val.stdout).split("\\n")
         src_zone = tz.tzutc()
         dst_zone = tz.tzlocal()
 
@@ -324,28 +334,28 @@ def generateNewFileName(fileName):
         #   MIME Type                       : audio/mp4
         #   Major Brand                     : Apple iTunes AAC-LC (.M4A) Audio
         if e.upper() == ".M4A":
-            for element in metaData:
+            for element in meta_data:
                 if "Create Date" in element:
                     try:
-                        creationDate = (element.split(" : ")[1])
-                        creationDateTime = creationDate[:19]
-                        timeZone = creationDate[19:]
-                        if timeZone == CN_TIME_ZONE:
-                            locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
-                            dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
-                            retVal = True
+                        creation_date = (element.split(" : ")[1])
+                        creation_date_time = creation_date[:19]
+                        time_zone = creation_date[19:]
+                        if time_zone == CN_TIME_ZONE:
+                            local_date_time = datetime.strptime(creation_date_time, '%Y:%m:%d %H:%M:%S')
+                            date_str = local_date_time.strftime(my_data_format)
+                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            ret_val = True
                             break
                         else:
-                            utcDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
-                            utcDateTime = utcDateTime.replace(tzinfo=src_zone)
-                            locDateTime = utcDateTime.astimezone(dst_zone)
-                            dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
-                            retVal = True
+                            utc_date_time = datetime.strptime(creation_date_time, '%Y:%m:%d %H:%M:%S')
+                            utc_date_time = utc_date_time.replace(tzinfo=src_zone)
+                            local_date_time = utc_date_time.astimezone(dst_zone)
+                            date_str = local_date_time.strftime(my_data_format)
+                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            ret_val = True
                             break
                     except:
-                        retVal = False
+                        ret_val = False
                         break
         # For ".WAV":
         #   File Type                       : WAV
@@ -353,83 +363,83 @@ def generateNewFileName(fileName):
         #   MIME Type                       : audio/x-wav
         #   Encoding                        : Microsoft PCM
         elif e.upper() == ".WAV":
-            for element in metaData:
+            for element in meta_data:
                 if "File Modification Date/Time" in element:
                     try:
-                        creationDate = (element.split(" : ")[1])
-                        creationDateTime = creationDate[:19]
-                        timeZone = creationDate[19:]
-                        if timeZone == CN_TIME_ZONE:
-                            locDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
-                            dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
-                            retVal = True
+                        creation_date = (element.split(" : ")[1])
+                        creation_date_time = creation_date[:19]
+                        time_zone = creation_date[19:]
+                        if time_zone == CN_TIME_ZONE:
+                            local_date_time = datetime.strptime(creation_date_time, '%Y:%m:%d %H:%M:%S')
+                            date_str = local_date_time.strftime(my_data_format)
+                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            ret_val = True
                             break
                         else:
-                            utcDateTime = datetime.strptime(creationDateTime, '%Y:%m:%d %H:%M:%S')
-                            utcDateTime = utcDateTime.replace(tzinfo=src_zone)
-                            locDateTime = utcDateTime.astimezone(dst_zone)
-                            dateStr = locDateTime.strftime(myDataFormat)
-                            newFileName = os.path.join(dateStr + defSuffix + e).upper()
-                            retVal = True
+                            utc_date_time = datetime.strptime(creation_date_time, '%Y:%m:%d %H:%M:%S')
+                            utc_date_time = utc_date_time.replace(tzinfo=src_zone)
+                            local_date_time = utc_date_time.astimezone(dst_zone)
+                            date_str = local_date_time.strftime(my_data_format)
+                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            ret_val = True
                             break
                     except:
-                        retVal = False
+                        ret_val = False
                         break
 
     # 如果获取Exif信息失败，则采用该照片的创建日期重命名文件
-    if retVal == False and useModifiedDate == True:
-        state = os.stat(fileName)
-        dateStr = time.strftime(myDataFormat, time.localtime(state[-2]))
-        newFileName = os.path.join(dateStr + e).upper()
-        retVal = True
+    if ret_val == False and g_use_modified_date == True:
+        state = os.stat(file_name)
+        date_str = time.strftime(my_data_format, time.localtime(state[-2]))
+        new_file_name = os.path.join(date_str + e).upper()
+        ret_val = True
 
     # 检查新文件名是否合法
-    if retVal == True:
+    if ret_val == True:
         # 如果新文件名与原文件名相同，则无需改名
-        if isSameFileName(fileName, newFileName):
-            retVal = False
+        if is_same_file_name(file_name, new_file_name):
+            ret_val = False
         # 如果新文件名与其他文件重名，则在新文件明后加后缀 _01, _02, .., _99
-        elif newFileName in os.listdir(dirname):
+        elif new_file_name in os.listdir(dirname):
             for i in range(1, 100):
-                tmpDateStr = dateStr + "_" + str(i).zfill(2)
-                newFileName = os.path.join(tmpDateStr + e).upper()
-                if isSameFileName(fileName, newFileName):
-                    retVal = False
+                tmpDateStr = date_str + "_" + str(i).zfill(2)
+                new_file_name = os.path.join(tmpDateStr + e).upper()
+                if is_same_file_name(file_name, new_file_name):
+                    ret_val = False
                     break
-                elif newFileName not in os.listdir(dirname):
-                    retVal = True
+                elif new_file_name not in os.listdir(dirname):
+                    ret_val = True
                     break
         else:
-            retVal = True
+            ret_val = True
 
-    return retVal, newFileName
+    return ret_val, new_file_name
 
 
-def scanDir(startdir):
+def scan_dir(startdir):
     # 只检查指定的一个文件
-    if aFile != "":
-        if os.path.isfile(aFile):
-            obj = aFile
+    if g_single_file != "":
+        if os.path.isfile(g_single_file):
+            obj = g_single_file
             # 对满足过滤条件的文件进行改名处理
-            retVal, newFileName = generateNewFileName(obj)
-            if retVal:
+            ret_val, new_file_name = generate_new_file_name(obj)
+            if ret_val:
                 try:
-                    if isExecute == True:
-                        os.rename(obj, newFileName)
-                    if useAbsPath == True:
-                        print(os.path.abspath(obj), "\t=>\t", newFileName)
+                    if g_is_execute == True:
+                        os.rename(obj, new_file_name)
+                    if g_use_abs_path == True:
+                        print(os.path.abspath(obj), "\t=>\t", new_file_name)
                     else:
-                        print(obj, "\t=>\t", newFileName)
+                        print(obj, "\t=>\t", new_file_name)
                 except:
-                    if isQuiet == False:
-                        if useAbsPath == True:
-                            print(os.path.abspath(obj), "\t=>\tcannot rename to ", newFileName)
+                    if g_is_quiet == False:
+                        if g_use_abs_path == True:
+                            print(os.path.abspath(obj), "\t=>\tcannot rename to ", new_file_name)
                         else:
-                            print(obj, "\t=>\tcannot rename to ", newFileName)
+                            print(obj, "\t=>\tcannot rename to ", new_file_name)
             else:
-                if isQuiet == False:
-                    if useAbsPath == True:
+                if g_is_quiet == False:
+                    if g_use_abs_path == True:
                         print(os.path.abspath(obj), "\t=>\tNo change")
                     else:
                         print(obj, "\t=>\tNo change")
@@ -442,32 +452,32 @@ def scanDir(startdir):
     for obj in os.listdir(os.curdir):
         if os.path.isfile(obj):
             # 对满足过滤条件的文件进行改名处理
-            retVal, newFileName = generateNewFileName(obj)
-            if retVal:
+            ret_val, new_file_name = generate_new_file_name(obj)
+            if ret_val:
                 try:
-                    if isExecute == True:
-                        os.rename(obj, newFileName)
-                    if useAbsPath == True:
-                        print(os.path.abspath(obj), "\t=>\t", newFileName)
+                    if g_is_execute == True:
+                        os.rename(obj, new_file_name)
+                    if g_use_abs_path == True:
+                        print(os.path.abspath(obj), "\t=>\t", new_file_name)
                     else:
-                        print(obj, "\t=>\t", newFileName)
+                        print(obj, "\t=>\t", new_file_name)
                 except:
-                    if isQuiet == False:
-                        if useAbsPath == True:
-                            print(os.path.abspath(obj), "\t=>\tcannot rename to ", newFileName)
+                    if g_is_quiet == False:
+                        if g_use_abs_path == True:
+                            print(os.path.abspath(obj), "\t=>\tcannot rename to ", new_file_name)
                         else:
-                            print(obj, "\t=>\tcannot rename to ", newFileName)
+                            print(obj, "\t=>\tcannot rename to ", new_file_name)
             else:
-                if isQuiet == False:
-                    if useAbsPath == True:
+                if g_is_quiet == False:
+                    if g_use_abs_path == True:
                         print(os.path.abspath(obj), "\t=>\tNo change")
                     else:
                         print(obj, "\t=>\tNo change")
-        elif os.path.isdir(obj) and isRecursive == True:
-            scanDir(obj)
+        elif os.path.isdir(obj) and g_is_recursive == True:
+            scan_dir(obj)
             os.chdir(os.pardir)
 
 
 if __name__ == "__main__":
-    path = parseArguments()
-    scanDir(path)
+    parse_arguments()
+    scan_dir(g_path_list[0])
