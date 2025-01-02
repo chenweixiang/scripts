@@ -142,6 +142,7 @@ def calc_md5sum():
                     print(file)
                 print('\n')
 
+
 if __name__ == "__main__":
     parse_arguments()
 
