@@ -5,7 +5,7 @@
 批量修改照片文件名称的Python脚本程序。
 遍历指定目录（含子目录）的照片文件，并
 根据拍照时间将照片文件名修改为以下格式：
-    IMG_20140315_091230.JPG
+    IMG_20140315_091230_00.JPG
 如果存在重名文件，则尝试如下文件名：
     IMG_20140315_091230_01.JPG
     ...
@@ -45,27 +45,31 @@
 '''
 
 import os
+import sys
 import stat
 import time
 import exifread
 import argparse
 import subprocess
+import shutil
 from datetime import datetime
 from dateutil import tz
 from pathlib import Path
+from collections import defaultdict
 
-# FILE_TYPE
+
+# File type
 IMG_FILE_TYPE = "IMG_"
 VID_FILE_TYPE = "VID_"
 AUD_FILE_TYPE = "AUD_"
 
-# Extension Names
+# Extension names
 IMG_SUFFIX_FILTER = [ '.JPG', '.PNG', '.BMP', '.JPEG' ]
 VID_SUFFIX_FILTER = [ '.MP4', '.MPG', '.MOV', '.AVI' ]
 AUD_SUFFIX_FILTER = [ '.M4A', '.WAV' ]
 
-# Global Variables
-g_path_list         = []
+
+# Global variables for input parameters
 g_is_recursive      = False
 g_is_execute        = False
 g_single_file       = ""
@@ -73,8 +77,8 @@ g_use_modified_date = False
 g_handle_photo      = False
 g_handle_vedio      = False
 g_handle_audio      = False
-g_use_abs_path      = False
-g_is_quiet          = True
+g_is_verbose        = False
+
 
 # China Time Zone
 CN_TIME_ZONE = "+08:00"
@@ -94,22 +98,8 @@ def parse_arguments():
     parser.add_argument("-a", "--all", action="store_true", help="Process photos and vedios.")
     parser.add_argument("-p", "--photo", action="store_true", help="Process photos.")
     parser.add_argument("-v", "--vedio", action="store_true", help="Process vedios.")
-    parser.add_argument("-b", "--abspath", action="store_true", help="Print abspath.")
-    parser.add_argument("-n", "--notquiet", action="store_true", help="Print all rename info.")
+    parser.add_argument("-V", "--verbose", action="store_true", help="Print debug traces")
     args = parser.parse_args()
-
-    # -d, --directory
-    global g_path_list
-    if args.directory:
-        path_list = args.directory.split()
-        for path in path_list:
-            path_obj = Path(path)
-            if path_obj.exists():
-                path_str = path_obj.resolve()
-                if path_str not in g_path_list:
-                    g_path_list.append(path_str)
-    else:
-        g_path_list.append(Path().absolute())
 
     # -r, --recursive
     global g_is_recursive
@@ -139,24 +129,33 @@ def parse_arguments():
         g_handle_photo = True
         g_handle_vedio = True
         g_handle_audio = True
+
     # -p, --photo
     if args.photo:
         g_handle_photo = True
+
     # -v, --vedio
     if args.vedio:
         g_handle_vedio = True
 
-    # -b, --abspath
-    global g_use_abs_path
-    if args.abspath:
-        g_use_abs_path = True
+    # -V, --verbose
+    global g_is_verbose
+    if args.verbose:
+        g_is_verbose = True
 
-    # -n, --notquiet
-    global g_is_quiet
-    if args.notquiet:
-        g_is_quiet = False
+    # -d, --directory
+    path_list = []
+    if args.directory:
+        for path in args.directory.split():
+            path_obj = Path(path)
+            if path_obj.exists():
+                source_path_str = path_obj.resolve()
+                if source_path_str not in path_list:
+                    path_list.append(source_path_str)
+    else:
+        source_path_str = Path().absolute()
+        path_list.append(source_path_str)
 
-    print("g_path_list         :", g_path_list)
     print("g_is_recursive      :", g_is_recursive)
     print("g_is_execute        :", g_is_execute)
     print("g_single_file       :", g_single_file)
@@ -164,64 +163,105 @@ def parse_arguments():
     print("g_handle_photo      :", g_handle_photo)
     print("g_handle_vedio      :", g_handle_vedio)
     print("g_handle_audio      :", g_handle_audio)
-    print("g_use_abs_path      :", g_use_abs_path)
-    print("g_is_quiet          :", g_is_quiet)
     print('\n')
 
-
-def is_target_file_type(file_name):
-    # 根据文件扩展名，判断是否是需要处理的文件类型
-    file_name_no_path = os.path.basename(file_name)
-    f, e = os.path.splitext(file_name_no_path)
-    if e.upper() in IMG_SUFFIX_FILTER:
-        return True, IMG_FILE_TYPE
-    elif e.upper() in VID_SUFFIX_FILTER:
-        return True, VID_FILE_TYPE
-    elif e.upper() in AUD_SUFFIX_FILTER:
-        return True, AUD_FILE_TYPE
-    else:
-        return False, ""
+    return path_list
 
 
-def is_same_file_name(file_name, new_file_name):
-    ret_val = False
+def scan_path(path):
+    global g_is_recursive
+    global g_is_verbose
 
-    ext_len = 4
-    if len(new_file_name) <= ext_len:
-        return False
+    source_file_list = []
+    sub_dir_list = []
 
-    name_len = len(new_file_name) - ext_len
-    if file_name[:name_len] == new_file_name[:name_len] and file_name[-ext_len:] == new_file_name[-ext_len:]:
-        ret_val = True
+    curr_path = Path(path)
+    curr_path_str = curr_path.resolve()
 
-    return ret_val
+    if g_is_verbose == True:
+        print('\n')
+        print("curr_path_str:")
+        print(curr_path_str)
+
+    for item in curr_path.iterdir():
+        if item.is_file() and (not str(item.name).startswith('.')):
+            source_file_list.append(curr_path_str / item)
+        elif item.is_dir() and g_is_recursive and (not str(item.name).startswith('.')):
+            sub_dir_list.append(curr_path_str / item)
+
+    if (g_is_recursive == True) and (g_is_verbose == True):
+        print('\n')
+        print("sub_dir_list:")
+        if len(sub_dir_list) > 0:
+            for sub_dir in sub_dir_list:
+                print(sub_dir)
+        else:
+            print("Empty!")
+
+    if g_is_recursive == True:
+        for dir in sub_dir_list:
+            source_file_list.extend(scan_path(dir))
+
+    return source_file_list
 
 
-def generate_new_file_name(file_name):
+def generate_target_file_dict(path, source_file_list):
+    global g_is_verbose
+
+    target_file_dict = defaultdict(list)
+
+    target_path = Path(str(path) + OUTPUT_DIR_SUFFIX)
+    #print("target_path:", target_path)
+    if Path(target_path).exists():
+        print(target_path, "already exists, abort!")
+        sys.exit()
+
+    for source_file in source_file_list:
+        ret_val, target_file_name = generate_target_file_name(source_file)
+        if ret_val == False:
+            print("ret_val:", ret_val, "for file:", str(source_file), "target_file_name:", target_file_name)
+
+        source_file_sub_path = str(source_file.parent)[len(str(path))+1:]
+        #print("source_file_sub_path:", source_file_sub_path)
+        if len(source_file_sub_path) > 0:
+            target_file = target_path.joinpath(source_file_sub_path).joinpath(target_file_name)
+        else:
+            target_file = target_path.joinpath(target_file_name)
+        #print("target_file:", target_file)
+        target_file_dict[target_file].append(source_file)
+
+    return target_path, target_file_dict
+
+
+def generate_target_file_name(source_file_name):
     # 根据照片的拍照时间生成新的文件名。如果获取不到拍照时间，则直接跳过
     try:
-        if os.path.isfile(file_name):
-            fd = open(file_name, 'rb')
-        else:
-            raise "[%s] is not a file!\n" % file_name
+        fd = Path(source_file_name).open('rb')
+        # print("open file: ", source_file_name)
     except:
-        raise "unopen file[%s]\n" % file_name
+        print("cannot open file ", source_file_name)
+        sys.exit()
 
     # Default value
     ret_val = False
-    new_file_name = ""
-    def_suffix = "_00"
+    new_file_name = source_file_name.name
 
     # 原文件信息
-    abs_path_file = os.path.abspath(file_name)
-    dirname = os.path.dirname(abs_path_file)
-    file_name_no_path = os.path.basename(abs_path_file)
-    f, e = os.path.splitext(file_name_no_path)
+    file_name_str = Path(source_file_name).name
+    f, e = os.path.splitext(file_name_str)
 
-    # Check if the file can be handled or not
-    is_supported, file_type = is_target_file_type(file_name)
-    if is_supported == False:
-        return ret_val, new_file_name
+    file_type = ""
+
+    # 根据文件扩展名，判断是否是需要处理的文件类型
+    if e.upper() in IMG_SUFFIX_FILTER:
+        file_type = IMG_FILE_TYPE
+    elif e.upper() in VID_SUFFIX_FILTER:
+        file_type = VID_FILE_TYPE
+    elif e.upper() in AUD_SUFFIX_FILTER:
+        file_type = AUD_FILE_TYPE
+    else:
+        print("Unsupported file extension ", e.upper(), "for file", str(source_file_name))
+        return False, file_name_str
 
     my_data_format = file_type + '%Y%m%d_%H%M%S'
     if file_type == IMG_FILE_TYPE and g_handle_photo == True:
@@ -233,12 +273,12 @@ def generate_new_file_name(file_name):
                 t = exif_tags [ 'EXIF DateTimeOriginal' ]
                 date_str = file_type + str(t).replace(":", "")[:8] + "_" + str(t)[11:].replace(":", "")
                 # 生成新文件名
-                new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                new_file_name = os.path.join(date_str + e).upper()
                 ret_val = True
             except:
                 pass
     elif file_type == VID_FILE_TYPE and g_handle_vedio == True:
-        exiftool_cmd = "exiftool " + file_name
+        exiftool_cmd = "exiftool " + file_name_str
         exiftool_val = subprocess.run(exiftool_cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
         meta_data = str(exiftool_val.stdout).split("\\n")
         src_zone = tz.tzutc()
@@ -258,7 +298,7 @@ def generate_new_file_name(file_name):
                         utc_date_time = utc_date_time.replace(tzinfo=src_zone)
                         local_date_time = utc_date_time.astimezone(dst_zone)
                         date_str = local_date_time.strftime(my_data_format)
-                        new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                        new_file_name = os.path.join(date_str + e).upper()
                         ret_val = True
                         break
                     except:
@@ -278,7 +318,7 @@ def generate_new_file_name(file_name):
                         if time_zone == CN_TIME_ZONE:
                             local_date_time = datetime.strptime(modificationDateTime, '%Y:%m:%d %H:%M:%S')
                             date_str = local_date_time.strftime(my_data_format)
-                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            new_file_name = os.path.join(date_str + e).upper()
                             ret_val = True
                             break
                         else:
@@ -286,7 +326,7 @@ def generate_new_file_name(file_name):
                             utc_date_time = utc_date_time.replace(tzinfo=src_zone)
                             local_date_time = utc_date_time.astimezone(dst_zone)
                             date_str = local_date_time.strftime(my_data_format)
-                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            new_file_name = os.path.join(date_str + e).upper()
                             ret_val = True
                             break
                     except:
@@ -307,7 +347,7 @@ def generate_new_file_name(file_name):
                         if time_zone == CN_TIME_ZONE:
                             local_date_time = datetime.strptime(creation_date_time, '%Y:%m:%d %H:%M:%S')
                             date_str = local_date_time.strftime(my_data_format)
-                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            new_file_name = os.path.join(date_str + e).upper()
                             ret_val = True
                             break
                         else:
@@ -315,14 +355,14 @@ def generate_new_file_name(file_name):
                             utc_date_time = utc_date_time.replace(tzinfo=src_zone)
                             local_date_time = utc_date_time.astimezone(dst_zone)
                             date_str = local_date_time.strftime(my_data_format)
-                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            new_file_name = os.path.join(date_str + e).upper()
                             ret_val = True
                             break
                     except:
                         ret_val = False
                         break
     elif file_type == AUD_FILE_TYPE and g_handle_audio == True:
-        exiftool_cmd = "exiftool " + file_name
+        exiftool_cmd = "exiftool " + source_file_name
         exiftool_val = subprocess.run(exiftool_cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
         meta_data = str(exiftool_val.stdout).split("\\n")
         src_zone = tz.tzutc()
@@ -343,7 +383,7 @@ def generate_new_file_name(file_name):
                         if time_zone == CN_TIME_ZONE:
                             local_date_time = datetime.strptime(creation_date_time, '%Y:%m:%d %H:%M:%S')
                             date_str = local_date_time.strftime(my_data_format)
-                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            new_file_name = os.path.join(date_str + e).upper()
                             ret_val = True
                             break
                         else:
@@ -351,7 +391,7 @@ def generate_new_file_name(file_name):
                             utc_date_time = utc_date_time.replace(tzinfo=src_zone)
                             local_date_time = utc_date_time.astimezone(dst_zone)
                             date_str = local_date_time.strftime(my_data_format)
-                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            new_file_name = os.path.join(date_str + e).upper()
                             ret_val = True
                             break
                     except:
@@ -372,7 +412,7 @@ def generate_new_file_name(file_name):
                         if time_zone == CN_TIME_ZONE:
                             local_date_time = datetime.strptime(creation_date_time, '%Y:%m:%d %H:%M:%S')
                             date_str = local_date_time.strftime(my_data_format)
-                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            new_file_name = os.path.join(date_str + e).upper()
                             ret_val = True
                             break
                         else:
@@ -380,7 +420,7 @@ def generate_new_file_name(file_name):
                             utc_date_time = utc_date_time.replace(tzinfo=src_zone)
                             local_date_time = utc_date_time.astimezone(dst_zone)
                             date_str = local_date_time.strftime(my_data_format)
-                            new_file_name = os.path.join(date_str + def_suffix + e).upper()
+                            new_file_name = os.path.join(date_str + e).upper()
                             ret_val = True
                             break
                     except:
@@ -389,95 +429,105 @@ def generate_new_file_name(file_name):
 
     # 如果获取Exif信息失败，则采用该照片的创建日期重命名文件
     if ret_val == False and g_use_modified_date == True:
-        state = os.stat(file_name)
+        state = os.stat(source_file_name)
         date_str = time.strftime(my_data_format, time.localtime(state[-2]))
         new_file_name = os.path.join(date_str + e).upper()
         ret_val = True
 
-    # 检查新文件名是否合法
-    if ret_val == True:
-        # 如果新文件名与原文件名相同，则无需改名
-        if is_same_file_name(file_name, new_file_name):
-            ret_val = False
-        # 如果新文件名与其他文件重名，则在新文件明后加后缀 _01, _02, .., _99
-        elif new_file_name in os.listdir(dirname):
-            for i in range(1, 100):
-                tmpDateStr = date_str + "_" + str(i).zfill(2)
-                new_file_name = os.path.join(tmpDateStr + e).upper()
-                if is_same_file_name(file_name, new_file_name):
-                    ret_val = False
-                    break
-                elif new_file_name not in os.listdir(dirname):
-                    ret_val = True
-                    break
-        else:
-            ret_val = True
-
     return ret_val, new_file_name
 
 
-def scan_dir(startdir):
-    # 只检查指定的一个文件
-    if g_single_file != "":
-        if os.path.isfile(g_single_file):
-            obj = g_single_file
-            # 对满足过滤条件的文件进行改名处理
-            ret_val, new_file_name = generate_new_file_name(obj)
-            if ret_val:
-                try:
-                    if g_is_execute == True:
-                        os.rename(obj, new_file_name)
-                    if g_use_abs_path == True:
-                        print(os.path.abspath(obj), "\t=>\t", new_file_name)
-                    else:
-                        print(obj, "\t=>\t", new_file_name)
-                except:
-                    if g_is_quiet == False:
-                        if g_use_abs_path == True:
-                            print(os.path.abspath(obj), "\t=>\tcannot rename to ", new_file_name)
-                        else:
-                            print(obj, "\t=>\tcannot rename to ", new_file_name)
-            else:
-                if g_is_quiet == False:
-                    if g_use_abs_path == True:
-                        print(os.path.abspath(obj), "\t=>\tNo change")
-                    else:
-                        print(obj, "\t=>\tNo change")
-        else:
-            print(obj, " is not a vaild file!")
-        return
+def execute_rename_action(target_path, target_file_dict):
+    global g_is_verbose
 
-    # 遍历指定目录以及子目录，对满足条件的文件进行改名
-    os.chdir(startdir)
-    for obj in os.listdir(os.curdir):
-        if os.path.isfile(obj):
-            # 对满足过滤条件的文件进行改名处理
-            ret_val, new_file_name = generate_new_file_name(obj)
-            if ret_val:
-                try:
-                    if g_is_execute == True:
-                        os.rename(obj, new_file_name)
-                    if g_use_abs_path == True:
-                        print(os.path.abspath(obj), "\t=>\t", new_file_name)
-                    else:
-                        print(obj, "\t=>\t", new_file_name)
-                except:
-                    if g_is_quiet == False:
-                        if g_use_abs_path == True:
-                            print(os.path.abspath(obj), "\t=>\tcannot rename to ", new_file_name)
-                        else:
-                            print(obj, "\t=>\tcannot rename to ", new_file_name)
-            else:
-                if g_is_quiet == False:
-                    if g_use_abs_path == True:
-                        print(os.path.abspath(obj), "\t=>\tNo change")
-                    else:
-                        print(obj, "\t=>\tNo change")
-        elif os.path.isdir(obj) and g_is_recursive == True:
-            scan_dir(obj)
-            os.chdir(os.pardir)
+    num_of_copied_files = 0
+
+    for (target_file, source_file_list) in target_file_dict.items():
+        if not target_file.parent.exists():
+            target_file.parent.mkdir(parents = True)
+
+        if len(source_file_list) == 1:
+            shutil.copy(source_file_list[0], target_file)
+            num_of_copied_files += 1
+
+            if g_is_verbose == True:
+                print(str(source_file_list[0]), "->", str(target_file))
+        else:
+            target_file_dir = target_file.parent
+            target_file_stem = target_file.stem
+            target_file_suffix = target_file.suffix
+            #print("target_file_dir:", target_file_dir, "target_file_stem:", target_file_stem, "target_file_suffix:", target_file_suffix)
+
+            source_file_index = 0
+            for source_file in source_file_list:
+                target_file_name_with_index = target_file_stem + "_" + str(source_file_index).zfill(2) + target_file_suffix
+                target_file_with_index = target_file_dir / target_file_name_with_index
+                #print("source file:", source_file, "target_file_name_with_index:", target_file_name_with_index, "target_file_with_index:", target_file_with_index)
+
+                shutil.copy(source_file, target_file_with_index)
+                num_of_copied_files += 1
+                source_file_index += 1
+
+                if g_is_verbose == True:
+                    print(str(source_file), "->", str(target_file_with_index))
+
+    print("Number of files copied to", str(target_path), ":", num_of_copied_files)
 
 
 if __name__ == "__main__":
-    parse_arguments()
-    scan_dir(g_path_list[0])
+    # Parse input arguments
+    path_list = parse_arguments()
+
+    if g_is_verbose == True:
+        print('\n')
+        print("path_list:")
+        if len(path_list) > 0:
+            for path in path_list:
+                print(path)
+        else:
+            print("Empty!")
+
+    # Loop path specified in input argument -d "path1 path2 .."
+    for path in path_list:
+        # Scan the path and put all files to source_file_list
+        source_file_list = scan_path(path)
+
+        # Print all files in source_file_list if input argument -V is specified
+        if g_is_verbose == True:
+            print('\n')
+            print("source_file_list:")
+            if len(source_file_list) > 0:
+                for file in source_file_list:
+                    print(file)
+            else:
+                print("Empty!")
+
+        print("Number of source files in source_file_list :", len(source_file_list))
+
+        # Generate target file name and put it in to target_file_dict
+        target_path, target_file_dict = generate_target_file_dict(path, source_file_list)
+
+        len_duplicated_key = 0
+        len_duplicated_val = 0
+
+        if len(target_file_dict) > 0:
+            for target_file in target_file_dict:
+                if len(target_file_dict[target_file]) > 1:
+                    len_duplicated_key += 1
+                    len_duplicated_val += len(target_file_dict[target_file])
+
+        if g_is_verbose == True:
+            print('\n')
+            print("target_file_dict:")
+            if len(target_file_dict) > 0:
+                for target_file in target_file_dict:
+                    print(target_file, str(target_file_dict[target_file]))
+            else:
+                print("Empty!")
+
+        #print("Number of target files:", len(target_file_dict))
+        #print("Number of target files with duplicated source files:", len_duplicated_key)
+        print("Number of source files in target_file_dict :", len(target_file_dict) - len_duplicated_key + len_duplicated_val)
+
+        if g_is_execute == True:
+            execute_rename_action(target_path, target_file_dict)
