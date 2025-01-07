@@ -11,10 +11,6 @@ from collections import defaultdict
 g_is_recursive = False
 g_is_verbose = False
 g_show_single_file = False
-g_path_list = []
-
-g_file_list = []
-g_file_md5sum_list = defaultdict(list)
 
 
 def parse_arguments():
@@ -42,111 +38,108 @@ def parse_arguments():
         g_show_single_file = True
 
     # -d, --directory
-    global g_path_list
+    path_list = []
     if args.directory:
-        path_list = args.directory.split()
-        for path in path_list:
+        input_path_list = args.directory.split()
+        for path in input_path_list:
             path_obj = Path(path)
             if path_obj.exists():
                 path_str = path_obj.resolve()
-                if path_str not in g_path_list:
-                    g_path_list.append(path_str)
+                if path_str not in path_list:
+                    path_list.append(path_str)
     else:
-        g_path_list.append(Path().absolute())
+        path_list.append(Path().absolute())
 
-    if g_is_verbose:
-        print('\n')
-        print("g_path_list:")
-        for path in g_path_list:
-            print(path)
+    return path_list
 
 
 def scan_path(start_path):
-    global g_file_list
     global g_is_recursive
-    global g_is_verbose
 
     curr_path = Path(start_path)
     curr_path_str = curr_path.resolve()
 
-    if g_is_verbose == True:
-        print('\n')
-        print("curr_path_str:")
-        print(curr_path_str)
-
+    file_list = []
     sub_dir_list = []
 
     for item in curr_path.iterdir():
         if item.is_file() and not str(item.name).startswith('.'):
-            g_file_list.append(curr_path_str / item)
+            file_list.append(curr_path_str / item)
         elif item.is_dir() and g_is_recursive and not str(item.name).startswith('.'):
             sub_dir_list.append(curr_path_str / item)
 
-    if g_is_verbose == True:
-        print('\n')
-        print("g_file_list:")
-        for file in g_file_list:
-            print(file)
-
     if g_is_recursive == True:
-        if g_is_verbose == True:
-            print('\n')
-            print("sub_dir_list:")
-            if len(sub_dir_list) > 0:
-                for sub_dir in sub_dir_list:
-                    print(sub_dir)
-            else:
-                print("Empty!")
-
         for dir in sub_dir_list:
-            scan_path(dir)
+            file_list_in_sub_dir = scan_path(dir)
+            file_list.extend(file_list_in_sub_dir)
+
+    return file_list
 
 
-def calc_md5sum():
-    global g_file_list
+def calc_md5sum(file_list):
     global g_is_verbose
     global g_show_single_file
+
+    md5sum_file_dict = defaultdict(list)
 
     if g_is_verbose:
         print('\n')
         print("md5sum per file:")
 
-    for file in g_file_list:
+    for file in file_list:
         with open(file, 'rb') as fp:
             data = fp.read()
-            file_md5 = hashlib.md5(data).hexdigest()
-            g_file_md5sum_list[file_md5].append(file)
+            md5sum = hashlib.md5(data).hexdigest()
+            md5sum_file_dict[md5sum].append(file)
 
             if g_is_verbose:
-                print(file_md5, file)
+                print(md5sum, file)
+
+    return md5sum_file_dict
+
+
+if __name__ == "__main__":
+    path_list = parse_arguments()
+
+    if g_is_verbose:
+        print('\n')
+        print("path_list:")
+        for path in path_list:
+            print(path)
+
+    file_list = []
+
+    for path in path_list:
+        file_list_in_path = scan_path(path)
+        file_list.extend(file_list_in_path)
+
+    if g_is_verbose == True:
+        print('\n')
+        print("file_list:")
+        for file in file_list:
+            print(file)
+
+    md5sum_file_dict = calc_md5sum(file_list)
 
     print('\n')
-    print("Duplicated files")
+    print("Duplicated files:")
     print('\n')
 
-    for md5sum in g_file_md5sum_list:
-        if len(g_file_md5sum_list[md5sum]) > 1:
+    for md5sum in md5sum_file_dict:
+        if len(md5sum_file_dict[md5sum]) > 1:
             print(md5sum)
-            for file in g_file_md5sum_list[md5sum]:
+            for file in md5sum_file_dict[md5sum]:
                 print(file)
             print('\n')
 
     if g_show_single_file == True:
-        print("Not duplicated files")
+        print("Not duplicated files:")
         print('\n')
 
-        for md5sum in g_file_md5sum_list:
-            if len(g_file_md5sum_list[md5sum]) == 1:
+        for md5sum in md5sum_file_dict:
+            if len(md5sum_file_dict[md5sum]) == 1:
                 print(md5sum)
-                for file in g_file_md5sum_list[md5sum]:
+                for file in md5sum_file_dict[md5sum]:
                     print(file)
                 print('\n')
 
-
-if __name__ == "__main__":
-    parse_arguments()
-
-    for path in g_path_list:
-        scan_path(path)
-
-    calc_md5sum()
