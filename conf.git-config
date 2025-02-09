@@ -20,6 +20,15 @@ git config --global core.abbrev 12
 # Take care of file mode change
 git config --global core.filemode true
 
+# This option changes the size of the buffer that Git uses when pushing data to
+# a remote over HTTP or HTTPS. If the data is larger than this size, libcurl,
+# which handles the HTTP support for Git, will use chunked transfer encoding
+# since it isn’t known ahead of time what the size of the pushed data will be.
+#
+# This setting fixes the following error when push commits to remote:
+# fatal: the remote end hung up unexpectedly
+git config --global http.postBuffer 524288000
+
 
 ################################################################################
 ## Variables
