@@ -45,8 +45,8 @@ set backspace=2
 "Show match brackets
 set showmatch
 
-"Highlight the column 80
-set colorcolumn=80
+"Highlight the column 72 for width of commit message on gerrit
+set colorcolumn=72
 
 "If in Insert, Replace or Visual mode, put a message on the last line.
 set showmode
