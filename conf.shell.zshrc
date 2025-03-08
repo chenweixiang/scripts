@@ -21,6 +21,9 @@
 # Common Configure
 ################################################################################
 
+# command line prompt
+export PS1='%n@%m [%D{%Y-%m-%d %H:%M:%S}] %d %# '
+
 # ls
 alias ll='ls --color -D "%Y-%m-%d %H:%M:%S" -lh'
 alias lla='ls --color -D "%Y-%m-%d %H:%M:%S" -lha'
