@@ -967,6 +967,16 @@ git config --global alias.ps push
 git config --global alias.psh "push origin HEAD:refs/for/master"
 
 #-------------------------------------------------------------------------------
+# Git push to master with GPG signed.
+#
+# Usage:  git pssh
+#
+# Shell:  gpssh
+#-------------------------------------------------------------------------------
+
+git config --global alias.pssh "push --signed origin HEAD:refs/for/master"
+
+#-------------------------------------------------------------------------------
 # Git push to drafts.
 #
 # Usage:  git psd
