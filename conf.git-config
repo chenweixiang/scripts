@@ -997,6 +997,16 @@ git config --global alias.psd "push origin HEAD:refs/drafts/master"
 git config --global alias.psp "push origin HEAD:refs/for/master%private"
 
 #-------------------------------------------------------------------------------
+# Git push to Work In Progress (WIP) for Gerrit v3.4.
+#
+# Usage:  git pswip
+#
+# Shell:  gpswip
+#-------------------------------------------------------------------------------
+
+git config --global alias.pswip "push origin HEAD:refs/for/master%wip"
+
+#-------------------------------------------------------------------------------
 # Git Submodule.
 #
 # Usage:  git sub
