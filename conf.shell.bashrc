@@ -239,19 +239,18 @@ alias ssigie0='find . -noignore_readdir_race -nowarn -type f -print0 \( -not -pa
 alias fdf='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I\{\} -n1 find -type f -size \{\}c -print0 | xargs -0 md5sum | sort | uniq -w32 --all-repeated=separate | cut -b 36- '
 
 # Find specific file within current path
-alias ff='find . -noignore_readdir_race -nowarn -type f -iname'
-alias sff='~/scripts/find_files.py -t f -s'
-
-ffile() {
-    find . -name -noignore_readdir_race -type f -iname "$1" -exec realpath  {} \;
-}
+# Example: ff '*.txt'
+alias ff='find "$PWD" -noignore_readdir_race -nowarn -type f -iname'
 
 # Find specific directory within current path
-alias fd='find . -noignore_readdir_race -nowarn -type d -iname'
-alias sfd='~/scripts/find_files.py -t d -s'
+# Example: fd 'unit*'
+alias fd='find "$PWD" -noignore_readdir_race -nowarn -type d -iname'
 
-# Real path of specified file
-alias rp='realpath'
+# Find specific file within current path
+alias sff='~/scripts/find_files.py -t f -s'
+
+# Find specific directory within current path
+alias sfd='~/scripts/find_files.py -t d -s'
 
 
 ################################################################################
