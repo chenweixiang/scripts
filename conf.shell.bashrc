@@ -242,9 +242,16 @@ alias fdf='find -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs 
 alias ff='find . -noignore_readdir_race -nowarn -type f -iname'
 alias sff='~/scripts/find_files.py -t f -s'
 
+ffile() {
+    find . -name -noignore_readdir_race -type f -iname "$1" -exec realpath  {} \;
+}
+
 # Find specific directory within current path
 alias fd='find . -noignore_readdir_race -nowarn -type d -iname'
 alias sfd='~/scripts/find_files.py -t d -s'
+
+# Real path of specified file
+alias rp='realpath'
 
 
 ################################################################################
