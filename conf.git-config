@@ -1007,6 +1007,16 @@ git config --global alias.psp "push origin HEAD:refs/for/master%private"
 git config --global alias.pswip "push origin HEAD:refs/for/master%wip"
 
 #-------------------------------------------------------------------------------
+# Git push to Ready (to cancel WIP) for Gerrit v3.4.
+#
+# Usage:  git psr
+#
+# Shell:  gpsr
+#-------------------------------------------------------------------------------
+
+git config --global alias.psr "push origin HEAD:refs/for/master%ready"
+
+#-------------------------------------------------------------------------------
 # Git Submodule.
 #
 # Usage:  git sub
